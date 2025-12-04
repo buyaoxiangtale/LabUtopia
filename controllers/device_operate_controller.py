@@ -1,10 +1,10 @@
 from controllers.atomic_actions.move_controller import MoveController
-from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController
+from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
+from isaacsim.core.utils.rotations import euler_angles_to_quat
 from scipy.spatial.transform import Rotation as R
 import numpy as np
 from enum import Enum
 from typing import Optional
-from omni.isaac.core.utils.rotations import euler_angles_to_quat
 from .atomic_actions.open_controller import OpenController
 from .atomic_actions.pick_controller import PickController
 from .atomic_actions.place_controller import PlaceController

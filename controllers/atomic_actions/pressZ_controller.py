@@ -1,11 +1,9 @@
-from omni.isaac.core.controllers import BaseController
-from omni.isaac.core.utils.stage import get_stage_units
-from omni.isaac.core.utils.types import ArticulationAction
-from omni.isaac.core.utils.rotations import euler_angles_to_quat
+from isaacsim.core.api.controllers import BaseController
+from isaacsim.core.utils.stage import get_stage_units
+from isaacsim.core.utils.types import ArticulationAction
+from isaacsim.core.utils.rotations import euler_angles_to_quat
 import numpy as np
 import typing
-from omni.isaac.manipulators.grippers.gripper import Gripper
-
 class PressZController(BaseController):
     def __init__(
         self,

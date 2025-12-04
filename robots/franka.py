@@ -1,24 +1,34 @@
-# Copyright (c) 2021-2023, NVIDIA CORPORATION. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
 #
-# NVIDIA CORPORATION and its licensors retain all intellectual property
-# and proprietary rights in and to this software, related documentation
-# and any modifications thereto. Any use, reproduction, disclosure or
-# distribution of this software and related documentation without an express
-# license agreement from NVIDIA CORPORATION is strictly prohibited.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from typing import List, Optional
 
 import carb
 import numpy as np
-from omni.isaac.core.prims.rigid_prim import RigidPrim
-from omni.isaac.core.robots.robot import Robot
-from omni.isaac.core.utils.prims import get_prim_at_path
-from omni.isaac.core.utils.stage import add_reference_to_stage, get_stage_units
-from omni.isaac.manipulators.grippers.parallel_gripper import ParallelGripper
-from omni.isaac.nucleus import get_assets_root_path
-from omni.isaac.sensor import ContactSensor
-from omni.isaac.sensor import Camera
+from isaacsim.core.api.robots.robot import Robot
+from isaacsim.core.prims import SingleRigidPrim
+from isaacsim.core.utils.prims import get_prim_at_path
+from isaacsim.core.utils.stage import add_reference_to_stage, get_stage_units
+from isaacsim.robot.manipulators.grippers.parallel_gripper import ParallelGripper
+from isaacsim.storage.native import get_assets_root_path
+from isaacsim.sensors.physics import ContactSensor
+from isaacsim.sensors.camera import Camera
+
 from utils.object_utils import ObjectUtils
+
+
 class Franka(Robot):
     """[summary]
 
@@ -60,7 +70,7 @@ class Franka(Robot):
                 assets_root_path = get_assets_root_path()
                 if assets_root_path is None:
                     carb.log_error("Could not find Isaac Sim assets folder")
-                usd_path = assets_root_path + "/Isaac/Robots/Franka/franka.usd"
+                usd_path = assets_root_path + "/Isaac/Robots/FrankaRobotics/FrankaPanda/franka.usd"
                 add_reference_to_stage(usd_path=usd_path, prim_path=prim_path)
             if self._end_effector_prim_name is None:
                 self._end_effector_prim_path = prim_path + "/panda_rightfinger"
@@ -98,7 +108,6 @@ class Franka(Robot):
                 joint_closed_positions=gripper_closed_position,
                 action_deltas=deltas,
             )
-            self._gripper.set_action_deltas(np.array([0.03, 0.03]) / get_stage_units())
         
         self.left_contact_sensor = ContactSensor(
             prim_path=prim_path + "/panda_leftfinger" + "/contact_sensor",
@@ -120,7 +129,7 @@ class Franka(Robot):
             translation=np.array([-0.2, -0, -0.02]),
             frequency=60,
             resolution=(256, 256),
-            orientation=np.array([0.20083, 0.67799, -0.67799, -0.20083])
+            orientation=np.array([0.20083, 0.67799, -0.67799, -0.20083]),
         )
         self.camera.set_local_pose(orientation=np.array([0.20083, 0.67799, -0.67799, -0.20083]), camera_axes="usd")
         self.camera.set_clipping_range(near_distance=0.05)
@@ -128,15 +137,21 @@ class Franka(Robot):
         return
 
     def get_contact_sensor(self):
+        """Get contact sensors
         
+        Returns:
+            tuple: (left_contact_sensor, right_contact_sensor)
+            left_contact_sensor: Left contact sensor
+            right_contact_sensor: Right contact sensor
+        """
         return self.left_contact_sensor, self.right_contact_sensor
         
     @property
-    def end_effector(self) -> RigidPrim:
+    def end_effector(self) -> SingleRigidPrim:
         """[summary]
 
         Returns:
-            RigidPrim: [description]
+            SingleRigidPrim: [description]
         """
         return self._end_effector
 
@@ -152,7 +167,7 @@ class Franka(Robot):
     def initialize(self, physics_sim_view=None) -> None:
         """[summary]"""
         super().initialize(physics_sim_view)
-        self._end_effector = RigidPrim(prim_path=self._end_effector_prim_path, name=self.name + "_end_effector")
+        self._end_effector = SingleRigidPrim(prim_path=self._end_effector_prim_path, name=self.name + "_end_effector")
         self._end_effector.initialize(physics_sim_view)
         self._gripper.initialize(
             physics_sim_view=physics_sim_view,

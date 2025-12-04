@@ -7,7 +7,7 @@ from controllers.robot_controllers.grapper_manager import Gripper
 from controllers.robot_controllers.trajectory_controller import FrankaTrajectoryController
 from factories.collector_factory import create_collector
 from utils.object_utils import ObjectUtils
-from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController as FrankaRMPFlowController
+from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController as FrankaRMPFlowController
 
 class BaseController(ABC):
     """Base class for all controllers in the chemistry lab simulator.

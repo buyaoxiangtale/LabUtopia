@@ -1,5 +1,5 @@
 from typing import Dict, Type
-from omni.isaac.core.robots.robot import Robot
+from isaacsim.core.api.robots.robot import Robot
 from robots.franka import Franka
 
 _robot_registry: Dict[str, Type[Robot]] = {}

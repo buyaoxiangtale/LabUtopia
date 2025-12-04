@@ -1,5 +1,5 @@
 from .base_task import BaseTask
-from omni.isaac.core.utils.prims import set_prim_visibility
+from isaacsim.core.utils.prims import set_prim_visibility
 
 class PickPourTask(BaseTask):
     def __init__(self, cfg, world, stage, robot):

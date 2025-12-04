@@ -4,10 +4,10 @@ simulation_app = SimulationApp({"headless": False})
 import os
 import h5py
 import yaml
-from omni.isaac.core import World
-from omni.isaac.core.utils.stage import add_reference_to_stage
-from omni.isaac.core.robots import Robot
-from omni.isaac.core.utils.types import ArticulationAction
+from isaacsim.core.api import World
+from isaacsim.core.utils.stage import add_reference_to_stage
+from isaacsim.core.api.robots.robot import Robot
+from isaacsim.core.utils.types import ArticulationAction
 import omni.usd
 from utils.object_utils import ObjectUtils
 

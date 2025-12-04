@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 import numpy as np
-from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController
+from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
 from scipy.spatial.transform import Rotation as R
 
 from .base_controller import BaseController

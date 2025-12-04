@@ -4,21 +4,22 @@ simulation_app = SimulationApp({"headless": False})
 import os
 import yaml
 from scipy.spatial.transform import Rotation as R
-from omni.isaac.core import World
-from omni.isaac.core.utils.stage import add_reference_to_stage
-from omni.isaac.core.robots import Robot
-from omni.isaac.franka.controllers import RMPFlowController
-from omni.isaac.core.utils.rotations import euler_angles_to_quat, quat_to_euler_angles
+from isaacsim.core.api import World
+from isaacsim.core.utils.stage import add_reference_to_stage
+from isaacsim.core.api.robots.robot import Robot
+from isaacsim.robot.manipulators.examples.franka.controllers import RMPFlowController
+from isaacsim.core.utils.rotations import quat_to_euler_angles
 import omni.usd
-from omni.isaac.core.articulations import Articulation, ArticulationSubset
-from omni.isaac.sensor import Camera
+from isaacsim.core.api.articulations import ArticulationSubset
+from isaacsim.sensors.camera import Camera
+
 
 from controllers.robot_controllers.ridgebase.ridgebase_controller import RidgebaseController
 from controllers.atomic_actions.pick_controller import PickController
 from controllers.robot_controllers.grapper_manager import Gripper
 from utils.a_star import plan_navigation_path, real_to_grid, load_grid
 from utils.object_utils import ObjectUtils
-from omni.isaac.core.utils.types import ArticulationAction
+from isaacsim.core.utils.types import ArticulationAction
 from data_collectors.pick_data_collector import PickDataCollector
 
 def load_assets_config(config_path):

@@ -1,6 +1,5 @@
 import numpy as np
 from .base_task import BaseTask
-from omni.isaac.core.utils.prims import set_prim_visibility
 
 class DeviceOperateTask(BaseTask):
     """

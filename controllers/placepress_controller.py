@@ -1,4 +1,4 @@
-from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController
+from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
 from scipy.spatial.transform import Rotation as R
 import numpy as np
 from enum import Enum

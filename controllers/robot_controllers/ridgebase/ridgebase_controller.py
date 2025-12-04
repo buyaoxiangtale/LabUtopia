@@ -1,7 +1,8 @@
 import numpy as np
 from typing import List, Tuple, Optional
-from omni.isaac.core.articulations import Articulation, ArticulationSubset
-from omni.isaac.core.utils.types import ArticulationAction
+from isaacsim.core.api.articulations import ArticulationSubset
+from isaacsim.core.prims.impl import Articulation
+from isaacsim.core.utils.types import ArticulationAction
 
 class RidgebaseController:
     def __init__(

@@ -3,8 +3,8 @@ from isaacsim import SimulationApp
 simulation_app = SimulationApp({"headless": False})
 import numpy as np
 import yaml
-from omni.isaac.core import World
-from omni.isaac.core.utils.stage import add_reference_to_stage
+from isaacsim.core.api import World
+from isaacsim.core.utils.stage import add_reference_to_stage
 
 from controllers.robot_controllers.ridgebase.ridgebase_controller import RidgebaseController
 from utils.a_star import plan_navigation_path, real_to_grid, load_grid
@@ -46,7 +46,7 @@ def main():
         prim_path=robot_path
     )
     
-    from omni.isaac.core.robots import Robot
+    from isaacsim.core.api.robots.robot import Robot
     robot = Robot(
         prim_path=robot_path,
         name="ridgebase",
@@ -109,7 +109,7 @@ def main():
                     initial_position = np.array([start_point[0], start_point[1], 0.0])
                     initial_orientation = np.array([0.0, 0.0, waypoints[0][2]])  
 
-                    from omni.isaac.core.utils.rotations import euler_angles_to_quat
+                    from isaacsim.core.utils.rotations import euler_angles_to_quat
                     initial_rotation = euler_angles_to_quat(initial_orientation)
                     
                     robot.set_world_pose(position=initial_position)
@@ -146,7 +146,7 @@ def main():
                 reset_need = False
                 
             position, orientation = robot.get_world_pose()
-            from omni.isaac.core.utils.rotations import quat_to_euler_angles
+            from isaacsim.core.utils.rotations import quat_to_euler_angles
             euler_angles = quat_to_euler_angles(orientation, extrinsic=False)
             current_pose = np.array([position[0], position[1], euler_angles[2]])
             

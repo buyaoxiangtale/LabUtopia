@@ -1,9 +1,9 @@
 hydra-core
 omegaconf
 h5py
-numpy
+numpy==1.26.0
 numcodecs
-opencv-python
+opencv-python-headless==4.11.0.86
 pandas
 scipy
 zarr
@@ -16,7 +16,6 @@ threadpoolctl
 matplotlib
 dill
 pydantic
-numba==0.56.4
 rtree
 shapely
 open3d
@@ -24,3 +23,5 @@ diffusers
 pytorch-lightning
 lightning-bolts
 tyro
+sentry-sdk==1.43.0
+typing_extensions==4.12.2

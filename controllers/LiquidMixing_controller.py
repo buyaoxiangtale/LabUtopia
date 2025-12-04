@@ -10,9 +10,9 @@ from controllers.atomic_actions.open_controller import OpenController
 from controllers.atomic_actions.pick_controller import PickController
 from controllers.atomic_actions.place_controller import PlaceController
 from controllers.atomic_actions.stir_controller import StirController
-from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController
+from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
 from utils.object_utils import ObjectUtils
-from omni.isaac.core.utils.numpy.rotations import euler_angles_to_quats
+from isaacsim.core.utils.numpy.rotations import euler_angles_to_quats
 
 class TaskPhase(Enum):
     """Task phase enumeration"""

@@ -5,19 +5,16 @@ import os
 import yaml
 import hydra
 import torch
-from omni.isaac.core import World
-from omni.isaac.core.utils.stage import add_reference_to_stage
-from omni.isaac.core.robots import Robot
-from omni.isaac.core.articulations import ArticulationSubset
-from omni.isaac.sensor import Camera
-from omni.isaac.core.utils.rotations import quat_to_euler_angles
+from isaacsim.core.api import World
+from isaacsim.core.utils.stage import add_reference_to_stage
+from isaacsim.core.api.robots.robot import Robot
+from isaacsim.sensors.camera import Camera
 import omni.usd
 from collections import deque
 from omegaconf import OmegaConf
 from policy.model.common.normalizer import LinearNormalizer
-from omni.isaac.core.utils.types import ArticulationAction
-
-from utils.a_star import plan_navigation_path, load_grid
+from isaacsim.core.utils.types import ArticulationAction
+from utils.a_star import plan_navigation_path
 from utils.object_utils import ObjectUtils
 
 OmegaConf.register_new_resolver("eval", eval, replace=True)

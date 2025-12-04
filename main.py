@@ -14,6 +14,8 @@ def parse_args():
                        help='Disable video display and saving')
     parser.add_argument('--config-name', type=str, default='level3_Heat_Liquid',
                        help='Configuration file name (without .yaml extension)')
+    parser.add_argument('--config-dir', type=str, default='config',
+                       help='Configuration directory path (default: config)')
     return parser.parse_args()
 
 # Get command line arguments
@@ -29,9 +31,8 @@ import cv2
 import numpy as np
 
 import omni
-import omni.physx
-from omni.isaac.core import World
-from omni.isaac.core.utils.stage import add_reference_to_stage
+from isaacsim.core.api import World
+from isaacsim.core.utils.stage import add_reference_to_stage
 import omni.usd
 
 from factories.robot_factory import create_robot
@@ -40,7 +41,7 @@ from factories.task_factory import create_task
 from factories.controller_factory import create_controller
 
 def main():
-    hydra.initialize(config_path="config", job_name=args.config_name)
+    hydra.initialize(config_path=args.config_dir, job_name=args.config_name)
     cfg = hydra.compose(config_name=args.config_name)
     os.makedirs(cfg.multi_run.run_dir, exist_ok=True)
     OmegaConf.save(cfg, cfg.multi_run.run_dir + "/config.yaml")

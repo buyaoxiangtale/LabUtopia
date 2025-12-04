@@ -1,13 +1,13 @@
 import re
 from typing import Optional
 from controllers.atomic_actions.close_controller import CloseController
-from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController
+from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
 import numpy as np
 
 from controllers.atomic_actions.open_controller import OpenController
 from .base_controller import BaseController
 from .robot_controllers.trajectory_controller import FrankaTrajectoryController
-from omni.isaac.core.utils.numpy.rotations import euler_angles_to_quats
+from isaacsim.core.utils.numpy.rotations import euler_angles_to_quats
 from .inference_engines.inference_engine_factory import InferenceEngineFactory
 
 class OpenCloseTaskController(BaseController):
