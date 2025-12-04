@@ -120,19 +120,17 @@ class BaseTask(ABC):
                     frequency=60,
                     resolution=tuple(cam_cfg.resolution)
                 )
-
-                # camera.set_local_pose(orientation=np.array(cam_cfg.orientation), camera_axes="usd")
                 # self.world.scene.add(camera)
-                # camera.set_focal_length(cam_cfg.focal_length)
+                camera.set_local_pose(orientation=np.array(cam_cfg.orientation), camera_axes="usd")
+                camera.set_focal_length(cam_cfg.focal_length)
                 
-            # camera.set_clipping_range(near_distance=0.1, far_distance=10.0)
-            # self.cameras.append(camera)
+            camera.set_clipping_range(near_distance=0.1, far_distance=10.0)
+            self.cameras.append(camera)
         
         self.world.reset()
         
         for camera, cam_cfg in zip(self.cameras, self.cfg.cameras):
             camera.initialize()
-            
             image_types = cam_cfg.image_type.split('+') if '+' in cam_cfg.image_type else [cam_cfg.image_type]
             
             for image_type in image_types:
