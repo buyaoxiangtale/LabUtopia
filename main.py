@@ -34,6 +34,10 @@ import omni
 from isaacsim.core.api import World
 from isaacsim.core.utils.stage import add_reference_to_stage
 import omni.usd
+from isaacsim.core.utils import extensions
+
+extensions.enable_extension("omni.physx.bundle")
+extensions.enable_extension("omni.usdphysics.ui")
 
 from factories.robot_factory import create_robot
 from utils.object_utils import ObjectUtils

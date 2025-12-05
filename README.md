@@ -58,7 +58,7 @@ pip install isaacsim==4.2.0.2 isaacsim-extscache-physics==4.2.0.2 isaacsim-extsc
 pip install -r requirements.txt
 
 # Run script to setup .vscode/settings.json
-python setup_vscode_settings.py
+python -m isaacsim --generate-vscode-settings
 ```
 
 ## Code Structure

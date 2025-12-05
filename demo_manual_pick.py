@@ -7,17 +7,16 @@ from scipy.spatial.transform import Rotation as R
 from isaacsim.core.api import World
 from isaacsim.core.utils.stage import add_reference_to_stage
 from isaacsim.core.api.robots.robot import Robot
-from isaacsim.robot.manipulators.examples.franka.controllers import RMPFlowController
 from isaacsim.core.utils.rotations import quat_to_euler_angles
 import omni.usd
 from isaacsim.core.api.articulations import ArticulationSubset
 from isaacsim.sensors.camera import Camera
 
-
+from robots.franka.rmpflow_controller import RMPFlowController
 from controllers.robot_controllers.ridgebase.ridgebase_controller import RidgebaseController
 from controllers.atomic_actions.pick_controller import PickController
 from controllers.robot_controllers.grapper_manager import Gripper
-from utils.a_star import plan_navigation_path, real_to_grid, load_grid
+from utils.a_star import plan_navigation_path, load_grid
 from utils.object_utils import ObjectUtils
 from isaacsim.core.utils.types import ArticulationAction
 from data_collectors.pick_data_collector import PickDataCollector

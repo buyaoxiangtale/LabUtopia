@@ -6,7 +6,7 @@ import isaacsim.robot_motion.motion_generation as mg
 from isaacsim.core.utils.extensions import get_extension_path_from_name
 from isaacsim.core.prims.impl import Articulation
 from isaacsim.core.utils.types import ArticulationAction
-from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
+from robots.franka.rmpflow_controller import RMPFlowController
 
 
 class FrankaTrajectoryController(RMPFlowController):

@@ -1,19 +1,13 @@
 import numpy as np
-import random
 from enum import Enum
-from typing import Dict, Any, Tuple, Optional, List
+from typing import Dict, Any, Tuple, Optional
 from scipy.spatial.transform import Rotation as R
 from controllers.atomic_actions.pour_controller import PourController
 from controllers.atomic_actions.pressZ_controller import PressZController
 from controllers.base_controller import BaseController
-from controllers.atomic_actions.open_controller import OpenController
 from controllers.atomic_actions.pick_controller import PickController
 from controllers.atomic_actions.place_controller import PlaceController
-from controllers.atomic_actions.stir_controller import StirController
-from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
-from utils.object_utils import ObjectUtils
-from isaacsim.core.utils.numpy.rotations import euler_angles_to_quats
-
+from robots.franka.rmpflow_controller import RMPFlowController
 class TaskPhase(Enum):
     """Task phase enumeration"""
     PICKING1 = "picking1"        # Door opening stage

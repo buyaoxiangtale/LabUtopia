@@ -8,7 +8,7 @@ from controllers.base_controller import BaseController
 from controllers.atomic_actions.open_controller import OpenController
 from controllers.atomic_actions.pick_controller import PickController
 from controllers.atomic_actions.place_controller import PlaceController
-from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
+from robots.franka.rmpflow_controller import RMPFlowController
 from isaacsim.core.utils.numpy.rotations import euler_angles_to_quats
 
 class TaskPhase(Enum):

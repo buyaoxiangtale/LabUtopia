@@ -1,6 +1,6 @@
 from typing import Dict, Type
 from isaacsim.core.api.robots.robot import Robot
-from robots.franka import Franka
+from robots.franka.franka import Franka
 
 _robot_registry: Dict[str, Type[Robot]] = {}
 

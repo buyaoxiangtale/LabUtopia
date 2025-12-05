@@ -1,6 +1,6 @@
 import re
 from typing import Optional
-from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
+from robots.franka.rmpflow_controller import RMPFlowController
 import numpy as np
 
 from controllers.atomic_actions.open_controller import OpenController

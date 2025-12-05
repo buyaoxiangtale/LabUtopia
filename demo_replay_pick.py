@@ -92,7 +92,6 @@ def main():
                     
                     target_joint_positions = agent_poses[current_step]
                     
-                    
                     action = ArticulationAction(
                         joint_positions=target_joint_positions,
                         joint_velocities=None

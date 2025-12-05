@@ -8,7 +8,8 @@ from .atomic_actions.press_controller import PressController
 
 class PressTaskController(BaseController):
     def __init__(self, cfg, robot):
-        super().__init__(cfg, robot)
+        super().__init__(cfg, robot, use_default_config=False)
+        
     def _init_collect_mode(self, cfg, robot):
         super()._init_collect_mode(cfg, robot)
         self.press_controller = PressController(

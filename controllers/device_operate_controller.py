@@ -1,5 +1,5 @@
 from controllers.atomic_actions.move_controller import MoveController
-from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import RMPFlowController
+from robots.franka.rmpflow_controller import RMPFlowController
 from isaacsim.core.utils.rotations import euler_angles_to_quat
 from scipy.spatial.transform import Rotation as R
 import numpy as np
