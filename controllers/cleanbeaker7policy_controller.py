@@ -113,7 +113,6 @@ class CleanBeaker7PolicyTaskController(BaseController):
         self.shake_beaker1 = ShakeController(
             name="shake_beaker1",
             cspace_controller=self.rmp_controller,
-            gripper=robot.gripper
         )
         
         self.pour_beaker1 = PourController(

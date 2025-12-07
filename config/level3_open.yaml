@@ -1,6 +1,6 @@
 name: Level3_open
 
-task_type: "open"
+task_type: "openclose"
 controller_type: "open"
 
 mode: "collect"
