@@ -1,8 +1,8 @@
 from typing import Optional
 import numpy as np
 
-from omni.isaac.core.utils.types import ArticulationAction
-from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController
+from isaacsim.core.utils.types import ArticulationAction
+from robots.franka.rmpflow_controller import RMPFlowController
 from scipy.spatial.transform import Rotation as R
 
 from .base_controller import BaseController

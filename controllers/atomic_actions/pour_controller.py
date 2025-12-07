@@ -1,6 +1,6 @@
-from omni.isaac.core.controllers import BaseController
-from omni.isaac.core.controllers.articulation_controller import ArticulationController
-from omni.isaac.core.utils.types import ArticulationAction
+from isaacsim.core.api.controllers import BaseController
+from isaacsim.core.api.controllers.articulation_controller import ArticulationController
+from isaacsim.core.utils.types import ArticulationAction
 
 import numpy as np
 import typing

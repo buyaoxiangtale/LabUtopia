@@ -27,13 +27,13 @@ task:
   left_pos:
     x: [0.18, 0.33]
     y: [-0.32, -0.17]
-    z: [0.83, 0.83]
+    z: [0.87, 0.87]
   obj_paths:
     - path: "/World/beaker2"
       position_range:
         x: [0.22, 0.37]
         y: [0.0, 0.15]
-        z: [0.83, 0.83]
+        z: [0.87, 0.87]
         
 cameras:
   - prim_path: "/World/Camera1"

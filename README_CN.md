@@ -21,10 +21,10 @@
 
 ## 系统要求
 - 支持CUDA的RTX系列NVIDIA GPU（Isaac Sim 不支持A100/A800）
-- Ubuntu 2204（经过我们测试的系统版本）
+- Ubuntu 24.04（经过我们测试的系统版本）
 - conda
-- Python 3.10
-- Isaac Sim 4.2
+- Python 3.11
+- Isaac Sim 5.1
 
 ## 🛠️ 安装
 
@@ -41,7 +41,7 @@ git lfs pull
 ### 2. 环境创建
 创建并激活新的conda环境：
 ```bash
-conda create -n labutopia python=3.10 -y
+conda create -n labutopia python=3.11 -y
 conda activate labutopia
 ```
 
@@ -49,16 +49,16 @@ conda activate labutopia
 安装所需包：
 ```bash
 # 安装PyTorch
-pip install torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 --index-url https://download.pytorch.org/whl/cu121
+pip install torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 --index-url https://download.pytorch.org/whl/cu126
 
 # 安装Isaac Sim
-pip install isaacsim==4.2.0.2 isaacsim-extscache-physics==4.2.0.2 isaacsim-extscache-kit==4.2.0.2 isaacsim-extscache-kit-sdk==4.2.0.2 --extra-index-url https://pypi.nvidia.com
+pip install isaacsim[all,extscache]==5.1.0 --extra-index-url https://pypi.nvidia.com
 
 # 安装其他依赖
 pip install -r requirements.txt
 
 # 运行脚本设置.vscode/settings.json
-python setup_vscode_settings.py
+python -m isaacsim --generate-vscode-settings
 ```
 
 ## 代码结构
@@ -370,6 +370,17 @@ OpenPI服务器应返回以下格式之一的动作：
 - `{"action": [action_array]}`
 - `{"actions": [action_array]}`
 - 任何包含"action"键的字典
+
+## 🤝 贡献
+
+我们欢迎社区的贡献！如果您有任何问题、建议或改进想法，请随时：
+
+- **提交 Issue**：报告 bug、提出功能请求或讨论想法
+- **提交 Pull Request**：贡献代码改进、文档修复或新功能
+
+在提交 PR 之前，请确保您的代码符合项目的代码风格，并通过了相关测试。
+
+感谢所有贡献者对本项目的支持！🙏
 
 ## 📚 引用
 

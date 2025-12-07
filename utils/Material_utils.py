@@ -1,6 +1,6 @@
 import os
 import omni.usd
-from omni.isaac.nucleus import get_assets_root_path
+from isaacsim.storage.native import get_assets_root_path
 from pxr import Gf, Sdf, UsdGeom, UsdShade
 
 class ObjectMaterial:

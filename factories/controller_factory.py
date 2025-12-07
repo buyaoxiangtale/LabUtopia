@@ -19,6 +19,8 @@ from controllers.opentransportpour_controller import OpenTransportPourController
 from controllers.LiquidMixing_controller import LiquidMixingController
 from controllers.close_controller import CloseTaskController
 from controllers.openclose_controller import OpenCloseTaskController
+from controllers.navigation_controller import NavigationController
+from controllers.mobile_pick_controller import MobilePickController
 
 _controller_registry: Dict[str, Type[BaseController]] = {}
 
@@ -49,3 +51,5 @@ register_controller("cleanbeaker7policy", CleanBeaker7PolicyTaskController)
 register_controller("device_operate", DeviceOperateController)
 register_controller("OpenTransportPour", OpenTransportPourController)
 register_controller("LiquidMixing", LiquidMixingController)
+register_controller("navigation", NavigationController)
+register_controller("mobile_pick", MobilePickController)

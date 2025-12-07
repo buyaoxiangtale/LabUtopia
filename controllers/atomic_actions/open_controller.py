@@ -1,10 +1,10 @@
 from controllers.robot_controllers.grapper_manager import Gripper
-from omni.isaac.core.controllers import BaseController
-from omni.isaac.core.utils.stage import get_stage_units
-from omni.isaac.core.utils.types import ArticulationAction
+from isaacsim.core.api.controllers import BaseController
+from isaacsim.core.utils.stage import get_stage_units
+from isaacsim.core.utils.types import ArticulationAction
 import numpy as np
 import typing
-from omni.isaac.core.utils.rotations import euler_angles_to_quat
+from isaacsim.core.utils.rotations import euler_angles_to_quat
 from scipy.spatial.transform import Slerp
 from scipy.spatial.transform import Rotation as R
 
@@ -28,6 +28,7 @@ class OpenController(BaseController):
         self.door_width = door_width
         self.door_open_direction = door_open_direction
         self.position_rotation_interp_iter = None
+        self._start = True
         
         if events_dt is None:
             self._events_dt = [0.0025, 0.005, 0.08, 0.002, 0.05, 0.05, 0.01, 0.008]
@@ -67,6 +68,9 @@ class OpenController(BaseController):
             ArticulationAction: Control action
         """
 
+        if self._start:
+            return self._handle_start_state(current_joint_positions)
+
         if end_effector_orientation is None:
             end_effector_orientation = euler_angles_to_quat([0, 110, 0], degrees=True, extrinsic=False)
             
@@ -85,6 +89,21 @@ class OpenController(BaseController):
             self._event += 1
             self._t = 0
         return target_joint_positions
+    
+    def _handle_start_state(self, current_joint_positions):
+        """Handles the initial state by opening the gripper.
+
+        Args:
+            current_joint_positions (np.ndarray): Current joint positions of the robot.
+
+        Returns:
+            ArticulationAction: Joint positions with gripper opened.
+        """
+        self._start = False
+        target_joint_positions = [None] * current_joint_positions.shape[0]
+        target_joint_positions[7] = 0.04 / get_stage_units()
+        target_joint_positions[8] = 0.04 / get_stage_units()
+        return ArticulationAction(joint_positions=target_joint_positions)
     
     def _execute_phase(self, handle_position, end_effector_orientation, current_joint_positions, gripper_position, revolute_joint_position = None, angle = 50, close_gripper_distance = 0.023):
         """Execute current phase of grasping action"""
@@ -242,6 +261,7 @@ class OpenController(BaseController):
         self._event = 0
         self._t = 0
         self.position_rotation_interp_iter = None
+        self._start = True
 
     def is_done(self) -> bool:
         """Check if controller has completed all states"""

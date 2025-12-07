@@ -21,10 +21,10 @@
 
 ## System Requirements
 - NVIDIA GPU with CUDA support (RTX series recommended, Isaac Sim does not support A100/A800)
-- Ubuntu 22.04 (tested version)
+- Ubuntu 24.04 (tested version)
 - conda
-- Python 3.10
-- Isaac Sim 4.2
+- Python 3.11
+- Isaac Sim 5.1
 
 ## 🛠️ Installation
 
@@ -41,7 +41,7 @@ git lfs pull
 ### 2. Environment Creation
 Create and activate a new conda environment:
 ```bash
-conda create -n labutopia python=3.10 -y
+conda create -n labutopia python=3.11 -y
 conda activate labutopia
 ```
 
@@ -49,16 +49,16 @@ conda activate labutopia
 Install required packages:
 ```bash
 # Install PyTorch
-pip install torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 --index-url https://download.pytorch.org/whl/cu121
+pip install torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 --index-url https://download.pytorch.org/whl/cu126
 
 # Install Isaac Sim
-pip install isaacsim==4.2.0.2 isaacsim-extscache-physics==4.2.0.2 isaacsim-extscache-kit==4.2.0.2 isaacsim-extscache-kit-sdk==4.2.0.2 --extra-index-url https://pypi.nvidia.com
+pip install isaacsim[all,extscache]==5.1.0 --extra-index-url https://pypi.nvidia.com
 
 # Install other dependencies
 pip install -r requirements.txt
 
 # Run script to setup .vscode/settings.json
-python setup_vscode_settings.py
+python -m isaacsim --generate-vscode-settings
 ```
 
 ## Code Structure
@@ -368,6 +368,17 @@ The OpenPI server should return actions in one of these formats:
 - `{"action": [action_array]}`
 - `{"actions": [action_array]}`
 - Any dictionary with a key containing "action"
+
+## 🤝 Contributing
+
+We welcome contributions from the community! If you have any questions, suggestions, or ideas for improvements, please feel free to:
+
+- **Open an Issue**: Report bugs, request features, or discuss ideas
+- **Submit a Pull Request**: Contribute code improvements, documentation fixes, or new features
+
+Before submitting a PR, please ensure your code follows the project's coding style and passes relevant tests.
+
+Thank you to all contributors for supporting this project! 🙏
 
 ## 📚 Citation
 

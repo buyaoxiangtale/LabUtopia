@@ -219,10 +219,10 @@ class PourTaskController(BaseController):
                     object_name=state['object_name'],
                     gripper_control=self.gripper_control,
                     gripper_position=state['gripper_position'],
-                    end_effector_orientation=R.from_euler('xyz', np.radians([0, 90, 20])).as_quat(),
+                    end_effector_orientation=R.from_euler('xyz', np.radians([0, 90, 30])).as_quat(),
                     pre_offset_x=0.05,
                     pre_offset_z=0.05,
-                    after_offset_z=0.3
+                    after_offset_z=0.5
                 )
             else:
                 action = self.pour_controller.forward(

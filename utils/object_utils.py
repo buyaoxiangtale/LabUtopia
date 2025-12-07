@@ -1,7 +1,7 @@
 from pxr import Usd, UsdGeom, Gf, UsdPhysics
-from omni.isaac.core.utils.stage import get_stage_units
+from isaacsim.core.utils.stage import get_stage_units
 import numpy as np
-from omni.isaac.core.utils.numpy.rotations import euler_angles_to_quats
+from isaacsim.core.utils.numpy.rotations import euler_angles_to_quats
 class ObjectUtils:
     _instance = None
 

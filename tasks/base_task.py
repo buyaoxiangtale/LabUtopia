@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Any
 import numpy as np
-from omni.isaac.sensor import Camera
+from isaacsim.sensors.camera import Camera
 from utils.object_utils import ObjectUtils
-from omni.isaac.core.utils.semantics import add_update_semantics
+from isaacsim.core.utils.semantics import add_update_semantics
 from utils.camera_utils import process_camera_image
-from omni.isaac.core.utils.prims import set_prim_visibility
+from isaacsim.core.utils.prims import set_prim_visibility
 from pxr import UsdShade
 
 class BaseTask(ABC):
@@ -111,7 +111,6 @@ class BaseTask(ABC):
                     frequency=60,
                     resolution=tuple(cam_cfg.resolution)
                 )
-                self.world.scene.add(camera)
             else:
                 camera = Camera(
                     prim_path=cam_cfg.prim_path,
@@ -121,18 +120,18 @@ class BaseTask(ABC):
                     resolution=tuple(cam_cfg.resolution)
                 )
                 camera.set_local_pose(orientation=np.array(cam_cfg.orientation), camera_axes="usd")
-                self.world.scene.add(camera)
                 camera.set_focal_length(cam_cfg.focal_length)
-                
-                
-            camera.set_clipping_range(near_distance=0.1, far_distance=10.0)
-            camera.initialize()
-            self.cameras.append(camera)
             
+            if hasattr(cam_cfg, 'clipping_range'):
+                camera.set_clipping_range(near_distance=cam_cfg.clipping_range[0], far_distance=cam_cfg.clipping_range[1])
+            else:
+                camera.set_clipping_range(near_distance=0.1, far_distance=10.0)
+            self.cameras.append(camera)
+        
         self.world.reset()
+        
         for camera, cam_cfg in zip(self.cameras, self.cfg.cameras):
             camera.initialize()
-            
             image_types = cam_cfg.image_type.split('+') if '+' in cam_cfg.image_type else [cam_cfg.image_type]
             
             for image_type in image_types:

@@ -1,12 +1,12 @@
 import re
 from typing import Optional
-from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController
+from robots.franka.rmpflow_controller import RMPFlowController
 import numpy as np
 
 from controllers.atomic_actions.open_controller import OpenController
 from .base_controller import BaseController
 from .robot_controllers.trajectory_controller import FrankaTrajectoryController
-from omni.isaac.core.utils.numpy.rotations import euler_angles_to_quats
+from isaacsim.core.utils.numpy.rotations import euler_angles_to_quats
 from .inference_engines.inference_engine_factory import InferenceEngineFactory
 
 class OpenTaskController(BaseController):
@@ -37,7 +37,7 @@ class OpenTaskController(BaseController):
                 robot_articulation=robot
             ),
             gripper=robot.gripper,
-            events_dt=[0.0025, 0.005, 0.08, 0.002, 0.05, 0.05, 0.01, 0.008],
+            events_dt=[0.0025, 0.005, 0.08, 0.004, 0.05, 0.05, 0.01, 0.004],
             furniture_type=self.cfg.task.get("operate_type", "door"),
             door_open_direction="clockwise"
         )
@@ -122,7 +122,8 @@ class OpenTaskController(BaseController):
                 self.check_success_counter += 1
             else:
                 self.check_success_counter = 0
-                
+            
+            print(self.check_success_counter)
             return action, False, False
 
         success = self.check_success_counter >= self.REQUIRED_SUCCESS_STEPS
@@ -181,7 +182,7 @@ class OpenTaskController(BaseController):
         current_pos = state['object_position']
         gripper_position = state['gripper_position']
         return (
-            np.linalg.norm(np.array(current_pos) - self.initial_handle_position) > 0.13 and
+            np.linalg.norm(np.array(current_pos) - self.initial_handle_position) > 0.12 and
             np.linalg.norm(np.array(gripper_position) - np.array(current_pos)) > 0.04
         )
 

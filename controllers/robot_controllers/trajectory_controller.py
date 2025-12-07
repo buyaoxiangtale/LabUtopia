@@ -2,11 +2,11 @@ import os
 import numpy as np
 from typing import List, Optional
 
-import omni.isaac.motion_generation as mg
-from omni.isaac.core.utils.extensions import get_extension_path_from_name
-from omni.isaac.core.articulations import Articulation
-from omni.isaac.core.utils.types import ArticulationAction
-from omni.isaac.franka.controllers.rmpflow_controller import RMPFlowController
+import isaacsim.robot_motion.motion_generation as mg
+from isaacsim.core.utils.extensions import get_extension_path_from_name
+from isaacsim.core.prims.impl import Articulation
+from isaacsim.core.utils.types import ArticulationAction
+from robots.franka.rmpflow_controller import RMPFlowController
 
 
 class FrankaTrajectoryController(RMPFlowController):
@@ -21,7 +21,7 @@ class FrankaTrajectoryController(RMPFlowController):
     ) -> None:
         super().__init__(name=name, robot_articulation=robot_articulation, physics_dt=physics_dt)
         
-        mg_extension_path = get_extension_path_from_name("omni.isaac.motion_generation")
+        mg_extension_path = get_extension_path_from_name("isaacsim.robot_motion.motion_generation")
         rmp_config_dir = os.path.join(mg_extension_path, "motion_policy_configs")
         
         self._c_space_trajectory_generator = mg.LulaCSpaceTrajectoryGenerator(
