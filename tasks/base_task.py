@@ -111,7 +111,6 @@ class BaseTask(ABC):
                     frequency=60,
                     resolution=tuple(cam_cfg.resolution)
                 )
-                # self.world.scene.add(camera)
             else:
                 camera = Camera(
                     prim_path=cam_cfg.prim_path,
@@ -120,11 +119,13 @@ class BaseTask(ABC):
                     frequency=60,
                     resolution=tuple(cam_cfg.resolution)
                 )
-                # self.world.scene.add(camera)
                 camera.set_local_pose(orientation=np.array(cam_cfg.orientation), camera_axes="usd")
                 camera.set_focal_length(cam_cfg.focal_length)
-                
-            camera.set_clipping_range(near_distance=0.1, far_distance=10.0)
+            
+            if hasattr(cam_cfg, 'clipping_range'):
+                camera.set_clipping_range(near_distance=cam_cfg.clipping_range[0], far_distance=cam_cfg.clipping_range[1])
+            else:
+                camera.set_clipping_range(near_distance=0.1, far_distance=10.0)
             self.cameras.append(camera)
         
         self.world.reset()
