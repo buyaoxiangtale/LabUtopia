@@ -1,11 +1,11 @@
-name: Level5_Navigation_2
+name: Level5_Navigation_4
 
 task_type: "navigation_new_cp"
 controller_type: "navigation"
 
 mode: "collect"
 
-usd_path: "roomlayout/12_14_test1.usd"
+usd_path: "assets/navigation_lab/navigation_lab_01/lab.usd"
 
 max_episodes: 100
 
@@ -23,7 +23,12 @@ infer:
 
 task:
   max_steps: 4000
-  navigation_config_path: "config/navigation/navigation_assets_fbh.yaml"
+  navigation_config_path: "config/navigation/navigation_assets_12_14.yaml"
+  goal_pairs:
+    - start: [-5.59, 0.98]
+      end: [-0.35, -0.18]
+    - start: [-0.35, -0.18]
+      end: [-5.59, 0.98]
   max_linear_speed: 0.04
   max_angular_speed: 1.5
   position_threshold: 0.08

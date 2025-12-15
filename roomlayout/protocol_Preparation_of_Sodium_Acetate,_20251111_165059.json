@@ -1,0 +1,194 @@
+{
+  "experiment_name": "Preparation of Sodium Acetate, Crystallization, and Simple Distillation of Residual Liquor",
+  "experiment_description": "Preparation of Sodium Acetate followed by crystallization and simple distillation of residual liquor. Required instruments: Beaker, ErlenmeyerFlask, HeatingPlate, ElectronicScale, GlassRod, DistillationFlask, Thermometer. Required reagents: AceticAcid, SodiumCarbonate, Ethanol, Water.",
+  "assets": [
+    {
+      "name": "Beaker",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Mixing and reaction vessel",
+      "initial_location": "BENCH"
+    },
+    {
+      "name": "ErlenmeyerFlask",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Crystallization vessel",
+      "initial_location": "BENCH"
+    },
+    {
+      "name": "HeatingPlate",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Heating the reaction mixture",
+      "initial_location": "BENCH"
+    },
+    {
+      "name": "ElectronicScale",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Weighing reagents",
+      "initial_location": "BENCH"
+    },
+    {
+      "name": "GlassRod",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Stirring the mixture",
+      "initial_location": "BENCH"
+    },
+    {
+      "name": "DistillationFlask",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Distillation of residual liquor",
+      "initial_location": "BENCH"
+    },
+    {
+      "name": "Thermometer",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Monitoring temperature during distillation",
+      "initial_location": "BENCH"
+    },
+    {
+      "name": "AceticAcid",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Reactant for sodium acetate preparation",
+      "initial_location": "HOOD"
+    },
+    {
+      "name": "SodiumCarbonate",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Reactant for sodium acetate preparation",
+      "initial_location": "BENCH"
+    },
+    {
+      "name": "Ethanol",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Solvent for crystallization",
+      "initial_location": "HOOD"
+    },
+    {
+      "name": "Water",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Solvent for reaction",
+      "initial_location": "BENCH"
+    }
+  ],
+  "physical_constraints": [
+    {
+      "type": "boundary"
+    },
+    {
+      "type": "non_overlap"
+    }
+  ],
+  "chemical_constraints": [
+    {
+      "constraint_type": "C1",
+      "description": "Separation between flammable reagents and heat sources",
+      "asset1": "Ethanol",
+      "asset2": "HeatingPlate"
+    },
+    {
+      "constraint_type": "C3",
+      "description": "Volatile or toxic reagents require ventilation",
+      "asset1": "AceticAcid",
+      "zone": "background"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "Beaker"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "ErlenmeyerFlask"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "DistillationFlask"
+    },
+    {
+      "constraint_type": "C5",
+      "description": "Separation between incompatible reagents",
+      "asset1": "AceticAcid",
+      "asset2": "SodiumCarbonate"
+    }
+  ],
+  "procedure": [
+    {
+      "step_number": 1,
+      "description": "Weigh 5g of SodiumCarbonate using the ElectronicScale.",
+      "assets_involved": [
+        "ElectronicScale",
+        "SodiumCarbonate"
+      ],
+      "safety_notes": "Ensure accurate measurement.",
+      "location": "BENCH"
+    },
+    {
+      "step_number": 2,
+      "description": "Add SodiumCarbonate to the Beaker containing 50 mL of Water.",
+      "assets_involved": [
+        "Beaker",
+        "SodiumCarbonate",
+        "Water"
+      ],
+      "safety_notes": "Mix gently using the GlassRod.",
+      "location": "BENCH"
+    },
+    {
+      "step_number": 3,
+      "description": "Add 10 mL of AceticAcid to the Beaker slowly.",
+      "assets_involved": [
+        "Beaker",
+        "AceticAcid"
+      ],
+      "safety_notes": "Perform in fume hood due to AceticAcid volatility.",
+      "location": "HOOD"
+    },
+    {
+      "step_number": 4,
+      "description": "Heat the mixture on the HeatingPlate until reaction is complete.",
+      "assets_involved": [
+        "HeatingPlate",
+        "Beaker"
+      ],
+      "safety_notes": "Avoid overheating.",
+      "location": "BENCH"
+    },
+    {
+      "step_number": 5,
+      "description": "Transfer the solution to an ErlenmeyerFlask and add Ethanol for crystallization.",
+      "assets_involved": [
+        "ErlenmeyerFlask",
+        "Ethanol"
+      ],
+      "safety_notes": "Perform in fume hood due to Ethanol volatility.",
+      "location": "HOOD"
+    },
+    {
+      "step_number": 6,
+      "description": "Set up the DistillationFlask for simple distillation of residual liquor.",
+      "assets_involved": [
+        "DistillationFlask",
+        "Thermometer"
+      ],
+      "safety_notes": "Monitor temperature closely.",
+      "location": "BENCH"
+    }
+  ],
+  "safety_warnings": [
+    "Ensure proper ventilation when handling AceticAcid and Ethanol.",
+    "Keep flammable reagents away from heat sources."
+  ],
+  "notes": "Ensure all glassware is placed securely away from table edges."
+}

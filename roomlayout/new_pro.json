@@ -1,0 +1,330 @@
+{
+  "experiment_name": "Synthesis of Aspirin",
+  "experiment_description": "Synthesis of Aspirin (Acetylsalicylic Acid) via O-acetylation of Salicylic Acid. Required instruments: ThermostaticWaterBath, ElectronicScale, SuctionFlask, InfraredSpectrophotometer. Required reagents: SalicylicAcid, AceticAnhydride, SulfuricAcid.",
+  "assets": [
+    {
+      "name": "SalicylicAcid",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Primary reactant (substrate)",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "AceticAnhydride",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Acetylating agent",
+      "initial_location": "FumeHood"
+    },
+    {
+      "name": "SulfuricAcid",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Acid catalyst",
+      "initial_location": "FumeHood"
+    },
+    {
+      "name": "Ethanol",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Washing and recrystallization solvent",
+      "initial_location": "FumeHood"
+    },
+    {
+      "name": "ErlenmeyerFlask",
+      "type": "instrument",
+      "quantity": 2,
+      "purpose": "Reaction vessel and collection flask",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "Beaker",
+      "type": "instrument",
+      "quantity": 2,
+      "purpose": "Measuring liquids and handling water",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "Pipette",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Precise addition of acid catalyst",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "GlassRod",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Stirring reaction mixture",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "GlassFunnel",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Filtration setup",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "SuctionFlask",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Vacuum filtration of product",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "ThermostaticWaterBath",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Controlled heating of reaction",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "ElectronicScale",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Weighing reactants and product",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "Thermometer",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Monitoring temperature",
+      "initial_location": "experimental_desk"
+    },
+    {
+      "name": "InfraredSpectrophotometer",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Product verification",
+      "initial_location": "validation_desk"
+    }
+  ],
+  "physical_constraints": [
+    {
+      "type": "boundary"
+    },
+    {
+      "type": "non_overlap"
+    }
+  ],
+  "chemical_constraints": [
+    {
+      "constraint_type": "C1",
+      "description": "Flammable Ethanol must be kept away from heat sources",
+      "asset1": "Ethanol",
+      "asset2": "ThermostaticWaterBath"
+    },
+    {
+      "constraint_type": "C3",
+      "description": "Acetic Anhydride is lachrymatory and requires ventilation",
+      "asset1": "AceticAnhydride",
+      "zone": "FumeHood"
+    },
+    {
+      "constraint_type": "C3",
+      "description": "Sulfuric Acid fumes require ventilation",
+      "asset1": "SulfuricAcid",
+      "zone": "FumeHood"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "ErlenmeyerFlask"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "Beaker"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "GlassRod"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "GlassFunnel"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "SuctionFlask"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "Thermometer"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "SalicylicAcid"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "AceticAnhydride"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "SulfuricAcid"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Glass containers should avoid table edges to prevent falls",
+      "asset1": "Ethanol"
+    },
+    {
+      "constraint_type": "C10",
+      "description": "Heat sources should be placed in the experiment zone",
+      "asset1": "ThermostaticWaterBath"
+    }
+  ],
+  "procedure": [
+    {
+      "step_number": 1,
+      "description": "Weigh approximately 3.0 g of SalicylicAcid using the ElectronicScale.",
+      "assets_involved": [
+        "SalicylicAcid",
+        "ElectronicScale",
+        "ErlenmeyerFlask"
+      ],
+      "safety_notes": "Avoid inhaling dust. Wear gloves.",
+      "location": "experimental_desk"
+    },
+    {
+      "step_number": 2,
+      "description": "Move the ErlenmeyerFlask containing SalicylicAcid to the FumeHood.",
+      "assets_involved": [
+        "ErlenmeyerFlask"
+      ],
+      "safety_notes": "Prepare for addition of volatile reagents.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 3,
+      "description": "Add 6 mL of AceticAnhydride to the ErlenmeyerFlask.",
+      "assets_involved": [
+        "AceticAnhydride",
+        "ErlenmeyerFlask",
+        "Beaker"
+      ],
+      "safety_notes": "Acetic Anhydride is corrosive and lachrymatory. Perform strictly in FumeHood.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 4,
+      "description": "Add 5-8 drops of SulfuricAcid to the mixture using a Pipette.",
+      "assets_involved": [
+        "SulfuricAcid",
+        "ErlenmeyerFlask",
+        "Pipette"
+      ],
+      "safety_notes": "Sulfuric Acid is highly corrosive. Handle with extreme care.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 5,
+      "description": "Mix the contents gently using a GlassRod.",
+      "assets_involved": [
+        "ErlenmeyerFlask",
+        "GlassRod"
+      ],
+      "safety_notes": "Ensure thorough mixing.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 6,
+      "description": "Heat the ErlenmeyerFlask in the ThermostaticWaterBath at 50-60°C for 15 minutes.",
+      "assets_involved": [
+        "ErlenmeyerFlask",
+        "ThermostaticWaterBath",
+        "Thermometer"
+      ],
+      "safety_notes": "Monitor temperature carefully. Keep face away from vapors.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 7,
+      "description": "Remove flask from heat and carefully add 20 mL of Water to decompose excess AceticAnhydride.",
+      "assets_involved": [
+        "ErlenmeyerFlask",
+        "Water",
+        "Beaker"
+      ],
+      "safety_notes": "Reaction may be exothermic and release acetic acid vapors. Keep in FumeHood.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 8,
+      "description": "Cool the mixture in an ice bath (Beaker with ice/water) to induce crystallization.",
+      "assets_involved": [
+        "ErlenmeyerFlask",
+        "Beaker",
+        "Water"
+      ],
+      "safety_notes": "Scratch the side of the flask with GlassRod if necessary to start crystallization.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 9,
+      "description": "Set up the SuctionFlask and GlassFunnel for vacuum filtration.",
+      "assets_involved": [
+        "SuctionFlask",
+        "GlassFunnel"
+      ],
+      "safety_notes": "Ensure vacuum connections are secure.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 10,
+      "description": "Filter the crystals and wash with a small amount of cold Ethanol/Water mixture.",
+      "assets_involved": [
+        "SuctionFlask",
+        "GlassFunnel",
+        "ErlenmeyerFlask",
+        "Ethanol",
+        "Water"
+      ],
+      "safety_notes": "Ethanol is flammable. Ensure no heat sources are nearby during washing.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 11,
+      "description": "Transfer the solid product to a watch glass (or clean paper) to dry.",
+      "assets_involved": [
+        "GlassRod"
+      ],
+      "safety_notes": "Allow solvent to evaporate.",
+      "location": "experimental_desk"
+    },
+    {
+      "step_number": 12,
+      "description": "Weigh the dried Aspirin product on the ElectronicScale.",
+      "assets_involved": [
+        "ElectronicScale"
+      ],
+      "safety_notes": "Record yield.",
+      "location": "experimental_desk"
+    },
+    {
+      "step_number": 13,
+      "description": "Analyze a sample of the product using the InfraredSpectrophotometer.",
+      "assets_involved": [
+        "InfraredSpectrophotometer"
+      ],
+      "safety_notes": "Clean the sample holder after use.",
+      "location": "validation_desk"
+    }
+  ],
+  "safety_warnings": [
+    "Acetic Anhydride causes severe burns and eye damage; vapor is irritating.",
+    "Sulfuric Acid is a strong oxidizer and corrosive; avoid contact with skin and eyes.",
+    "Perform all heating and mixing of volatile reagents in the Fume Hood."
+  ],
+  "notes": "Ice is required for the cooling step but is represented by Water in the asset list. Filter paper is assumed to be available for the GlassFunnel."
+}

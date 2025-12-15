@@ -158,4 +158,4 @@ if __name__ == "__main__":
     main()
 
 
-# python main.py --config-name=level5_Navigation_2
+# python main.py --config-name=level5_Navigation

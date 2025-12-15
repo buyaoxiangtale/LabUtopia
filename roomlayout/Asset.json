@@ -1,0 +1,198 @@
+{
+    "$schema": "laboratory-asset-library-v1.0",
+    "$coordinate_system": "Cartesian coordinates with origin at front-left corner of table. X-axis: width (0-2.7m), Z-axis: depth (0-1.5m). All distances in meters.",
+    "table": {
+      "size_m": {"width": 2.7, "depth": 1.5},
+      "grid": {
+        "rows": 4,
+        "cols": 3,
+        "id_to_bounds_m": {
+          "1":  {"x_range":[0.00,0.90],"z_range":[1.125,1.50],"name":"Background Zone(Forbidden)"},
+          "2":  {"x_range":[0.90,1.80],"z_range":[1.125,1.50],"name":"Background Zone(Forbidden)"},
+          "3":  {"x_range":[1.80,2.70],"z_range":[1.125,1.50],"name":"Background Zone(Forbidden)"},
+          "4":  {"x_range":[0.00,0.90],"z_range":[0.75,1.125],"name":"Preparation Zone"},
+          "5":  {"x_range":[0.90,1.80],"z_range":[0.75,1.125],"name":"Experiment Zone"},
+          "6":  {"x_range":[1.80,2.70],"z_range":[0.75,1.125],"name":"Experiment Zone"},
+          "7":  {"x_range":[0.00,0.90],"z_range":[0.375,0.75],"name":"Preparation Zone"},
+          "8":  {"x_range":[0.90,1.80],"z_range":[0.375,0.75],"name":"Experiment Zone"},
+          "9":  {"x_range":[1.80,2.70],"z_range":[0.375,0.75],"name":"Experiment Zone"},
+          "11": {"x_range":[0.00,0.90],"z_range":[0.00,0.375],"name":"Preparation Zone"},
+          "12": {"x_range":[0.90,1.80],"z_range":[0.00,0.375],"name":"Robot Zone (Forbidden)"},
+          "13": {"x_range":[1.80,2.70],"z_range":[0.00,0.375],"name":"Result Zone"}
+        },
+        "zones": {
+          "background": [1,2,3],
+          "preparation": [4,7,11],
+          "experiment": [5,6,8,9],
+          "result": [13],
+          "flexible": [4,5,6,7,8],
+          "robot": [12]
+        }
+      }
+    },
+    "$asset_properties_explanation": {
+        "name": "Unique identifier for the asset",
+        "type": "Either 'instrument' (lab equipment) or 'reagent' (chemical substance)",
+        "bbox": "Bounding box dimensions in meters: {short, long, height} where short≤long",
+        "props.flammable": "true if asset is flammable (must be kept away from heat sources per S1/S6)",
+        "props.explosive": "true if asset is explosive (should be stored in Explosionproofcabinets per S2)",
+        "props.volatile_or_toxic": "true if asset releases toxic vapors (should be placed in background/ventilation zone per S3)",
+        "props.glass_container": "true if asset is made of glass (should avoid front edge grids 11-13 per S4)",
+        "props.heat_source": "true if asset generates heat (must be kept away from flammable assets per S1/S6)",
+        "incompatible_with": "Array of asset names that should not be placed near this asset (min 0.70m distance per S5)"
+    },
+    "chemical_constraint_types": [
+      {
+        "id": "C1",
+        "name": "flammable_heat_separation",
+        "description": "Flammable reagents must be kept away from heat sources",
+        "applies_to": "Any flammable reagent near any heat source"
+      },
+      {
+        "id": "C2",
+        "name": "explosive_storage",
+        "description": "Explosive substances must be stored in explosion-proof cabinets",
+        "applies_to": "Any explosive reagent"
+      },
+      {
+        "id": "C3",
+        "name": "toxic_ventilation",
+        "description": "Toxic or volatile reagents require proper ventilation",
+        "applies_to": "Any reagent with volatile_or_toxic property"
+      },
+      {
+        "id": "C4",
+        "name": "glass_edge_avoidance",
+        "description": "Glass containers should avoid table edges to prevent falls",
+        "applies_to": "Any glass container"
+      },
+      {
+        "id": "C5",
+        "name": "incompatible_separation",
+        "description": "Incompatible reagents must be separated",
+        "applies_to": "Any pair of assets listed as incompatible"
+      },
+      {
+        "id": "C6",
+        "name": "acid_base_separation",
+        "description": "Acids and bases must be kept separated",
+        "applies_to": "Any acid and any base in the same experiment"
+      },
+      {
+        "id": "C7",
+        "name": "oxidizer_organic_separation",
+        "description": "Oxidizers must be kept away from organic compounds",
+        "applies_to": "Strong oxidizers near organic reagents"
+      },
+      {
+        "id": "C8",
+        "name": "metal_acid_separation",
+        "description": "Reactive metals must be kept away from acids",
+        "applies_to": "Reactive metals near acidic reagents"
+      },
+      {
+        "id": "C9",
+        "name": "oxidizing_acid_reducing_salt_separation",
+        "description": "Oxidizing acids must be kept away from reducing salts",
+        "applies_to": "Oxidizing acids (HNO3, H2SO4) near reducing salts"
+      },
+      {
+        "id": "C10",
+        "name": "heat_source_zone",
+        "description": "Heat sources should be placed in the experiment zone",
+        "applies_to": "Any heat source instrument"
+      }
+    ],
+    "assets": [
+      {
+        "name":"AmmoniumNitrate",
+        "type":"reagent",
+        "bbox":{"short":0.12,"long":0.12,"height":0.22},
+        "props":{"flammable":false,"explosive":true,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},
+        "incompatible_with":["Ethanol","Ether","Acetone","WhitePhosphorus","HydrogenPeroxide","NitricAcid","SulfuricAcid","Methanol","Benzene","Toluene","Hexane","PetroleumEther","Isopropanol","Tetrahydrofuran","CarbonDisulfide"]
+      },
+      {"name":"BalaoVolumetrico","type":"instrument","bbox":{"short":0.12,"long":0.12,"height":0.28},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"Beaker","type":"instrument","bbox":{"short":0.075,"long":0.081,"height":0.090},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"Crucible","type":"instrument","bbox":{"short":0.1,"long":0.1,"height":0.1},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"DistillationFlask","type":"instrument","bbox":{"short":0.078,"long":0.143,"height":0.215},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"ElectronicScale","type":"instrument","bbox":{"short":0.2,"long":0.25,"height":0.1},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"ErlenmeyerFlask","type":"instrument","bbox":{"short":0.080,"long":0.080,"height":0.134},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"Ethanol","type":"reagent","bbox":{"short":0.072,"long":0.072,"height":0.192},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["NitricAcid","SulfuricAcid","HydrogenPeroxide","AmmoniumNitrate","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"Ether","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["HydrogenPeroxide","NitricAcid","SulfuricAcid","AmmoniumNitrate","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"Explosionproofcabinets","type":"instrument","bbox":{"short":0.6,"long":0.8,"height":1.2},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"Flat_bottomFlask","type":"instrument","bbox":{"short":0.16,"long":0.16,"height":0.24},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"GrahamCondenser","type":"instrument","bbox":{"short":0.08,"long":0.08,"height":0.35},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"HeadspaceSampler","type":"instrument","bbox":{"short":0.35,"long":0.4,"height":0.35},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"Heater","type":"instrument","bbox":{"short":0.2,"long":0.2,"height":0.2},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":true},"incompatible_with":["Ethanol","Ether","Acetone","WhitePhosphorus","Methanol","Benzene","Toluene","Hexane","PetroleumEther","Isopropanol","Tetrahydrofuran","CarbonDisulfide"]},
+      {"name":"HeatingPlate","type":"instrument","bbox":{"short":0.180,"long":0.254,"height":0.089},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":true},"incompatible_with":["Ethanol","Ether","Acetone","WhitePhosphorus","Methanol","Benzene","Toluene","Hexane","PetroleumEther","Isopropanol","Tetrahydrofuran","CarbonDisulfide"]},
+      {"name":"HydrogenPeroxide","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["Ethanol","Ether","Acetone","WhitePhosphorus","AmmoniumNitrate","Methanol","Benzene","Toluene","Hexane","PetroleumEther","Isopropanol","Tetrahydrofuran","CarbonDisulfide"]},
+      {"name":"Kipp_sApparatus","type":"instrument","bbox":{"short":0.22,"long":0.22,"height":0.45},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"Microscope","type":"instrument","bbox":{"short":0.25,"long":0.35,"height":0.4},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"Oscillator","type":"instrument","bbox":{"short":0.25,"long":0.35,"height":0.2},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"Osmometer","type":"instrument","bbox":{"short":0.25,"long":0.3,"height":0.3},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"Pipette","type":"instrument","bbox":{"short":0.05,"long":0.05,"height":0.3},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"Round_bottomFlask","type":"instrument","bbox":{"short":0.16,"long":0.16,"height":0.26},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"SuctionFlask","type":"instrument","bbox":{"short":0.18,"long":0.18,"height":0.26},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"TestTube","type":"instrument","bbox":{"short":0.03,"long":0.03,"height":0.15},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"TitrationFlasks","type":"instrument","bbox":{"short":0.12,"long":0.12,"height":0.26},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"TubeRack","type":"instrument","bbox":{"short":0.1,"long":0.25,"height":0.1},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"VolumetricBottle","type":"instrument","bbox":{"short":0.12,"long":0.12,"height":0.28},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"VortexOscillator","type":"instrument","bbox":{"short":0.18,"long":0.18,"height":0.12},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"WhitePhosphorus","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.15},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["Oxygen","Air","NitricAcid","SulfuricAcid","HydrogenPeroxide","AmmoniumNitrate","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"pHMeter","type":"instrument","bbox":{"short":0.18,"long":0.22,"height":0.15},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"Burette","type":"instrument","bbox":{"short":0.08,"long":0.08,"height":0.6},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"WashBottle","type":"instrument","bbox":{"short":0.1,"long":0.1,"height":0.25},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[]},
+      {"name":"GlassFunnel","type":"instrument","bbox":{"short":0.12,"long":0.12,"height":0.18},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"SeparatoryFunnel","type":"instrument","bbox":{"short":0.075,"long":0.081,"height":0.090},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"Thermometer","type":"instrument","bbox":{"short":0.02,"long":0.02,"height":0.3},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"GlassRod","type":"instrument","bbox":{"short":0.075,"long":0.081,"height":0.090},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"HydrochloricAcid","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["SodiumHydroxide","AmmoniaSolution","CalciumCarbonate","SodiumCarbonate","Metals(reactive)"]},
+      {"name":"SulfuricAcid","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["Ethanol","Ether","Acetone","AmmoniumNitrate","WhitePhosphorus","SodiumHydroxide","AmmoniaSolution","Methanol","Benzene","Toluene","Hexane","PetroleumEther","Isopropanol","Tetrahydrofuran","CarbonDisulfide"]},
+      {"name":"NitricAcid","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["Ethanol","Ether","Acetone","WhitePhosphorus","AmmoniumNitrate","SodiumHydroxide","AmmoniaSolution","Methanol","Benzene","Toluene","Hexane","PetroleumEther","Isopropanol","Tetrahydrofuran","CarbonDisulfide"]},
+      {"name":"SodiumHydroxide","type":"reagent","bbox":{"short":0.075,"long":0.081,"height":0.090},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["HydrochloricAcid","SulfuricAcid","NitricAcid","AmmoniumNitrate"]},
+      {"name":"SodiumChloride","type":"reagent","bbox":{"short":0.12,"long":0.12,"height":0.18},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"SodiumCarbonate","type":"reagent","bbox":{"short":0.12,"long":0.12,"height":0.18},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":["Acids(release_CO2)"]},
+      {"name":"CalciumCarbonate","type":"reagent","bbox":{"short":0.12,"long":0.12,"height":0.18},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":["Acids(release_CO2)"]},
+      {"name":"CopperSulfate","type":"reagent","bbox":{"short":0.12,"long":0.12,"height":0.18},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["ReducingAgents"]},
+      {"name":"FerrousSulfate","type":"reagent","bbox":{"short":0.12,"long":0.12,"height":0.18},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":["Oxidizers(HydrogenPeroxide,NitricAcid)"]},
+      {"name":"SilverNitrate","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.2},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["SodiumChloride","Halides","ReducingAgents","AmmoniaSolution(excess)"]},
+      {"name":"Acetone","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["NitricAcid","SulfuricAcid","HydrogenPeroxide","AmmoniumNitrate","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"AceticAcid","type":"reagent","bbox":{"short":0.075,"long":0.081,"height":0.090},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["SodiumHydroxide","AmmoniaSolution","Carbonates(release_CO2)"],"note":"Glacial acetic acid has irritating vapor"},
+      {"name":"Phenolphthalein","type":"reagent","bbox":{"short":0.06,"long":0.06,"height":0.12},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[]},
+      {"name":"AmmoniaSolution","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":false,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["HydrochloricAcid","NitricAcid","SulfuricAcid","SilverNitrate","AmmoniumNitrate"]},
+      {"name":"Methanol","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["NitricAcid","SulfuricAcid","HydrogenPeroxide","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"Benzene","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["NitricAcid","SulfuricAcid","HydrogenPeroxide","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"Toluene","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["NitricAcid","SulfuricAcid","HydrogenPeroxide","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"Hexane","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["NitricAcid","SulfuricAcid","HydrogenPeroxide","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"PetroleumEther","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["NitricAcid","SulfuricAcid","HydrogenPeroxide","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"Isopropanol","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["NitricAcid","SulfuricAcid","HydrogenPeroxide","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"]},
+      {"name":"Tetrahydrofuran","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["NitricAcid","SulfuricAcid","HydrogenPeroxide","PotassiumPermanganate","PotassiumChlorate","HeatingPlate","Heater"],"note":"Can form explosive peroxides"},
+      {"name":"CarbonDisulfide","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"props":{"flammable":true,"explosive":false,"volatile_or_toxic":true,"glass_container":true,"heat_source":false},"incompatible_with":["Oxygen","Air","NitricAcid","SulfuricAcid","HydrogenPeroxide","PotassiumPermanganate","PotassiumChlorate","AmmoniumNitrate","HeatingPlate","Heater"]},
+      {"name":"PotassiumPermanganate","type":"reagent","bbox":{"short":0.12,"long":0.12,"height":0.18},"props":{"flammable":false,"explosive":true,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":["Ethanol","Methanol","Ether","Acetone","Benzene","Toluene","Hexane","PetroleumEther","Isopropanol","Tetrahydrofuran","CarbonDisulfide","WhitePhosphorus","SulfuricAcid(concentrated)","Glycerol"]},
+      {"name":"PotassiumChlorate","type":"reagent","bbox":{"short":0.12,"long":0.12,"height":0.18},"props":{"flammable":false,"explosive":true,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":["Ethanol","Methanol","Ether","Acetone","Benzene","Toluene","Hexane","PetroleumEther","Isopropanol","Tetrahydrofuran","CarbonDisulfide","WhitePhosphorus","SulfuricAcid","RedPhosphorus","Sulfur","OrganicMatter"]},
+      {"name":"background","type":"room_asset","bbox":{"short":0.45,"long":1.18,"height":0.13},"usd_path":"../room/background/background.usd","usd_prim_path":"/World/group_005/group_003","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Background decoration"},
+      {"name":"cabinet","type":"room_asset","bbox":{"short":0.44,"long":1.79,"height":2.36},"usd_path":"../room/cabinet/cabinet.usd","usd_prim_path":"/World/group_009","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Storage cabinet"},
+      {"name":"FumeHood","type":"room_asset","bbox":{"short":0.85,"long":3.24,"height":2.43},"usd_path":"../room/FumeHood/FumeHood.usd","usd_prim_path":"/World/Group","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Fume Hood"},
+      {"name":"desk","type":"room_asset","bbox":{"short":1.15,"long":3.88,"height":0.85},"usd_path":"../room/desk/desk.usd","usd_prim_path":"/World/group_006+group_007","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Desk/workbench (merged groups)"},
+      {"name":"experimental_platform","type":"room_asset","bbox":{"short":1.52,"long":2.74,"height":0.8},"usd_path":"../room/experimental_platform/experimental_platform.usd","usd_prim_path":"/World/Group","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Experimental platform - perfect size for 2.7x1.5x0.8 table"},
+      {"name":"room","type":"room_asset","bbox":{"short":8.59,"long":8.94,"height":3.67},"usd_path":"../room/room/room.usd","usd_prim_path":"/World/Group","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Complete room"},
+      {"name":"chair","type":"room_asset","bbox":{"short":0.30,"long":0.30,"height":0.47},"usd_path":"../room/chair/chair.usd","usd_prim_path":"/World/group_027","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Laboratory chair"},
+      {"name":"Safety_cabinet","type":"room_asset","bbox":{"short":0.55,"long":0.90,"height":1.95},"usd_path":"../room/Safety_cabinet/Safety_cabinet.usd","usd_prim_path":"/World/group_091","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Safety storage cabinet for hazardous materials"},
+      {"name":"computer","type":"room_asset","bbox":{"short":0.45,"long":0.65,"height":0.53},"usd_path":"../room/computer/computer.usd","usd_prim_path":"/World/group_178","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Desktop computer with monitor"},
+      {"name":"room2","type":"room_asset","bbox":{"short":6.93,"long":8.29,"height":4.09},"usd_path":"../room/room2/room2.usd","usd_prim_path":"/World/Group","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Alternative laboratory room - similar size to standard room with different layout"},
+      {"name":"fridge","type":"room_asset","bbox":{"short":0.80,"long":0.86,"height":1.75},"usd_path":"../room/fridge/fridge.usd","usd_prim_path":"/World/Group","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Laboratory refrigerator for storing temperature-sensitive reagents"},
+      {"name":"shelf","type":"room_asset","bbox":{"short":1.50,"long":3.00,"height":0.77},"usd_path":"../room/shelf/shelf.usd","usd_prim_path":"/World/Group_01/Group","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":false,"heat_source":false},"incompatible_with":[],"note":"Storage shelf for organizing equipment and supplies"},
+      {"name":"Water","type":"reagent","bbox":{"short":0.1,"long":0.1,"height":0.26},"usd_path":"water/water.usd","props":{"flammable":false,"explosive":false,"volatile_or_toxic":false,"glass_container":true,"heat_source":false},"incompatible_with":[],"note":"Water - common solvent and reagent"}
+    ],
+    "$constraint_syntax_explanation": {
+        "overview": "These rules define spatial and placement constraints for lab safety. Each rule specifies conditions and required actions.",
+        "rule.if / rule.if_any / rule.if_all": "Condition: Matches assets with specified properties. Use dot notation (e.g., 'asset.props.flammable') to access nested fields. 'asset' refers to the current item, 'target' refers to other items.",
+        "rule.must_be_far_from": "Spatial constraint: Current asset must maintain distance from assets matching the target condition.",
+        "rule.min_distance_m": "Minimum separation distance in meters.",
+        "rule.preferred_zone": "Recommended zone name from table.grid.zones (e.g., 'background', 'preparation', 'experiment').",
+        "rule.preferred_grids_not_in": "List of grid IDs where the asset should NOT be placed.",
+        "rule.should_be_stored_in": "Preferred storage container (asset name).",
+        "rule.fallback": "Alternative constraint when preferred option is not available."
+    }
+  }
+  
