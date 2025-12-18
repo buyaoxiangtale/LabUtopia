@@ -1,0 +1,131 @@
+# name: level5_Navigation_velocity_demo
+
+# # 使用支持速度信息的新任务类
+# task_type: "navigation_task_new_cp_cp"
+
+# # 对应的控制器
+# controller_type: "navigation"
+
+# # 运行模式
+# mode: "collect"
+
+# # 场景文件
+# usd_path: "assets/navigation_lab/navigation_lab_01/lab.usd"
+
+# # 训练参数
+# max_episodes: 10
+
+# # 速度信息配置
+# task:
+#   # 导航场景配置
+#   navigation_config_path: "config/navigation/navigation_assets_fbh.yaml"
+
+#   # 速度相关参数
+#   max_linear_speed: 0.02      # 最大线速度 (m/s) = 2cm/s
+#   max_angular_speed: 1.5      # 最大角速度 (rad/s)
+#   position_threshold: 0.08     # 位置到达阈值 (m) = 8cm
+#   angle_threshold: 0.1         # 角度到达阈值 (rad)
+
+#   # 显示选项
+#   show_velocity_info: true     # 是否显示速度信息
+
+#   # 目标队列示例 - 多个导航任务
+#   goal_pairs:
+#     - start: [-5.59, 0.98]
+#       end: [-0.35, -0.18]
+#     - start: [-0.35, -0.18]
+#       end: [-5.59, 0.98]
+
+# # 相机配置
+# cameras:
+#   - prim_path: "/World/Ridgebase/base_link/Camera"
+#     name: "front_camera"
+#     translation: [0, 0, 0.5]
+#     resolution: [256, 256]
+#     focal_length: 6
+#     orientation: [0.5, 0.5, -0.5, -0.5]
+#     image_type: "rgb"
+
+# # 数据收集配置
+# collector:
+#   type: "hdf5"
+#   compression: "gzip"
+
+# # 多轮运行配置
+# multi_run:
+#   run_dir: "outputs/navigation_velocity_demo_12_15"
+
+# # 相机参数（用于数据收集）
+# camera_params:
+#   width: 256
+#   height: 256
+#   focal_length: 6.0
+
+
+name: level5_Navigation_velocity_demo_copy
+
+task_type: "navigation_test_weizi"
+controller_type: "navigation"
+
+mode: "collect"
+
+usd_path: "assets/navigation_lab/navigation_lab_01/lab.usd"
+
+max_episodes: 100
+
+infer:
+  type: "local"
+  obs_names: {"camera_1_rgb": 'camera_1_rgb', "camera_2_rgb": 'camera_2_rgb'}
+  policy_model_path: ""
+  policy_config_path: ""
+  normalizer_path: ""
+  host: "127.0.0.1"
+  port: 8000
+  n_obs_steps: 1
+  timeout: 30
+  max_retries: 3
+
+task:
+  max_steps: 4000
+  navigation_config_path: "config/navigation/navigation_assets_12_14.yaml"
+  goal_pairs:
+    - start: [-5.59, 0.98, 1.57]  # [x, y, theta] - 起点坐标和朝向角度
+      end: [-0.35, -0.18, 1.57]   # [x, y, theta] - 终点坐标和朝向角度
+    - start: [-0.35, -0.18, 0] # [x, y, theta] - 起点坐标和朝向角度
+      end: [-5.59, 0.98, 0]    # [x, y, theta] - 终点坐标和朝向角度
+  max_linear_speed: 0.04
+  max_angular_speed: 1.5
+  position_threshold: 0.08
+  angle_threshold: 0.1
+
+cameras:
+  - prim_path: "/World/Ridgebase/base_link/Camera"
+    name: "front_camera"
+    resolution: [256, 256]
+    image_type: "rgb"
+
+  - prim_path: "/World/Ridgebase/panda_hand/Camera"
+    name: "wrist_camera"
+    resolution: [256, 256]
+    clipping_range: [0, 10.0]
+    image_type: "rgb"
+  
+  - prim_path: "/World/Ridgebase/base_link/Camera_01"
+    name: "top_camera"
+    resolution: [256, 256]
+    image_type: "rgb"
+
+robot:
+  type: "ridgebase"
+  position: [0.0, 0.0, 0.0]
+
+collector:
+  type: "default"
+  compression: gzip
+
+hydra:
+  run:
+    dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}
+
+multi_run:
+  run_dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}

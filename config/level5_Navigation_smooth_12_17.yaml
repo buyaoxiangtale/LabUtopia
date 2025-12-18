@@ -1,11 +1,10 @@
-name: Level5_Navigation
+name: level5_Navigation_smooth_12_17
 
-task_type: "navigation_new_cp"
-controller_type: "navigation"
-
+task_type: "navigation_new_cp_cp"
+controller_type: "navigation_smooth_12_16"
 mode: "collect"
 
-usd_path: "roomlayout/12_8_test1.usd"
+usd_path: "roomlayout/12_17/12_17.usd"
 
 max_episodes: 100
 
@@ -23,13 +22,13 @@ infer:
 
 task:
   max_steps: 4000
-  navigation_config_path: "config/navigation/navigation_assets_fbh.yaml"
+  navigation_config_path: "config/navigation/navigation_assets_12_17.yaml"
   goal_pairs:
-    - start: [4.3, 6.1]
-      end: [4.3, 1.53]
-    - start: [4.3, 1.53]
-      end: [4.3, 6.1]
-  max_linear_speed: 0.04
+    - start: [4.900, 2.920]
+      end: [7.130, 0.530]
+    - start: [6.000, 5.899]
+      end: [4.900, 2.920]
+  max_linear_speed: 0.6
   max_angular_speed: 1.5
   position_threshold: 0.08
   angle_threshold: 0.1

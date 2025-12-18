@@ -1,0 +1,8 @@
+assets:
+- name: "lab_3"
+  barrier_image_path: "roomlayout/12_17/12_17_new_scene.png"
+  scene_asset_path: "roomlayout/12_17/12_17.usd"
+  scene_scale: [ 1.0, 1.0, 1.0 ]
+  offset_radius: 0.6
+  x_bounds: [0, 9]
+  y_bounds: [0, 9]

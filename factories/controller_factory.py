@@ -22,7 +22,7 @@ from controllers.openclose_controller import OpenCloseTaskController
 from controllers.navigation_controller import NavigationController
 from controllers.mobile_pick_controller import MobilePickController
 from controllers.navigation_controller_new import NavigationControllerNew
-
+from controllers.navigation_controller_smooth_12_16 import NavigationControllerSmooth1216
 
 _controller_registry: Dict[str, Type[BaseController]] = {}
 
@@ -56,3 +56,4 @@ register_controller("LiquidMixing", LiquidMixingController)
 register_controller("navigation", NavigationController)
 register_controller("mobile_pick", MobilePickController)
 register_controller("navigation_new", NavigationControllerNew)
+register_controller("navigation_smooth_12_16", NavigationControllerSmooth1216) # 平滑式导航控制器

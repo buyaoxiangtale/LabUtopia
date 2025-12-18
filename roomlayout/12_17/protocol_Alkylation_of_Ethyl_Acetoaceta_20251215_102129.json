@@ -1,0 +1,294 @@
+{
+  "experiment_name": "Alkylation of Ethyl Acetoacetate with Bis(4-fluorophenyl)methylene Chloride",
+  "experiment_description": "Alkylation of Ethyl Acetoacetate (as a substitute for Diethyl Acetamidomalonate) with Bis(4-fluorophenyl)methylene chloride using Sodium Hydride as a base and Tetra-n-butylammonium iodide as a catalyst. Required instruments: RoundBottomFlask, HeatingPlate, SeparatoryFunnel, RotaryEvaporator, LiquidChromatograph. Required reagents: EthylAcetoacetate, SodiumHydride, Bis4FluorophenylMethyleneChloride, TetraNButylammoniumIodide, Dimethylformamide.",
+  "assets": [
+    {
+      "name": "EthylAcetoacetate",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Substrate for alkylation",
+      "initial_location": "reagent_cabinet"
+    },
+    {
+      "name": "SodiumHydride",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Strong base for enolate formation",
+      "initial_location": "reagent_cabinet"
+    },
+    {
+      "name": "Bis4FluorophenylMethyleneChloride",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Alkylating agent",
+      "initial_location": "reagent_cabinet"
+    },
+    {
+      "name": "TetraNButylammoniumIodide",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Phase transfer catalyst",
+      "initial_location": "reagent_cabinet"
+    },
+    {
+      "name": "Dimethylformamide",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Reaction solvent",
+      "initial_location": "reagent_cabinet"
+    },
+    {
+      "name": "EthylAcetate",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Extraction solvent",
+      "initial_location": "reagent_cabinet"
+    },
+    {
+      "name": "SodiumChloride",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Brine for washing",
+      "initial_location": "reagent_cabinet"
+    },
+    {
+      "name": "Acetonitrile",
+      "type": "reagent",
+      "quantity": 1,
+      "purpose": "Solvent for HPLC analysis",
+      "initial_location": "reagent_cabinet"
+    },
+    {
+      "name": "RoundBottomFlask",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Reaction vessel",
+      "initial_location": "experimental_platform"
+    },
+    {
+      "name": "HeatingPlate",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Heating the reaction",
+      "initial_location": "experimental_platform"
+    },
+    {
+      "name": "Thermometer",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Monitoring temperature",
+      "initial_location": "experimental_platform"
+    },
+    {
+      "name": "ElectronicScale",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Weighing solid reagents",
+      "initial_location": "experimental_platform"
+    },
+    {
+      "name": "Pipette",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Transferring liquids",
+      "initial_location": "experimental_platform"
+    },
+    {
+      "name": "GraduatedCylinder",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Measuring solvent volumes",
+      "initial_location": "experimental_platform"
+    },
+    {
+      "name": "SeparatoryFunnel",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Liquid-liquid extraction",
+      "initial_location": "experimental_platform"
+    },
+    {
+      "name": "Beaker",
+      "type": "instrument",
+      "quantity": 2,
+      "purpose": "Collecting fractions",
+      "initial_location": "experimental_platform"
+    },
+    {
+      "name": "RotaryEvaporator",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Removing solvent",
+      "initial_location": "experimental_platform"
+    },
+    {
+      "name": "LiquidChromatograph",
+      "type": "instrument",
+      "quantity": 1,
+      "purpose": "Product analysis",
+      "initial_location": "validation_platform"
+    }
+  ],
+  "physical_constraints": [
+    {
+      "type": "boundary"
+    },
+    {
+      "type": "non_overlap"
+    }
+  ],
+  "chemical_constraints": [
+    {
+      "constraint_type": "C1",
+      "description": "Keep flammable solvents away from heat sources",
+      "asset1": "EthylAcetate",
+      "asset2": "HeatingPlate"
+    },
+    {
+      "constraint_type": "C3",
+      "description": "All reagents must be stored in reagent cabinet",
+      "asset1": "Bis4FluorophenylMethyleneChloride",
+      "zone": "reagent_cabinet"
+    },
+    {
+      "constraint_type": "C3",
+      "description": "All reagents must be stored in reagent cabinet",
+      "asset1": "Dimethylformamide",
+      "zone": "reagent_cabinet"
+    },
+    {
+      "constraint_type": "C4",
+      "description": "Keep glassware away from edges",
+      "asset1": "RoundBottomFlask"
+    },
+    {
+      "constraint_type": "C5",
+      "description": "Sodium Hydride is incompatible with Water",
+      "asset1": "SodiumHydride",
+      "asset2": "Water"
+    },
+    {
+      "constraint_type": "C10",
+      "description": "HeatingPlate should be in the FumeHood for this reaction",
+      "asset1": "HeatingPlate",
+      "zone": "FumeHood"
+    }
+  ],
+  "procedure": [
+    {
+      "step_number": 1,
+      "description": "Retrieve EthylAcetoacetate, SodiumHydride, Bis4FluorophenylMethyleneChloride, TetraNButylammoniumIodide, Dimethylformamide, EthylAcetate, SodiumChloride, and Acetonitrile from reagent_cabinet and place them in the FumeHood.",
+      "assets_involved": [
+        "EthylAcetoacetate",
+        "SodiumHydride",
+        "Bis4FluorophenylMethyleneChloride",
+        "TetraNButylammoniumIodide",
+        "Dimethylformamide",
+        "EthylAcetate",
+        "SodiumChloride",
+        "Acetonitrile"
+      ],
+      "safety_notes": "Handle reagents with care; wear PPE.",
+      "location": "reagent_cabinet"
+    },
+    {
+      "step_number": 2,
+      "description": "Weigh SodiumHydride using ElectronicScale and transfer to a dry RoundBottomFlask. Measure Dimethylformamide using GraduatedCylinder and add to the flask.",
+      "assets_involved": [
+        "SodiumHydride",
+        "Dimethylformamide",
+        "RoundBottomFlask",
+        "ElectronicScale",
+        "GraduatedCylinder"
+      ],
+      "safety_notes": "Sodium Hydride reacts with moisture; keep flask dry. Work in FumeHood.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 3,
+      "description": "Measure EthylAcetoacetate using a Pipette and add it dropwise to the RoundBottomFlask. Stir the mixture at room temperature for 1 hour to allow enolate formation.",
+      "assets_involved": [
+        "EthylAcetoacetate",
+        "RoundBottomFlask",
+        "Pipette"
+      ],
+      "safety_notes": "Hydrogen gas evolution; ensure ventilation.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 4,
+      "description": "Weigh TetraNButylammoniumIodide using ElectronicScale and add to the flask. Measure Bis4FluorophenylMethyleneChloride using a Pipette and add to the mixture.",
+      "assets_involved": [
+        "TetraNButylammoniumIodide",
+        "Bis4FluorophenylMethyleneChloride",
+        "RoundBottomFlask",
+        "ElectronicScale",
+        "Pipette"
+      ],
+      "safety_notes": "Avoid contact with alkylating agent.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 5,
+      "description": "Place the RoundBottomFlask on the HeatingPlate. Insert Thermometer. Heat the reaction mixture to 50°C for 16 hours, then increase to 80°C for another 16 hours.",
+      "assets_involved": [
+        "RoundBottomFlask",
+        "HeatingPlate",
+        "Thermometer"
+      ],
+      "safety_notes": "Monitor temperature carefully. Hot surfaces.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 6,
+      "description": "Cool the reaction mixture to room temperature. Carefully add Water dropwise to quench any unreacted SodiumHydride.",
+      "assets_involved": [
+        "RoundBottomFlask",
+        "Water"
+      ],
+      "safety_notes": "Exothermic reaction with gas evolution. Add water very slowly.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 7,
+      "description": "Transfer the mixture to a SeparatoryFunnel. Add EthylAcetate and shake to extract. Separate the organic layer. Wash the organic layer with SodiumChloride solution (brine). Collect the organic phase in a Beaker.",
+      "assets_involved": [
+        "SeparatoryFunnel",
+        "EthylAcetate",
+        "SodiumChloride",
+        "Beaker",
+        "Water"
+      ],
+      "safety_notes": "Vent SeparatoryFunnel frequently to release pressure.",
+      "location": "FumeHood"
+    },
+    {
+      "step_number": 8,
+      "description": "Transfer the organic phase to the RotaryEvaporator and remove the solvent under reduced pressure.",
+      "assets_involved": [
+        "RotaryEvaporator",
+        "Beaker"
+      ],
+      "safety_notes": "Ensure proper vacuum seal and cooling.",
+      "location": "RotaryEvaporator"
+    },
+    {
+      "step_number": 9,
+      "description": "Dissolve a small sample of the residue in Acetonitrile and analyze using the LiquidChromatograph.",
+      "assets_involved": [
+        "LiquidChromatograph",
+        "Acetonitrile",
+        "Pipette"
+      ],
+      "safety_notes": "Dispose of chemical waste properly.",
+      "location": "validation_platform"
+    }
+  ],
+  "safety_warnings": [
+    "Sodium Hydride is water-reactive and flammable; handle under inert conditions if possible.",
+    "Bis(4-fluorophenyl)methylene chloride is toxic and an irritant.",
+    "Dimethylformamide is a potent solvent and toxic; avoid skin contact.",
+    "Always work in the Fume Hood when handling volatile or hazardous chemicals."
+  ],
+  "notes": "EthylAcetoacetate is used as the substrate in place of Diethyl Acetamidomalonate due to library availability, following the same alkylation protocol."
+}

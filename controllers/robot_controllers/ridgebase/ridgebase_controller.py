@@ -11,7 +11,8 @@ class RidgebaseController:
         max_linear_speed: float = 1.0,
         max_angular_speed: float = 1.0,
         position_threshold: float = 0.1,
-        angle_threshold: float = 0.1,
+        angle_threshold: float = 0.2,
+        # angle_threshold: float = 0.1,
         dt: float = 0.01,
         final_angle: float = None  
     ):
@@ -23,7 +24,8 @@ class RidgebaseController:
         self.final_angle = final_angle  
 
         self.k_p_linear = 1
-        self.k_p_angular = 4
+        self.k_p_angular = 0.9
+        # self.k_p_angular = 4
         
         self.waypoints = None
         self.current_waypoint_idx = 0
@@ -76,6 +78,7 @@ class RidgebaseController:
                 self.current_waypoint_idx += 1
                 return self.compute_control(current_pose)
 
+        # speed = min(distance * 0.05, self.max_linear_speed)
         speed = min(distance * 0.2, self.max_linear_speed)
         x_vel = speed * np.cos(target_angle)
         y_vel = speed * np.sin(target_angle)
