@@ -2112,9 +2112,9 @@
       "file_path": "assets/rotavapor.usd",
       "geometry": {
         "bbox": {
-          "short": 0.5,
-          "long": 0.76,
-          "height": 0.85
+          "short": 0.9105756737463484,
+          "long": 2.3,
+          "height": 2.3700388799526886
         },
         "scale_factor": 1.0,
         "front_direction": [
@@ -2147,7 +2147,7 @@
         "oxidizer": false,
         "reactive_metal": false
       },
-      "initial_location": "experimental_platform",
+      "initial_location": "floor",
       "notes": "Instrument containing glassware and a heating bath; used for solvent evaporation. Ensure proper vacuum setup and handle glassware with care."
     },
     {

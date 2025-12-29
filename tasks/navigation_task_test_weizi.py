@@ -1501,15 +1501,36 @@ class NavigationTaskTestWeizi(BaseTask):
     def _has_remaining_goals(self) -> bool:
         return self.current_goal_idx < len(self.goal_pairs)
 
+    # def _apply_next_goal_until_success(self) -> bool:
+    #     nav_scene = self.navigation_assets[0]
+    #     idx = self.current_goal_idx
+    #     while idx < len(self.goal_pairs):
+    #         start_point, end_point = self.goal_pairs[idx]
+    #         if self._plan_and_set_path(nav_scene, start_point, end_point):
+    #             self.current_goal_idx = idx
+    #             return True
+    #         idx += 1
+    #     return False
+
     def _apply_next_goal_until_success(self) -> bool:
         nav_scene = self.navigation_assets[0]
-        idx = self.current_goal_idx
-        while idx < len(self.goal_pairs):
-            start_point, end_point = self.goal_pairs[idx]
+        
+        # 从当前的索引开始尝试
+        while self.current_goal_idx < len(self.goal_pairs):
+            start_point, end_point = self.goal_pairs[self.current_goal_idx]
+            
+            # 尝试规划路径
             if self._plan_and_set_path(nav_scene, start_point, end_point):
-                self.current_goal_idx = idx
+                # --- 关键修正点 ---
+                # 路径规划成功，将索引移向下一个任务，以便下次 reset 时执行新任务
+                self.current_goal_idx += 1 
+                print(f"✅ 成功加载任务对，后续将执行任务索引: {self.current_goal_idx}")
                 return True
-            idx += 1
+            
+            # 如果当前任务规划失败（例如起点或终点在障碍物内），跳过它尝试下一个
+            print(f"⚠️ 任务索引 {self.current_goal_idx} 规划失败，尝试跳过...")
+            self.current_goal_idx += 1
+            
         return False
 
     def _generate_random_navigation_task(self) -> bool:

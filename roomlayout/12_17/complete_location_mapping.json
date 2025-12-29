@@ -1,0 +1,34 @@
+{
+  "description": "完整的 location 映射 (已更新为使用更大的对象)",
+  "original_mapping": {
+    "reagent_cabinet": "ReagentCabinet",
+    "RotaryEvaporator": "RotaryEvaporator",
+    "validation_platform": "ValidationPlatform",
+    "FumeHood": "FumeHood"
+  },
+  "processed_mapping": {
+    "SodiumHydride": "ReagentCabinet",
+    "Bis4FluorophenylMethyleneChloride": "ReagentCabinet",
+    "Dimethylformamide": "ReagentCabinet",
+    "EthylAcetoacetate": "ReagentCabinet",
+    "TetraNButylammoniumIodide": "ReagentCabinet",
+    "EthylAcetate": "ReagentCabinet",
+    "Acetonitrile": "ReagentCabinet",
+    "SodiumChloride": "ReagentCabinet",
+    "HeatingPlate": "HeatingPlate",
+    "RoundBottomFlask": "RoundBottomFlask",
+    "Thermometer": "Thermometer",
+    "ElectronicScale": "ElectronicScale",
+    "Pipette": "Pipette",
+    "GraduatedCylinder": "GraduatedCylinder",
+    "SeparatoryFunnel": "SeparatoryFunnel",
+    "Beaker": "Beaker",
+    "LiquidChromatograph": "ValidationPlatform"
+  },
+  "updated_mapping": {
+    "reagent_cabinet": "ReagentCabinet",
+    "RotaryEvaporator": "RotaryEvaporator",
+    "validation_platform": "ValidationPlatform",
+    "FumeHood": "FumeHood"
+  }
+}

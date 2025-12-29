@@ -111,6 +111,30 @@ def grid_to_real(i, j, x_bounds, y_bounds, grid_size):
     )
 
 
+def calculate_path_distance(path: List[List[float]]) -> float:
+    """
+    Calculate the total distance of a path by summing Euclidean distances between consecutive points.
+    
+    Args:
+        path: List of path points, each point is [x, y, ...] or [x, y]
+    
+    Returns:
+        float: Total path distance in meters
+    """
+    if len(path) < 2:
+        return 0.0
+    
+    total_distance = 0.0
+    for i in range(len(path) - 1):
+        p1 = path[i]
+        p2 = path[i + 1]
+        dx = p2[0] - p1[0]
+        dy = p2[1] - p1[1]
+        total_distance += np.sqrt(dx**2 + dy**2)
+    
+    return total_distance
+
+
 def save_path_image(grid_path, path, save_path=None):
 
     plt.figure(figsize=(10, 10))
@@ -134,8 +158,22 @@ def save_path_image(grid_path, path, save_path=None):
         plt.show()
 
 
-def plan_navigation_path(task_info: dict) -> Optional[Tuple[List[List[float]], List[List[int]]]]:
-
+def plan_navigation_path(task_info: dict) -> Optional[Tuple[List[List[float]], List[List[int]], float]]:
+    """
+    Plan navigation path using A* algorithm.
+    
+    Args:
+        task_info: Dictionary containing:
+            - 'asset': Navigation scene configuration with 'barrier_image_path', 'x_bounds', 'y_bounds', 'offset_radius'
+            - 'start': [x, y] starting position
+            - 'end': [x, y] ending position
+    
+    Returns:
+        Optional[Tuple]: (real_path, path_grid, total_distance) if path found, None otherwise
+            - real_path: List of path points in real coordinates [[x, y, 0.0], ...]
+            - path_grid: List of path points in grid coordinates [[i, j], ...]
+            - total_distance: Total path distance in meters (float)
+    """
     grid, W, H = load_grid(task_info['asset']['barrier_image_path'])
     
     x_bounds = task_info['asset']['x_bounds']
@@ -169,7 +207,9 @@ def plan_navigation_path(task_info: dict) -> Optional[Tuple[List[List[float]], L
             point[0], point[1],
             x_bounds, y_bounds, (W, H)
         )
-        real_path.append([real_x, real_y, 0.0])  
+        real_path.append([real_x, real_y, 0.0])
+    
+    # Calculate total path distance
+    total_distance = calculate_path_distance(real_path)
 
-        
-    return real_path, path_grid
+    return real_path, path_grid, total_distance

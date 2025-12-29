@@ -1,0 +1,23 @@
+{
+  "description": "映射: 原对象id -> 更大的对象id (针对非 floor 对象)",
+  "processed_mapping": {
+    "SodiumHydride": "ReagentCabinet",
+    "Bis4FluorophenylMethyleneChloride": "ReagentCabinet",
+    "Dimethylformamide": "ReagentCabinet",
+    "EthylAcetoacetate": "ReagentCabinet",
+    "TetraNButylammoniumIodide": "ReagentCabinet",
+    "EthylAcetate": "ReagentCabinet",
+    "Acetonitrile": "ReagentCabinet",
+    "SodiumChloride": "ReagentCabinet",
+    "HeatingPlate": "HeatingPlate",
+    "RoundBottomFlask": "RoundBottomFlask",
+    "Thermometer": "Thermometer",
+    "ElectronicScale": "ElectronicScale",
+    "Pipette": "Pipette",
+    "GraduatedCylinder": "GraduatedCylinder",
+    "SeparatoryFunnel": "SeparatoryFunnel",
+    "Beaker": "Beaker",
+    "LiquidChromatograph": "ValidationPlatform"
+  },
+  "total_processed": 17
+}

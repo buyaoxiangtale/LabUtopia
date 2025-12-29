@@ -413,7 +413,7 @@
         "y": 0,
         "z": 0.0
       },
-      "initial_location": "experimental_platform"
+      "initial_location": "floor"
     },
     {
       "id": "LiquidChromatograph",

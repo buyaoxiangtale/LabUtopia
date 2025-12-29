@@ -317,3 +317,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+#  python roomlayout/12_17/nav_goal_targets_demo_12_17.py

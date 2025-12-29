@@ -404,7 +404,7 @@ class RidgebaseControllerSmooth:
         max_angular_speed: float = 1.0,
         position_threshold: float = 0.15,
         angle_threshold: float = 0.15,
-        dt: float = 0.02,
+        dt: float = 0.2,
         final_angle: Optional[float] = None,
     ):
         self.max_linear_speed = max_linear_speed

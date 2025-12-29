@@ -1,398 +1,984 @@
-"""
-Demo: derive navigation targets between experimental areas.
+# """
+# Demo: derive navigation targets between experimental areas.
 
-适配 12_17 场景：
-- 通过规范化匹配自动建立 protocol location -> room_assets 对象的映射
-- 支持新格式 assets_annotated.json（geometry.bbox）
-- 目标点生成：在平台 bbox 边缘，沿 -y 方向退 offset_radius（机器人半径）
-- 仅打印规划点，不控制机器人
-"""
+# 适配 12_17 场景：
+# - 通过规范化匹配自动建立 protocol location -> room_assets 对象的映射
+# - 支持新格式 assets_annotated.json（geometry.bbox）
+# - 目标点生成：在平台 bbox 边缘，沿 -y 方向退 offset_radius（机器人半径）
+# - 仅打印规划点，不控制机器人
+# """
+
+# import json
+# import yaml
+# import os
+# import argparse
+# from pathlib import Path
+# import numpy as np
+
+# # 12_17 文件夹在 roomlayout 下，需要往上 3 级到达项目根目录
+# ROOT = Path(__file__).resolve().parent.parent.parent
+
+# def parse_args():
+#     parser = argparse.ArgumentParser(description='Navigation goal targets demo')
+#     parser.add_argument('--protocol', type=str,
+#                        default=str(ROOT / "roomlayout/protocol_Preparation_of_Sodium_Acetate,_20251111_165059.json"),
+#                        help='Path to protocol JSON file')
+#     parser.add_argument('--room-assets', type=str,
+#                        default=str(ROOT / "roomlayout/Preparation_of_Sodium_Acetate,_Crystallization,_and_Simple_Distillation_of_Residual_Liquor_room_isaacsim.json"),
+#                        help='Path to room assets JSON file')
+#     parser.add_argument('--asset-lib', type=str,
+#                        default=str(ROOT / "roomlayout/12_17/assets_annotated.json"),
+#                        help='Path to asset library JSON file (supports new assets_annotated.json format)')
+#     parser.add_argument('--nav-cfg', type=str,
+#                        default=str(ROOT / "config/navigation/navigation_assets_fbh2.yaml"),
+#                        help='Path to navigation config YAML file')
+#     parser.add_argument('--verbose', action='store_true', default=True,
+#                        help='Enable verbose output')
+#     return parser.parse_args()
+
+# args = parse_args()
+
+# PROTOCOL = Path(args.protocol)
+# ROOM_ASSETS = Path(args.room_assets)
+# ASSET_LIB = Path(args.asset_lib)
+# NAV_CFG = Path(args.nav_cfg)
+# VERBOSE = args.verbose
+
+
+# def _norm(s: str) -> str:
+#     """规范化字符串：去除下划线/空格/横线，转小写"""
+#     return s.lower().replace(" ", "").replace("-", "").replace("_", "")
+
+
+# # 特殊映射：某些 location 是设备名称，需要映射到其所在的平台
+# # 注意：LabBench 在 assets_annotated.json 中对应 ExperimentalPlatform
+# SPECIAL_MAPPING = {
+#     "rotaryevaporator": "RotaryEvaporator",  # 旋转蒸发仪在实验台上
+#     "labbench": "ExperimentalPlatform",  # LabBench 映射到 ExperimentalPlatform
+#     "bench": "ExperimentalPlatform",  # BENCH 的别名
+#     "hood": "FumeHood",  # HOOD 的别名
+# }
+
+
+# def build_location_to_platform(protocol_data, room_assets):
+#     """
+#     从 protocol 中提取 location，通过规范化匹配自动映射到 room_assets 中的平台对象。
+#     只有特殊情况（如设备名映射到所在平台）才使用硬编码。
+#     """
+#     # 收集 protocol 中所有的 location
+#     locations = set()
+#     for step in protocol_data.get("procedure", []):
+#         loc = step.get("location")
+#         if loc:
+#             locations.add(loc)
+    
+#     # 获取 room_assets 中所有对象的 id
+#     platform_ids = [obj.get("id", "") for obj in room_assets.get("objects", [])]
+    
+#     result = {}
+#     for loc in locations:
+#         norm_loc = _norm(loc)
+        
+#         # 1. 先检查特殊映射
+#         if norm_loc in SPECIAL_MAPPING:
+#             result[loc] = SPECIAL_MAPPING[norm_loc]
+#             continue
+        
+#         # 2. 规范化匹配：在 room_assets 中查找匹配的对象 id
+#         matched = None
+#         for pid in platform_ids:
+#             if _norm(pid) == norm_loc:
+#                 matched = pid
+#                 break
+        
+#         # 3. 如果精确匹配失败，尝试模糊匹配（startswith）
+#         if not matched:
+#             for pid in platform_ids:
+#                 if _norm(pid).startswith(norm_loc) or norm_loc.startswith(_norm(pid)):
+#                     matched = pid
+#                     break
+        
+#         result[loc] = matched if matched else loc
+    
+#     return result
+
+
+# def load_offset_radius():
+#     with open(NAV_CFG, "r") as f:
+#         cfg = yaml.safe_load(f)
+#     return cfg["assets"][0]["offset_radius"]
+
+
+# def load_protocol():
+#     with open(PROTOCOL, "r") as f:
+#         return json.load(f)
+
+
+# def load_room_assets():
+#     with open(ROOM_ASSETS, "r") as f:
+#         return json.load(f)
+
+
+# def load_asset_lib():
+#     with open(ASSET_LIB, "r") as f:
+#         return json.load(f)
+
+
+# def grid_centers(asset_lib):
+#     """从 asset_lib 中提取网格中心（如果存在 table.grid 定义）"""
+#     centers = {}
+#     table = asset_lib.get("table", {})
+#     grid = table.get("grid", {})
+#     bounds = grid.get("id_to_bounds_m", {})
+#     for gid, info in bounds.items():
+#         cx = sum(info["x_range"]) / 2
+#         cz = sum(info["z_range"]) / 2
+#         centers[int(gid)] = (cx, cz, info["name"], info["x_range"], info["z_range"])
+#     return centers
+
+
+# def pick_platform(location, room_assets, location_mapping):
+#     """
+#     根据 location 选择对应的平台对象。
+#     使用 location_mapping 进行映射，通过规范化匹配在 room_assets 中查找。
+#     """
+#     target_id = location_mapping.get(location)
+#     if not target_id:
+#         # 尝试直接规范化匹配
+#         target_id = location
+    
+#     objs = room_assets.get("objects", [])
+#     norm_target = _norm(target_id)
+    
+#     for obj in objs:
+#         obj_id = obj.get("id", "")
+#         if _norm(obj_id) == norm_target:
+#             return obj
+    
+#     # 模糊匹配
+#     for obj in objs:
+#         obj_id = obj.get("id", "")
+#         if _norm(obj_id).startswith(norm_target) or norm_target.startswith(_norm(obj_id)):
+#             return obj
+    
+#     return None
+
+
+# def build_bbox_lookup(asset_lib):
+#     """
+#     Map normalized asset name/id -> (half_x, half_z).
+#     支持两种格式：
+#     - 旧格式: asset.bbox.{short, long}
+#     - 新格式 (assets_annotated.json): asset.geometry.bbox.{short, long}
+#     """
+#     lookup = {}
+#     for a in asset_lib.get("assets", []):
+#         # 获取 name 和 id 作为查找键
+#         name = a.get("name", "")
+#         asset_id = a.get("id", "")
+        
+#         # 兼容两种 bbox 格式
+#         bbox = a.get("bbox", {})
+#         if not bbox:
+#             # 新格式：geometry.bbox
+#             geometry = a.get("geometry", {})
+#             bbox = geometry.get("bbox", {})
+        
+#         if not bbox:
+#             continue
+            
+#         half_long = max(bbox.get("short", 0), bbox.get("long", 0)) / 2.0
+#         half_short = min(bbox.get("short", 0), bbox.get("long", 0)) / 2.0
+        
+#         # x 方向取短边 /2，z(y) 方向取长边 /2
+#         half_tuple = (half_short if half_short else half_long, half_long if half_long else half_short)
+        
+#         # 同时用 name 和 id 作为键
+#         if name:
+#             lookup[_norm(name)] = half_tuple
+#         if asset_id:
+#             lookup[_norm(asset_id)] = half_tuple
+    
+#     return lookup
+
+
+# def bbox_for_assetid(asset_id: str, asset_lib, bbox_lookup):
+#     """Given an assetId like Foo_Bar, return (half_x, half_z) if known."""
+#     if not asset_id:
+#         return None
+#     norm_full = _norm(asset_id)
+#     primary = asset_id.split("_")[0] if "_" in asset_id else asset_id
+#     # 先尝试完整 assetId，再尝试前缀，再尝试前缀模糊匹配（startswith）
+#     hit = bbox_lookup.get(norm_full) or bbox_lookup.get(_norm(primary))
+#     if hit:
+#         return hit
+#     for k, v in bbox_lookup.items():
+#         if k.startswith(norm_full) or norm_full.startswith(k):
+#             return v
+#     return None
+
+
+# def platform_target(platform, offset_radius, bbox_lookup):
+#     """
+#     仅考虑平台自身 bbox，在其 -y 方向（桌面后沿）退 offset_radius 生成目标。
+#     平台 bbox 用 Asset.json 的尺寸，center 取 room_assets 中的位置。
+#     """
+#     info = asset_bbox_info(platform, bbox_lookup)
+#     if not info:
+#         return None
+#     cx, cy = info["center"]
+#     hy = info["half_y"]
+#     # 沿 -y 退 hy+offset
+#     tx = cx
+#     tz = cy - (hy + offset_radius)
+#     return {
+#         "x": tx,
+#         "z": tz,
+#         "note": f"platform {platform.get('id')} back -y (hy+offset)",
+#         "bbox": info,
+#     }
+
+
+# def asset_bbox_info(asset, bbox_lookup):
+#     """Return bbox info: center(x,y), half_x, half_y, x_min/max, y_min/max."""
+#     pos = asset.get("position", {})
+#     ox, oy = pos.get("x"), pos.get("y")
+#     # 兼容 id 和 assetId 两种字段名
+#     asset_id = asset.get("id") or asset.get("assetId")
+#     half = bbox_for_assetid(asset_id, None, bbox_lookup)
+#     if ox is None or oy is None or not half:
+#         return None
+#     hx, hz = half
+#     return {
+#         "center": (ox, oy),
+#         "half_x": hx,
+#         "half_y": hz,
+#         "x_min": ox - hx,
+#         "x_max": ox + hx,
+#         "y_min": oy - hz,
+#         "y_max": oy + hz,
+#     }
+
+
+# def point_inside_any(target, room_assets, bbox_lookup):
+#     """Check if target (x,z) falls inside any object's footprint (axis-aligned, conservative square)."""
+#     objs = room_assets.get("objects", [])
+#     tx, tz = target
+#     for obj in objs:
+#         # 兼容 id 和 assetId 两种字段名
+#         aid = obj.get("id") or obj.get("assetId", "")
+#         primary = aid.split("_")[0] if "_" in aid else aid
+#         half = bbox_lookup.get(_norm(primary))
+#         if not half:
+#             continue
+#         hx, hz = half
+#         pos = obj.get("position", {})
+#         ox, oy = pos.get("x"), pos.get("y")  # room layout uses x,y; we treat y as z
+#         if ox is None or oy is None:
+#             continue
+#         if abs(tx - ox) <= hx and abs(tz - oy) <= hz:
+#             return True
+#     return False
+
+
+# def find_clear_target(center, offset_radius, room_assets, bbox_lookup):
+#     """
+#     Try multiple offsets around grid center to avoid placing target inside an object.
+#     Offsets tested in order. If all fail, return None.
+#     """
+#     x, z, _, xr, zr = center
+
+#     def inside_bounds(px, pz):
+#         return xr[0] <= px <= xr[1] and zr[0] <= pz <= zr[1]
+
+#     attempts = []
+
+#     candidates = [
+#         (x, z - offset_radius, "offset -z"),
+#         (x + offset_radius, z, "offset +x"),
+#         (x - offset_radius, z, "offset -x"),
+#         (x, z + offset_radius, "offset +z"),
+#         (x + offset_radius, z - offset_radius, "offset +x -z"),
+#         (x - offset_radius, z - offset_radius, "offset -x -z"),
+#     ]
+#     # 若基本偏移全部撞物体，进一步在半径环上采样
+#     extra_radii = [offset_radius * 1.5, offset_radius * 2.0]
+#     angles = [0, 45, 90, 135, 180, 225, 270, 315]
+
+#     def try_pos(px, pz, note):
+#         if not inside_bounds(px, pz):
+#             attempts.append((note, "out_of_bounds"))
+#             return None
+#         if point_inside_any((px, pz), room_assets, bbox_lookup):
+#             attempts.append((note, "collision"))
+#             return None
+#         attempts.append((note, "ok"))
+#         return {"x": px, "z": pz, "note": note}
+
+#     for cx, cz, note in candidates:
+#         res = try_pos(cx, cz, note)
+#         if res:
+#             return res, attempts
+
+#     for r in extra_radii:
+#         for ang in angles:
+#             rad = ang * 3.1415926 / 180.0
+#             cx = x + r * np.cos(rad)
+#             cz = z + r * np.sin(rad)
+#             res = try_pos(cx, cz, f"ring r={r:.2f} ang={ang}")
+#             if res:
+#                 return res, attempts
+
+#     return None, attempts
+
+
+# def suggest_target(grid_center, offset_radius):
+#     """
+#     Place target near the grid center, offset in -z to leave room in front.
+#     grid_center can be (x, z, name) or (x, z, name, x_range, z_range).
+#     """
+#     x, z = grid_center[0], grid_center[1]
+#     return {"x": x, "z": z - offset_radius, "note": "offset by safety radius along -z"}
+
+
+# def main():
+#     offset_radius = load_offset_radius()
+#     protocol = load_protocol()
+#     room_assets = load_room_assets()
+#     asset_lib = load_asset_lib()
+#     bbox_lookup = build_bbox_lookup(asset_lib)
+    
+#     # 构建 location -> platform 映射（自动规范化匹配）
+#     location_mapping = build_location_to_platform(protocol, room_assets)
+#     if VERBOSE:
+#         print("Location mapping (auto-matched):")
+#         for loc, plat in location_mapping.items():
+#             print(f"  {loc} -> {plat}")
+#         print()
+#         print(f"Loaded {len(bbox_lookup)} assets into bbox_lookup")
+#         print()
+
+#     steps = protocol.get("procedure", [])
+#     print(f"Loaded {len(steps)} steps; offset_radius = {offset_radius} m\n")
+
+#     for step in steps:
+#         loc = step.get("location", "BENCH")
+#         platform = pick_platform(loc, room_assets, location_mapping)
+#         target = None
+#         debug_attempts = []
+
+#         print(f"Step {step.get('step_number')}: {step.get('description')}")
+#         print(f"  Location: {loc} -> {location_mapping.get(loc, loc)}")
+
+#         if platform:
+#             info = asset_bbox_info(platform, bbox_lookup)
+#             if info:
+#                 cx, cy = info["center"]
+#                 print(
+#                     f"  Platform bbox {platform.get('id')}: "
+#                     f"center=({cx:.3f},{cy:.3f}), "
+#                     f"hx={info['half_x']:.3f}, hy={info['half_y']:.3f}, "
+#                     f"x[{info['x_min']:.3f},{info['x_max']:.3f}], "
+#                     f"y[{info['y_min']:.3f},{info['y_max']:.3f}]"
+#                 )
+#                 target = platform_target(platform, offset_radius, bbox_lookup)
+#                 if target:
+#                     print(f"  Nav target (x,z): ({target['x']:.3f}, {target['z']:.3f})  [{target['note']}]")
+#                 else:
+#                     print("  Nav target: not assigned (missing bbox info)")
+#             else:
+#                 print("  Platform bbox not found in asset lib.")
+#         else:
+#             print("  Platform not found for this location.")
+
+#         print()
+
+
+# if __name__ == "__main__":
+#     main()
+
+
+# import json
+# import math
+# import os
+# from pathlib import Path
+# import numpy as np
+
+# # ================= 路径配置 =================
+# # 建议将脚本放在项目根目录下运行，或者修改以下路径
+# ROOT = Path(__file__).resolve().parent
+# PROTOCOL_PATH = ROOT / "protocol_Alkylation_of_Ethyl_Acetoaceta_20251215_102129.json"
+# ROOM_ASSETS_PATH = ROOT / "Alkylation_of_Ethyl_Acetoacetate_with_Bis(4-fluoro_room_isaacsim.json"
+# ASSET_LIB_PATH = ROOT / "Asset.json"  # 假设该文件存在于同一目录
+
+# # 导航偏移半径（机器人半径 + 安全距离）
+# OFFSET_RADIUS = 0.6 
+
+# # 平台映射：步骤中的 location 映射到 JSON 中的对象 ID
+# LOCATION_TO_PLATFORM = {
+#     "FUMEHOOD": "FumeHood",
+#     "BENCH": "LabBench",
+#     "EXPERIMENTAL_PLATFORM": "LabBench",
+#     "VALIDATION_PLATFORM": "LiquidChromatograph", # 或者映射到 ValidationPlatform 桌面
+#     "ROTARYEVAPORATOR": "LabBench",
+# }
+
+# # ================= 核心功能函数 =================
+
+# def load_json(path):
+#     if not path.exists():
+#         print(f"警告: 找不到文件 {path}")
+#         return {}
+#     with open(path, "r", encoding="utf-8") as f:
+#         return json.load(f)
+
+# def _norm(s: str) -> str:
+#     return s.lower().replace(" ", "").replace("-", "").replace("_", "")
+
+# def build_bbox_lookup(asset_lib):
+#     """从资产库中提取物体的长宽尺寸（half_x, half_y）"""
+#     lookup = {}
+#     if not asset_lib: return lookup
+#     for a in asset_lib.get("assets", []):
+#         name = a.get("name", "")
+#         bbox = a.get("bbox", {})
+#         # 默认长边为 y (depth)，短边为 x (width)
+#         long_side = max(bbox.get("short", 0), bbox.get("long", 0)) 
+#         short_side = min(bbox.get("short", 0), bbox.get("long", 0))
+#         lookup[_norm(name)] = (short_side / 2.0, long_side / 2.0)
+#     return lookup
+
+# def get_obj_bbox(obj, bbox_lookup):
+#     """获取特定实例的 bbox 信息"""
+#     # 优先匹配 id，再匹配 assetId
+#     name = obj.get("id") or obj.get("assetId") or ""
+#     half = bbox_lookup.get(_norm(name))
+    
+#     # 如果找不到精确匹配，尝试前缀匹配（如 FumeHood_01 -> FumeHood）
+#     if not half:
+#         for k, v in bbox_lookup.items():
+#             if _norm(name).startswith(k):
+#                 half = v
+#                 break
+                
+#     if not half:
+#         return 0.4, 0.4  # 找不到则给一个默认值
+#     return half
+
+# def calculate_rotated_target(obj, offset_radius, bbox_lookup):
+#     """
+#     根据对象的 position 和 rotation.z 计算导航目标点。
+#     逻辑：在对象局部坐标系的 -y 方向（正面）退后 (half_y + offset_radius) 距离。
+#     """
+#     pos = obj.get("position", {})
+#     rot = obj.get("rotation", {})
+    
+#     cx, cy = pos.get("x", 0), pos.get("y", 0)
+#     rz_deg = rot.get("z", 0)
+    
+#     # 获取物体的半宽/半深
+#     hx, hy = get_obj_bbox(obj, bbox_lookup)
+    
+#     # 计算总偏移距离
+#     dist = hy + offset_radius
+    
+#     # 将角度转为弧度
+#     rad = math.radians(rz_deg)
+    
+#     # 旋转矩阵计算 (针对局部向量 [0, -dist]):
+#     # dx = 0 * cos(theta) - (-dist) * sin(theta) = dist * sin(theta)
+#     # dy = 0 * sin(theta) + (-dist) * cos(theta) = -dist * cos(theta)
+#     dx = dist * math.sin(rad)
+#     dy = -dist * math.cos(rad)
+    
+#     tx = cx + dx
+#     ty = cy + dy
+    
+#     return {
+#         "x": tx,
+#         "y": ty,
+#         "rotation_z": rz_deg,
+#         "offset_vec": (dx, dy)
+#     }
+
+# # ================= 主程序 =================
+
+# def main():
+#     # 1. 加载数据
+#     protocol = load_json(PROTOCOL_PATH)
+#     room_layout = load_json(ROOM_ASSETS_PATH)
+#     asset_lib = load_json(ASSET_LIB_PATH)
+    
+#     bbox_lookup = build_bbox_lookup(asset_lib)
+#     objects = room_layout.get("objects", [])
+    
+#     print(f"--- 实验导航路径规划 ---")
+#     print(f"协议: {protocol.get('experiment_name')}")
+#     print(f"机器人安全半径: {OFFSET_RADIUS}m\n")
+
+#     steps = protocol.get("procedure", [])
+    
+#     for step in steps:
+#         step_num = step.get("step_number")
+#         location = step.get("location", "BENCH").upper()
+#         description = step.get("description")
+        
+#         # 寻找对应的平台对象
+#         target_id_prefix = LOCATION_TO_PLATFORM.get(location, "LabBench")
+#         target_obj = None
+#         for obj in objects:
+#             obj_id = obj.get("id") or obj.get("assetId") or ""
+#             if _norm(obj_id).startswith(_norm(target_id_prefix)):
+#                 target_obj = obj
+#                 break
+        
+#         print(f"步骤 {step_num}: {description[:60]}...")
+#         print(f"  [位置]: {location}")
+        
+#         if target_obj:
+#             target = calculate_rotated_target(target_obj, OFFSET_RADIUS, bbox_lookup)
+            
+#             print(f"  [目标对象]: {target_obj.get('id')}")
+#             print(f"  [对象中心]: x={target_obj['position']['x']:.2f}, y={target_obj['position']['y']:.2f}")
+#             print(f"  [对象旋转]: {target['rotation_z']}°")
+#             print(f"  [导航点]:   X={target['x']:.3f}, Y={target['y']:.3f}")
+#             print(f"  [偏移方向]: dx={target['offset_vec'][0]:.3f}, dy={target['offset_vec'][1]:.3f}")
+#         else:
+#             print(f"  [错误]: 无法在布局中找到类型为 {target_id_prefix} 的平台")
+            
+#         print("-" * 50)
+
+# if __name__ == "__main__":
+#     main()
+
+
+# import json
+# import math
+# import os
+# from pathlib import Path
+# import numpy as np
+
+# # ================= 路径配置 =================
+# ROOT = Path(__file__).resolve().parent
+# PROTOCOL_PATH = ROOT / "protocol_Alkylation_of_Ethyl_Acetoaceta_20251215_102129.json"
+# ROOM_ASSETS_PATH = ROOT / "Alkylation_of_Ethyl_Acetoacetate_with_Bis(4-fluoro_room_isaacsim.json"
+# ASSET_LIB_PATH = ROOT / "assets_annotated.json"
+
+# # 导航偏移半径（机器人半径设置为 0.6m）
+# OFFSET_RADIUS = 0.6 
+
+# # 平台映射
+# LOCATION_TO_PLATFORM = {
+#     "FUMEHOOD": "FumeHood",
+#     "BENCH": "LabBench",
+#     "EXPERIMENTAL_PLATFORM": "LabBench",
+#     "VALIDATION_PLATFORM": "LiquidChromatograph",
+#     "ROTARYEVAPORATOR": "LabBench",
+# }
+
+# # ================= 核心功能函数 =================
+
+# def load_json(path):
+#     if not path.exists():
+#         print(f"警告: 找不到文件 {path}")
+#         return {}
+#     with open(path, "r", encoding="utf-8") as f:
+#         return json.load(f)
+
+# def _norm(s: str) -> str:
+#     return s.lower().replace(" ", "").replace("-", "").replace("_", "")
+
+# def build_bbox_lookup(asset_lib):
+#     """从资产库中提取物体的长宽尺寸"""
+#     lookup = {}
+#     if not asset_lib: return lookup
+#     for a in asset_lib.get("assets", []):
+#         name = a.get("name", "")
+#         bbox = a.get("bbox", {})
+#         # 默认长边为 y (depth)，短边为 x (width)
+#         long_side = max(bbox.get("short", 0), bbox.get("long", 0)) 
+#         short_side = min(bbox.get("short", 0), bbox.get("long", 0))
+#         lookup[_norm(name)] = (short_side / 2.0, long_side / 2.0)
+#     return lookup
+
+# def get_obj_bbox(obj, bbox_lookup):
+#     """获取特定实例的半长宽信息"""
+#     name = obj.get("id") or obj.get("assetId") or ""
+#     half = bbox_lookup.get(_norm(name))
+    
+#     if not half:
+#         for k, v in bbox_lookup.items():
+#             if _norm(name).startswith(k):
+#                 half = v
+#                 break
+                
+#     if not half:
+#         return 0.4, 0.4  # 默认值
+#     return half
+
+# def calculate_rotated_target(obj, offset_radius, bbox_lookup):
+#     """
+#     根据对象的 position 和 rotation.z 计算导航目标点。
+#     """
+#     pos = obj.get("position", {})
+#     rot = obj.get("rotation", {})
+    
+#     cx, cy = pos.get("x", 0), pos.get("y", 0)
+#     rz_deg = rot.get("z", 0)
+    
+#     # 获取物体的半宽/半深 (hx, hy)
+#     hx, hy = get_obj_bbox(obj, bbox_lookup)
+    
+#     # 计算总偏移距离
+#     dist = hy + offset_radius
+    
+#     # 将角度转为弧度
+#     rad = math.radians(rz_deg)
+    
+#     # 旋转矩阵计算公式:
+#     # dx = dist * sin(theta)
+#     # dy = -dist * cos(theta)
+#     dx = dist * math.sin(rad)
+#     dy = -dist * math.cos(rad)
+    
+#     tx = cx + dx
+#     ty = cy + dy
+    
+#     return {
+#         "x": tx,
+#         "y": ty,
+#         "width": hx * 2,  # 全宽
+#         "depth": hy * 2,  # 全深
+#         "rotation_z": rz_deg,
+#         "offset_vec": (dx, dy)
+#     }
+
+# # ================= 主程序 =================
+
+# def main():
+#     protocol = load_json(PROTOCOL_PATH)
+#     room_layout = load_json(ROOM_ASSETS_PATH)
+#     asset_lib = load_json(ASSET_LIB_PATH)
+    
+#     bbox_lookup = build_bbox_lookup(asset_lib)
+#     objects = room_layout.get("objects", [])
+    
+#     print(f"--- 实验导航路径规划 (Isaac Sim) ---")
+#     print(f"实验名称: {protocol.get('experiment_name')}")
+#     print(f"设定机器人半径: {OFFSET_RADIUS}m\n")
+
+#     steps = protocol.get("procedure", [])
+    
+#     for step in steps:
+#         step_num = step.get("step_number")
+#         location = step.get("location", "BENCH").upper()
+#         description = step.get("description")
+        
+#         target_id_prefix = LOCATION_TO_PLATFORM.get(location, "LabBench")
+#         target_obj = None
+#         for obj in objects:
+#             obj_id = obj.get("id") or obj.get("assetId") or ""
+#             if _norm(obj_id).startswith(_norm(target_id_prefix)):
+#                 target_obj = obj
+#                 break
+        
+#         print(f"步骤 {step_num}: {description[:50]}...")
+#         print(f"  [指定位置]: {location}")
+        
+#         if target_obj:
+#             res = calculate_rotated_target(target_obj, OFFSET_RADIUS, bbox_lookup)
+            
+#             print(f"  [匹配对象]: {target_obj.get('id')}")
+#             # 输出边界大小
+#             print(f"  [边界尺寸]: 宽度(W)={res['width']:.2f}m, 深度(D)={res['depth']:.2f}m")
+#             print(f"  [对象中心]: x={target_obj['position']['x']:.2f}, y={target_obj['position']['y']:.2f}")
+#             print(f"  [对象旋转]: {res['rotation_z']}°")
+#             print(f"  [机器人导航点]: X={res['x']:.3f}, Y={res['y']:.3f}")
+#         else:
+#             print(f"  [错误]: 未能找到匹配的实验设备")
+            
+#         print("-" * 60)
+
+# if __name__ == "__main__":
+#     main()
+
 
 import json
-import yaml
-import os
-import argparse
+import math
 from pathlib import Path
-import numpy as np
 
-# 12_17 文件夹在 roomlayout 下，需要往上 3 级到达项目根目录
-ROOT = Path(__file__).resolve().parent.parent.parent
+# ================= 路径配置 =================
+ROOT = Path(__file__).resolve().parent
 
-def parse_args():
-    parser = argparse.ArgumentParser(description='Navigation goal targets demo')
-    parser.add_argument('--protocol', type=str,
-                       default=str(ROOT / "roomlayout/protocol_Preparation_of_Sodium_Acetate,_20251111_165059.json"),
-                       help='Path to protocol JSON file')
-    parser.add_argument('--room-assets', type=str,
-                       default=str(ROOT / "roomlayout/Preparation_of_Sodium_Acetate,_Crystallization,_and_Simple_Distillation_of_Residual_Liquor_room_isaacsim.json"),
-                       help='Path to room assets JSON file')
-    parser.add_argument('--asset-lib', type=str,
-                       default=str(ROOT / "roomlayout/12_17/assets_annotated.json"),
-                       help='Path to asset library JSON file (supports new assets_annotated.json format)')
-    parser.add_argument('--nav-cfg', type=str,
-                       default=str(ROOT / "config/navigation/navigation_assets_fbh2.yaml"),
-                       help='Path to navigation config YAML file')
-    parser.add_argument('--verbose', action='store_true', default=True,
-                       help='Enable verbose output')
-    return parser.parse_args()
+# 使用您指定的文件名
+PROTOCOL = ROOT / "protocol_Alkylation_of_Ethyl_Acetoaceta_20251215_102129.json"
+ROOM_ASSETS = ROOT / "Alkylation_of_Ethyl_Acetoacetate_with_Bis(4-fluoro_room_isaacsim.json"
+ASSET_LIB = ROOT / "assets_annotated.json" # 已更新为新文件名
 
-args = parse_args()
+# 需求修改：机器人半径强制设置为 0.6
+OFFSET_RADIUS = 0.6 
+VERBOSE = True
 
-PROTOCOL = Path(args.protocol)
-ROOM_ASSETS = Path(args.room_assets)
-ASSET_LIB = Path(args.asset_lib)
-NAV_CFG = Path(args.nav_cfg)
-VERBOSE = args.verbose
-
+# ================= 辅助函数 =================
 
 def _norm(s: str) -> str:
     """规范化字符串：去除下划线/空格/横线，转小写"""
-    return s.lower().replace(" ", "").replace("-", "").replace("_", "")
+    if not s: return ""
+    return str(s).lower().replace(" ", "").replace("-", "").replace("_", "")
 
-
-# 特殊映射：某些 location 是设备名称，需要映射到其所在的平台
-# 注意：LabBench 在 assets_annotated.json 中对应 ExperimentalPlatform
+# 映射逻辑：将协议中的位置映射到房间布局中的对象 ID
 SPECIAL_MAPPING = {
-    "rotaryevaporator": "RotaryEvaporator",  # 旋转蒸发仪在实验台上
-    "labbench": "ExperimentalPlatform",  # LabBench 映射到 ExperimentalPlatform
-    "bench": "ExperimentalPlatform",  # BENCH 的别名
-    "hood": "FumeHood",  # HOOD 的别名
+    # "rotaryevaporator": "ExperimentalPlatform", 
+    "labbench": "ExperimentalPlatform",
+    "bench": "ExperimentalPlatform",
+    "hood": "FumeHood",
+    "validation_platform": "ValidationPlatform"
 }
 
+def load_json(path):
+    if not path.exists():
+        print(f"警告: 找不到文件 {path}")
+        return {}
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 def build_location_to_platform(protocol_data, room_assets):
-    """
-    从 protocol 中提取 location，通过规范化匹配自动映射到 room_assets 中的平台对象。
-    只有特殊情况（如设备名映射到所在平台）才使用硬编码。
-    """
-    # 收集 protocol 中所有的 location
+    """建立 protocol location -> room_assets 对象的映射"""
     locations = set()
     for step in protocol_data.get("procedure", []):
         loc = step.get("location")
-        if loc:
-            locations.add(loc)
+        if loc: locations.add(loc)
     
-    # 获取 room_assets 中所有对象的 id
     platform_ids = [obj.get("id", "") for obj in room_assets.get("objects", [])]
     
     result = {}
     for loc in locations:
         norm_loc = _norm(loc)
-        
-        # 1. 先检查特殊映射
         if norm_loc in SPECIAL_MAPPING:
             result[loc] = SPECIAL_MAPPING[norm_loc]
             continue
         
-        # 2. 规范化匹配：在 room_assets 中查找匹配的对象 id
         matched = None
         for pid in platform_ids:
             if _norm(pid) == norm_loc:
                 matched = pid
                 break
-        
-        # 3. 如果精确匹配失败，尝试模糊匹配（startswith）
         if not matched:
             for pid in platform_ids:
                 if _norm(pid).startswith(norm_loc) or norm_loc.startswith(_norm(pid)):
                     matched = pid
                     break
-        
         result[loc] = matched if matched else loc
-    
     return result
-
-
-def load_offset_radius():
-    with open(NAV_CFG, "r") as f:
-        cfg = yaml.safe_load(f)
-    return cfg["assets"][0]["offset_radius"]
-
-
-def load_protocol():
-    with open(PROTOCOL, "r") as f:
-        return json.load(f)
-
-
-def load_room_assets():
-    with open(ROOM_ASSETS, "r") as f:
-        return json.load(f)
-
-
-def load_asset_lib():
-    with open(ASSET_LIB, "r") as f:
-        return json.load(f)
-
-
-def grid_centers(asset_lib):
-    """从 asset_lib 中提取网格中心（如果存在 table.grid 定义）"""
-    centers = {}
-    table = asset_lib.get("table", {})
-    grid = table.get("grid", {})
-    bounds = grid.get("id_to_bounds_m", {})
-    for gid, info in bounds.items():
-        cx = sum(info["x_range"]) / 2
-        cz = sum(info["z_range"]) / 2
-        centers[int(gid)] = (cx, cz, info["name"], info["x_range"], info["z_range"])
-    return centers
-
-
-def pick_platform(location, room_assets, location_mapping):
-    """
-    根据 location 选择对应的平台对象。
-    使用 location_mapping 进行映射，通过规范化匹配在 room_assets 中查找。
-    """
-    target_id = location_mapping.get(location)
-    if not target_id:
-        # 尝试直接规范化匹配
-        target_id = location
-    
-    objs = room_assets.get("objects", [])
-    norm_target = _norm(target_id)
-    
-    for obj in objs:
-        obj_id = obj.get("id", "")
-        if _norm(obj_id) == norm_target:
-            return obj
-    
-    # 模糊匹配
-    for obj in objs:
-        obj_id = obj.get("id", "")
-        if _norm(obj_id).startswith(norm_target) or norm_target.startswith(_norm(obj_id)):
-            return obj
-    
-    return None
-
 
 def build_bbox_lookup(asset_lib):
     """
-    Map normalized asset name/id -> (half_x, half_z).
-    支持两种格式：
-    - 旧格式: asset.bbox.{short, long}
-    - 新格式 (assets_annotated.json): asset.geometry.bbox.{short, long}
+    适配 assets_annotated.json 格式
+    路径: assets -> geometry -> bbox -> {short, long}
     """
     lookup = {}
-    for a in asset_lib.get("assets", []):
-        # 获取 name 和 id 作为查找键
-        name = a.get("name", "")
+    assets_list = asset_lib.get("assets", [])
+    for a in assets_list:
         asset_id = a.get("id", "")
+        name = a.get("name", "")
         
-        # 兼容两种 bbox 格式
-        bbox = a.get("bbox", {})
-        if not bbox:
-            # 新格式：geometry.bbox
-            geometry = a.get("geometry", {})
-            bbox = geometry.get("bbox", {})
+        # 核心修改：从 geometry.bbox 获取数据
+        geometry = a.get("geometry", {})
+        bbox = geometry.get("bbox", {})
         
-        if not bbox:
-            continue
+        if not bbox: continue
             
-        half_long = max(bbox.get("short", 0), bbox.get("long", 0)) / 2.0
-        half_short = min(bbox.get("short", 0), bbox.get("long", 0)) / 2.0
+        short_side = bbox.get("short", 0)
+        long_side = bbox.get("long", 0)
         
-        # x 方向取短边 /2，z(y) 方向取长边 /2
-        half_tuple = (half_short if half_short else half_long, half_long if half_long else half_short)
+        # 定义：half_x 使用 short/2, half_y (深度方向) 使用 long/2
+        # 这决定了机器人从哪一面接近。通常深度方向为靠近/远离的方向。
+        half_tuple = (short_side / 2.0, long_side / 2.0)
         
-        # 同时用 name 和 id 作为键
-        if name:
-            lookup[_norm(name)] = half_tuple
-        if asset_id:
-            lookup[_norm(asset_id)] = half_tuple
-    
+        if asset_id: lookup[_norm(asset_id)] = half_tuple
+        if name: lookup[_norm(name)] = half_tuple
     return lookup
 
-
-def bbox_for_assetid(asset_id: str, asset_lib, bbox_lookup):
-    """Given an assetId like Foo_Bar, return (half_x, half_z) if known."""
-    if not asset_id:
-        return None
-    norm_full = _norm(asset_id)
-    primary = asset_id.split("_")[0] if "_" in asset_id else asset_id
-    # 先尝试完整 assetId，再尝试前缀，再尝试前缀模糊匹配（startswith）
-    hit = bbox_lookup.get(norm_full) or bbox_lookup.get(_norm(primary))
-    if hit:
-        return hit
-    for k, v in bbox_lookup.items():
-        if k.startswith(norm_full) or norm_full.startswith(k):
-            return v
-    return None
-
-
-def platform_target(platform, offset_radius, bbox_lookup):
-    """
-    仅考虑平台自身 bbox，在其 -y 方向（桌面后沿）退 offset_radius 生成目标。
-    平台 bbox 用 Asset.json 的尺寸，center 取 room_assets 中的位置。
-    """
-    info = asset_bbox_info(platform, bbox_lookup)
-    if not info:
-        return None
-    cx, cy = info["center"]
-    hy = info["half_y"]
-    # 沿 -y 退 hy+offset
-    tx = cx
-    tz = cy - (hy + offset_radius)
-    return {
-        "x": tx,
-        "z": tz,
-        "note": f"platform {platform.get('id')} back -y (hy+offset)",
-        "bbox": info,
-    }
-
-
-def asset_bbox_info(asset, bbox_lookup):
-    """Return bbox info: center(x,y), half_x, half_y, x_min/max, y_min/max."""
-    pos = asset.get("position", {})
+def get_platform_info(platform, bbox_lookup):
+    """获取物体的中心、旋转、半尺寸及完整尺寸"""
+    pos = platform.get("position", {})
     ox, oy = pos.get("x"), pos.get("y")
-    # 兼容 id 和 assetId 两种字段名
-    asset_id = asset.get("id") or asset.get("assetId")
-    half = bbox_for_assetid(asset_id, None, bbox_lookup)
+    
+    # 获取资产库中的尺寸
+    obj_id = platform.get("id") or platform.get("assetId")
+    half = bbox_lookup.get(_norm(obj_id))
+    
     if ox is None or oy is None or not half:
         return None
-    hx, hz = half
+        
+    hx, hy = half
     return {
         "center": (ox, oy),
         "half_x": hx,
-        "half_y": hz,
-        "x_min": ox - hx,
-        "x_max": ox + hx,
-        "y_min": oy - hz,
-        "y_max": oy + hz,
+        "half_y": hy,
+        "width": hx * 2,  # 完整宽度
+        "depth": hy * 2,  # 完整深度
+        "rz": platform.get("rotation", {}).get("z", 0)
     }
 
+# ================= 核心逻辑：基于旋转计算导航点 =================
 
-def point_inside_any(target, room_assets, bbox_lookup):
-    """Check if target (x,z) falls inside any object's footprint (axis-aligned, conservative square)."""
-    objs = room_assets.get("objects", [])
-    tx, tz = target
-    for obj in objs:
-        # 兼容 id 和 assetId 两种字段名
-        aid = obj.get("id") or obj.get("assetId", "")
-        primary = aid.split("_")[0] if "_" in aid else aid
-        half = bbox_lookup.get(_norm(primary))
-        if not half:
-            continue
-        hx, hz = half
-        pos = obj.get("position", {})
-        ox, oy = pos.get("x"), pos.get("y")  # room layout uses x,y; we treat y as z
-        if ox is None or oy is None:
-            continue
-        if abs(tx - ox) <= hx and abs(tz - oy) <= hz:
-            return True
-    return False
+# def calculate_nav_target(platform, offset_radius, bbox_lookup):
+#     """
+#     根据 rotation.z 旋转目标点方向
+#     假设物体的“正面”在其局部坐标系的 -y 方向
+#     """
+#     info = get_platform_info(platform, bbox_lookup)
+#     if not info: return None
+    
+#     cx, cy = info["center"]
+#     hy = info["half_y"]
+#     rz_deg = info["rz"]
+    
+#     # 机器人停靠距离 = 物体半深度 + 机器人半径
+#     dist = hy + offset_radius
+    
+#     # 转换为弧度
+#     rad = math.radians(rz_deg)
+    
+#     # 旋转矩阵计算坐标偏移:
+#     # dx = dist * sin(theta)
+#     # dy = -dist * cos(theta)
+#     dx = dist * math.sin(rad)
+#     dy = -dist * math.cos(rad)
+    
+#     tx = cx + dx
+#     ty = cy + dy
+    
+#     return {
+#         "x": tx, "y": ty,
+#         "dx": dx, "dy": dy,
+#         "info": info
+#     }
 
 
-def find_clear_target(center, offset_radius, room_assets, bbox_lookup):
+# def calculate_nav_target(platform, offset_radius, bbox_lookup):
+#     """
+#     修正后的导航点计算：
+#     - 0度对应 +Y (正北)
+#     - 270度对应 +X (正东)
+#     - 机器人停在物体“正面” (即局部坐标的 +Y 方向)
+#     """
+#     info = get_platform_info(platform, bbox_lookup)
+#     if not info: return None
+    
+#     cx, cy = info["center"]
+#     hy = info["half_y"]  # 深度的一半
+#     rz_deg = info["rz"]
+    
+#     # 机器人停靠距离 = 物体半深度 + 机器人半径
+#     dist = hy + offset_radius
+    
+#     # 转换为弧度
+#     rad = math.radians(rz_deg)
+    
+#     # 核心修正逻辑：
+#     # 基于 0deg = (0,1) 且逆时针旋转的投影：
+#     dx = -dist * math.sin(rad)
+#     dy = dist * math.cos(rad)
+    
+#     tx = cx + dx
+#     ty = cy + dy
+    
+#     return {
+#         "x": tx, "y": ty,
+#         "dx": dx, "dy": dy,
+#         "info": info
+#     }
+
+def calculate_nav_target(platform, offset_radius, bbox_lookup):
     """
-    Try multiple offsets around grid center to avoid placing target inside an object.
-    Offsets tested in order. If all fail, return None.
+    修正后的导航点计算：
+    - 0度对应 +Y, 270度对应 +X
+    - 坐标计算结果采用“向上取整”逻辑，确保安全距离
     """
-    x, z, _, xr, zr = center
+    info = get_platform_info(platform, bbox_lookup)
+    if not info: return None
+    
+    cx, cy = info["center"]
+    hy = info["half_y"]
+    rz_deg = info["rz"]
+    
+    # 机器人停靠距离
+    dist = hy + offset_radius
+    rad = math.radians(rz_deg)
+    
+    # 1. 基础投影计算 (0deg=+Y, 270deg=+X)
+    dx_raw = -dist * math.sin(rad)
+    dy_raw = dist * math.cos(rad)
+    
+    tx_raw = cx + dx_raw
+    ty_raw = cy + dy_raw
 
-    def inside_bounds(px, pz):
-        return xr[0] <= px <= xr[1] and zr[0] <= pz <= zr[1]
+    # 2. 向上取整逻辑 (往大舍入)
+    # 假设我们需要保留 3 位小数，并向正无穷方向进位
+    precision = 1000.0
+    tx = math.ceil(tx_raw * precision) / precision
+    ty = math.ceil(ty_raw * precision) / precision
+    
+    # 对偏移量也进行同样的取整处理（可选，保持一致性）
+    dx = math.ceil(dx_raw * precision) / precision
+    dy = math.ceil(dy_raw * precision) / precision
+    
+    return {
+        "x": tx, "y": ty,
+        "dx": dx, "dy": dy,
+        "info": info
+    }
 
-    attempts = []
-
-    candidates = [
-        (x, z - offset_radius, "offset -z"),
-        (x + offset_radius, z, "offset +x"),
-        (x - offset_radius, z, "offset -x"),
-        (x, z + offset_radius, "offset +z"),
-        (x + offset_radius, z - offset_radius, "offset +x -z"),
-        (x - offset_radius, z - offset_radius, "offset -x -z"),
-    ]
-    # 若基本偏移全部撞物体，进一步在半径环上采样
-    extra_radii = [offset_radius * 1.5, offset_radius * 2.0]
-    angles = [0, 45, 90, 135, 180, 225, 270, 315]
-
-    def try_pos(px, pz, note):
-        if not inside_bounds(px, pz):
-            attempts.append((note, "out_of_bounds"))
-            return None
-        if point_inside_any((px, pz), room_assets, bbox_lookup):
-            attempts.append((note, "collision"))
-            return None
-        attempts.append((note, "ok"))
-        return {"x": px, "z": pz, "note": note}
-
-    for cx, cz, note in candidates:
-        res = try_pos(cx, cz, note)
-        if res:
-            return res, attempts
-
-    for r in extra_radii:
-        for ang in angles:
-            rad = ang * 3.1415926 / 180.0
-            cx = x + r * np.cos(rad)
-            cz = z + r * np.sin(rad)
-            res = try_pos(cx, cz, f"ring r={r:.2f} ang={ang}")
-            if res:
-                return res, attempts
-
-    return None, attempts
-
-
-def suggest_target(grid_center, offset_radius):
-    """
-    Place target near the grid center, offset in -z to leave room in front.
-    grid_center can be (x, z, name) or (x, z, name, x_range, z_range).
-    """
-    x, z = grid_center[0], grid_center[1]
-    return {"x": x, "z": z - offset_radius, "note": "offset by safety radius along -z"}
-
+# ================= 主程序 =================
 
 def main():
-    offset_radius = load_offset_radius()
-    protocol = load_protocol()
-    room_assets = load_room_assets()
-    asset_lib = load_asset_lib()
-    bbox_lookup = build_bbox_lookup(asset_lib)
+    # 1. 加载所有数据
+    protocol_data = load_json(PROTOCOL)
+    room_assets_data = load_json(ROOM_ASSETS)
+    asset_lib_data = load_json(ASSET_LIB)
     
-    # 构建 location -> platform 映射（自动规范化匹配）
-    location_mapping = build_location_to_platform(protocol, room_assets)
-    if VERBOSE:
-        print("Location mapping (auto-matched):")
-        for loc, plat in location_mapping.items():
-            print(f"  {loc} -> {plat}")
-        print()
-        print(f"Loaded {len(bbox_lookup)} assets into bbox_lookup")
-        print()
+    # 2. 构建查找表
+    bbox_lookup = build_bbox_lookup(asset_lib_data)
+    location_mapping = build_location_to_platform(protocol_data, room_assets_data)
+    
+    print(f"--- 实验室自动化导航路径规划 (机器人半径: {OFFSET_RADIUS}m) ---")
+    print(f"匹配完成：已加载 {len(bbox_lookup)} 个资产尺寸定义。\n")
 
-    steps = protocol.get("procedure", [])
-    print(f"Loaded {len(steps)} steps; offset_radius = {offset_radius} m\n")
-
+    steps = protocol_data.get("procedure", [])
+    
     for step in steps:
+        step_idx = step.get("step_number")
         loc = step.get("location", "BENCH")
-        platform = pick_platform(loc, room_assets, location_mapping)
-        target = None
-        debug_attempts = []
+        
+        # 获取匹配的房间对象 ID
+        matched_id = location_mapping.get(loc)
+        
+        # 在布局中找到该对象实例
+        target_instance = None
+        for obj in room_assets_data.get("objects", []):
+            if _norm(obj.get("id")) == _norm(matched_id):
+                target_instance = obj
+                break
+        
+        print(f"步骤 {step_idx}: {step.get('description')[:55]}...")
+        print(f"  [Protocol位置]: {loc} -> [匹配实例]: {matched_id}")
 
-        print(f"Step {step.get('step_number')}: {step.get('description')}")
-        print(f"  Location: {loc} -> {location_mapping.get(loc, loc)}")
-
-        if platform:
-            info = asset_bbox_info(platform, bbox_lookup)
-            if info:
-                cx, cy = info["center"]
-                print(
-                    f"  Platform bbox {platform.get('id')}: "
-                    f"center=({cx:.3f},{cy:.3f}), "
-                    f"hx={info['half_x']:.3f}, hy={info['half_y']:.3f}, "
-                    f"x[{info['x_min']:.3f},{info['x_max']:.3f}], "
-                    f"y[{info['y_min']:.3f},{info['y_max']:.3f}]"
-                )
-                target = platform_target(platform, offset_radius, bbox_lookup)
-                if target:
-                    print(f"  Nav target (x,z): ({target['x']:.3f}, {target['z']:.3f})  [{target['note']}]")
-                else:
-                    print("  Nav target: not assigned (missing bbox info)")
+        if target_instance:
+            target = calculate_nav_target(target_instance, OFFSET_RADIUS, bbox_lookup)
+            if target:
+                info = target["info"]
+                # 需求修改：输出对象的边界大小
+                print(f"  [边界尺寸]: 宽度(W)={info['width']:.2f}m, 深度(D)={info['depth']:.2f}m")
+                print(f"  [对象中心]: ({info['center'][0]:.2f}, {info['center'][1]:.2f}), 旋转: {info['rz']}°")
+                # 输出导航目标点
+                print(f"  [导航目标]: X={target['x']:.3f}, Y={target['y']:.3f} (偏移量: dx={target['dx']:.2f}, dy={target['dy']:.2f})")
             else:
-                print("  Platform bbox not found in asset lib.")
+                print("  [警告]: 无法在资产库中找到该物体的几何尺寸。")
         else:
-            print("  Platform not found for this location.")
-
-        print()
-
+            print("  [错误]: 无法在房间布局中定位该设备。")
+        print("-" * 75)
 
 if __name__ == "__main__":
     main()
