@@ -1,0 +1,1086 @@
+goal_pairs:
+- start:
+  - 2.2
+  - 6.81
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+  end:
+  - 5.207
+  - 1.801
+  - 4.71238898038469
+- start:
+  - 2.8
+  - 6.695
+  - 0.0
+  end:
+  - 4.0
+  - 2.533
+  - 0.0
+- start:
+  - 4.0
+  - 2.533
+  - 0.0
+  end:
+  - 6.5
+  - 5.96
+  - 0.0
+- start:
+  - 6.5
+  - 5.96
+  - 0.0
+  end:
+  - 6.5
+  - 5.96
+  - 0.0
+- start:
+  - 6.5
+  - 5.96
+  - 0.0
+  end:
+  - 6.5
+  - 5.96
+  - 0.0
+- start:
+  - 6.5
+  - 5.96
+  - 0.0
+  end:
+  - 6.185
+  - 4.8
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 4.8
+  - 4.71238898038469
+  end:
+  - 6.5
+  - 5.96
+  - 0.0
+- start:
+  - 6.5
+  - 5.96
+  - 0.0
+  end:
+  - 4.833
+  - 2.0
+  - 4.71238898038469
+- start:
+  - 4.833
+  - 2.0
+  - 4.71238898038469
+  end:
+  - 6.5
+  - 5.96
+  - 0.0
+- start:
+  - 2.2
+  - 5.81
+  - 0.0
+  end:
+  - 5.8
+  - 5.14
+  - 0.0
+- start:
+  - 5.8
+  - 5.14
+  - 0.0
+  end:
+  - 5.8
+  - 5.14
+  - 0.0
+- start:
+  - 5.8
+  - 5.14
+  - 0.0
+  end:
+  - 5.8
+  - 5.14
+  - 0.0
+- start:
+  - 5.8
+  - 5.14
+  - 0.0
+  end:
+  - 5.8
+  - 5.14
+  - 0.0
+- start:
+  - 5.8
+  - 5.14
+  - 0.0
+  end:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+  end:
+  - 5.8
+  - 5.14
+  - 0.0
+- start:
+  - 5.8
+  - 5.14
+  - 0.0
+  end:
+  - 5.8
+  - 5.14
+  - 0.0
+- start:
+  - 5.8
+  - 5.14
+  - 0.0
+  end:
+  - 5.8
+  - 3.935
+  - 3.141592653589793
+- start:
+  - 2.5
+  - 6.935
+  - 0.0
+  end:
+  - 3.5
+  - 2.533
+  - 0.0
+- start:
+  - 3.5
+  - 2.533
+  - 0.0
+  end:
+  - 5.8
+  - 6.14
+  - 0.0
+- start:
+  - 5.8
+  - 6.14
+  - 0.0
+  end:
+  - 5.8
+  - 6.14
+  - 0.0
+- start:
+  - 5.8
+  - 6.14
+  - 0.0
+  end:
+  - 5.8
+  - 6.14
+  - 0.0
+- start:
+  - 5.8
+  - 6.14
+  - 0.0
+  end:
+  - 3.5
+  - 2.533
+  - 0.0
+- start:
+  - 3.5
+  - 2.533
+  - 0.0
+  end:
+  - 5.8
+  - 6.14
+  - 0.0
+- start:
+  - 5.8
+  - 6.14
+  - 0.0
+  end:
+  - 5.8
+  - 6.14
+  - 0.0
+- start:
+  - 5.8
+  - 6.14
+  - 0.0
+  end:
+  - 5.8
+  - 6.14
+  - 0.0
+- start:
+  - 5.8
+  - 6.14
+  - 0.0
+  end:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+  end:
+  - 6.5
+  - 3.539
+  - 3.141592653589793
+- start:
+  - 2.8
+  - 7.025
+  - 0.0
+  end:
+  - 4.3
+  - 2.033
+  - 0.0
+- start:
+  - 4.3
+  - 2.033
+  - 0.0
+  end:
+  - 6.5
+  - 6.14
+  - 0.0
+- start:
+  - 6.5
+  - 6.14
+  - 0.0
+  end:
+  - 6.5
+  - 6.14
+  - 0.0
+- start:
+  - 6.5
+  - 6.14
+  - 0.0
+  end:
+  - 6.5
+  - 6.14
+  - 0.0
+- start:
+  - 6.5
+  - 6.14
+  - 0.0
+  end:
+  - 6.5
+  - 6.14
+  - 0.0
+- start:
+  - 6.5
+  - 6.14
+  - 0.0
+  end:
+  - 6.5
+  - 6.14
+  - 0.0
+- start:
+  - 6.5
+  - 6.14
+  - 0.0
+  end:
+  - 6.5
+  - 6.14
+  - 0.0
+- start:
+  - 6.5
+  - 6.14
+  - 0.0
+  end:
+  - 6.5
+  - 6.14
+  - 0.0
+- start:
+  - 6.5
+  - 6.14
+  - 0.0
+  end:
+  - 6.185
+  - 3.8
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 3.8
+  - 4.71238898038469
+  end:
+  - 2.928
+  - 3.5
+  - 1.5707963267948966
+- start:
+  - 1.5
+  - 6.8
+  - 0.0
+  end:
+  - 4.0
+  - 2.533
+  - 0.0
+- start:
+  - 4.0
+  - 2.533
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 6.185
+  - 5.0
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 5.0
+  - 4.71238898038469
+  end:
+  - 5.662
+  - 2.2
+  - 4.71238898038469
+- start:
+  - 5.662
+  - 2.2
+  - 4.71238898038469
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 2.2
+  - 6.805
+  - 0.0
+  end:
+  - 5.5
+  - 5.99
+  - 0.0
+- start:
+  - 5.5
+  - 5.99
+  - 0.0
+  end:
+  - 5.5
+  - 5.99
+  - 0.0
+- start:
+  - 5.5
+  - 5.99
+  - 0.0
+  end:
+  - 5.5
+  - 5.99
+  - 0.0
+- start:
+  - 5.5
+  - 5.99
+  - 0.0
+  end:
+  - 5.5
+  - 5.99
+  - 0.0
+- start:
+  - 5.5
+  - 5.99
+  - 0.0
+  end:
+  - 5.5
+  - 5.99
+  - 0.0
+- start:
+  - 5.5
+  - 5.99
+  - 0.0
+  end:
+  - 5.5
+  - 5.99
+  - 0.0
+- start:
+  - 5.5
+  - 5.99
+  - 0.0
+  end:
+  - 5.5
+  - 5.99
+  - 0.0
+- start:
+  - 5.5
+  - 5.99
+  - 0.0
+  end:
+  - 5.5
+  - 5.99
+  - 0.0
+- start:
+  - 5.5
+  - 5.99
+  - 0.0
+  end:
+  - 6.185
+  - 3.5
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 3.5
+  - 4.71238898038469
+  end:
+  - 5.663
+  - 5.9
+  - 4.71238898038469
+- start:
+  - 2.0
+  - 6.8
+  - 0.0
+  end:
+  - 4.0
+  - 2.533
+  - 0.0
+- start:
+  - 4.0
+  - 2.533
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 6.24
+  - 4.681
+  - 4.71238898038469
+- start:
+  - 6.24
+  - 4.681
+  - 4.71238898038469
+  end:
+  - 4.0
+  - 2.533
+  - 0.0
+- start:
+  - 4.0
+  - 2.533
+  - 0.0
+  end:
+  - 5.212
+  - 2.0
+  - 4.71238898038469
+- start:
+  - 6.0
+  - 6.849
+  - 0.0
+  end:
+  - 3.5
+  - 2.533
+  - 0.0
+- start:
+  - 3.5
+  - 2.533
+  - 0.0
+  end:
+  - 2.5
+  - 5.96
+  - 0.0
+- start:
+  - 2.5
+  - 5.96
+  - 0.0
+  end:
+  - 2.5
+  - 5.96
+  - 0.0
+- start:
+  - 2.5
+  - 5.96
+  - 0.0
+  end:
+  - 2.5
+  - 5.96
+  - 0.0
+- start:
+  - 2.5
+  - 5.96
+  - 0.0
+  end:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+  end:
+  - 2.5
+  - 5.96
+  - 0.0
+- start:
+  - 2.5
+  - 5.96
+  - 0.0
+  end:
+  - 2.5
+  - 5.96
+  - 0.0
+- start:
+  - 2.5
+  - 5.96
+  - 0.0
+  end:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+  end:
+  - 5.785
+  - 1.762
+  - 4.71238898038469
+- start:
+  - 5.785
+  - 1.762
+  - 4.71238898038469
+  end:
+  - 2.5
+  - 5.96
+  - 0.0
+- start:
+  - 2.5
+  - 6.465
+  - 0.0
+  end:
+  - 3.0
+  - 2.533
+  - 0.0
+- start:
+  - 3.0
+  - 2.533
+  - 0.0
+  end:
+  - 6.5
+  - 5.14
+  - 0.0
+- start:
+  - 6.5
+  - 5.14
+  - 0.0
+  end:
+  - 6.5
+  - 5.14
+  - 0.0
+- start:
+  - 6.5
+  - 5.14
+  - 0.0
+  end:
+  - 6.5
+  - 5.14
+  - 0.0
+- start:
+  - 6.5
+  - 5.14
+  - 0.0
+  end:
+  - 6.185
+  - 5.0
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 5.0
+  - 4.71238898038469
+  end:
+  - 6.5
+  - 5.14
+  - 0.0
+- start:
+  - 6.5
+  - 5.14
+  - 0.0
+  end:
+  - 6.5
+  - 5.14
+  - 0.0
+- start:
+  - 6.5
+  - 5.14
+  - 0.0
+  end:
+  - 6.185
+  - 5.0
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 5.0
+  - 4.71238898038469
+  end:
+  - 5.5
+  - 0.533
+  - 0.0
+- start:
+  - 2.3
+  - 6.766
+  - 0.0
+  end:
+  - 4.3
+  - 2.533
+  - 0.0
+- start:
+  - 4.3
+  - 2.533
+  - 0.0
+  end:
+  - 5.8
+  - 5.96
+  - 0.0
+- start:
+  - 5.8
+  - 5.96
+  - 0.0
+  end:
+  - 5.8
+  - 5.96
+  - 0.0
+- start:
+  - 5.8
+  - 5.96
+  - 0.0
+  end:
+  - 5.8
+  - 5.96
+  - 0.0
+- start:
+  - 5.8
+  - 5.96
+  - 0.0
+  end:
+  - 5.8
+  - 5.96
+  - 0.0
+- start:
+  - 5.8
+  - 5.96
+  - 0.0
+  end:
+  - 4.05
+  - 6.5
+  - 4.71238898038469
+- start:
+  - 4.05
+  - 6.5
+  - 4.71238898038469
+  end:
+  - 5.662
+  - 4.5
+  - 4.71238898038469
+- start:
+  - 5.662
+  - 4.5
+  - 4.71238898038469
+  end:
+  - 5.8
+  - 5.96
+  - 0.0
+- start:
+  - 2.5
+  - 7.025
+  - 0.0
+  end:
+  - 4.3
+  - 2.833
+  - 0.0
+- start:
+  - 4.3
+  - 2.833
+  - 0.0
+  end:
+  - 6.5
+  - 5.99
+  - 0.0
+- start:
+  - 6.5
+  - 5.99
+  - 0.0
+  end:
+  - 6.5
+  - 5.99
+  - 0.0
+- start:
+  - 6.5
+  - 5.99
+  - 0.0
+  end:
+  - 6.5
+  - 5.99
+  - 0.0
+- start:
+  - 6.5
+  - 5.99
+  - 0.0
+  end:
+  - 6.5
+  - 5.99
+  - 0.0
+- start:
+  - 6.5
+  - 5.99
+  - 0.0
+  end:
+  - 6.5
+  - 5.99
+  - 0.0
+- start:
+  - 6.5
+  - 5.99
+  - 0.0
+  end:
+  - 6.5
+  - 5.99
+  - 0.0
+- start:
+  - 6.5
+  - 5.99
+  - 0.0
+  end:
+  - 6.5
+  - 5.99
+  - 0.0
+- start:
+  - 6.5
+  - 5.99
+  - 0.0
+  end:
+  - 2.1
+  - 7.622
+  - 3.141592653589793
+- start:
+  - 2.1
+  - 7.622
+  - 3.141592653589793
+  end:
+  - 5.662
+  - 2.5
+  - 4.71238898038469
+- start:
+  - 2.0
+  - 6.805
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 5.5
+  - 5.96
+  - 0.0
+- start:
+  - 5.5
+  - 5.96
+  - 0.0
+  end:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+- start:
+  - 6.185
+  - 4.5
+  - 4.71238898038469
+  end:
+  - 4.0
+  - 2.533
+  - 0.0
+- start:
+  - 4.0
+  - 2.533
+  - 0.0
+  end:
+  - 4.933
+  - 1.801
+  - 4.71238898038469
+metadata:
+  total_scenes: 13
+  scenes:
+    Alkylation_of_Ethyl_Acetoacetate_with_Bis_4-fluoro_20251229_003726:
+      num_targets: 9
+      num_goal_pairs: 8
+      locations:
+      - ReagentCabinet
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - ValidationPlatform
+    Basic_Methanolysis_of_Acetate_Ester_20251229_003725:
+      num_targets: 9
+      num_goal_pairs: 8
+      locations:
+      - ReagentCabinet
+      - ExperimentalPlatform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - FumeHood
+      - ValidationPlatform
+      - FumeHood
+    Boc_Deprotection_of_Benzyl-methyl-piperidin-4-yl-a_20251229_003725:
+      num_targets: 9
+      num_goal_pairs: 8
+      locations:
+      - ReagentCabinet
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - FumeHood
+      - FumeHood
+      - ValidationPlatform
+    Boc_Deprotection_of_Hydrazine_Derivative_20251230_151033:
+      num_targets: 11
+      num_goal_pairs: 10
+      locations:
+      - reagent_cabinet
+      - experimental_platform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - experimental_platform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - validation_platform
+    Boc_Deprotection_of_Piperazine_Derivative__Model___20251229_003725:
+      num_targets: 11
+      num_goal_pairs: 10
+      locations:
+      - ReagentCabinet
+      - ExperimentalPlatform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - ValidationPlatform
+    Chlorination_of_Phenylphosphonic_Acid_with_Oxalyl__20251230_151033:
+      num_targets: 8
+      num_goal_pairs: 7
+      locations:
+      - reagent_cabinet
+      - experimental_platform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - validation_platform
+      - FumeHood
+    Chlorination_of_Triazolyl-Benzyl_Alcohol_using_Thi_20251229_003726:
+      num_targets: 11
+      num_goal_pairs: 10
+      locations:
+      - ReagentCabinet
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - ValidationPlatform
+    Deprotection_and_Cyclization_of_Indole_Derivative_20251229_003726:
+      num_targets: 8
+      num_goal_pairs: 7
+      locations:
+      - ReagentCabinet
+      - ExperimentalPlatform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - ExperimentalPlatform
+      - ValidationPlatform
+    Deprotection_of_a_Pyrrolidone_Derivative_20251229_003726:
+      num_targets: 11
+      num_goal_pairs: 10
+      locations:
+      - ReagentCabinet
+      - ExperimentalPlatform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - ValidationPlatform
+      - FumeHood
+    Fmoc_Deprotection_of_Peptide_Intermediate_20251229_003725:
+      num_targets: 10
+      num_goal_pairs: 9
+      locations:
+      - ReagentCabinet
+      - ExperimentalPlatform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - ValidationPlatform
+    Hydrolysis_of_Ethyl_α_α-dimethyl-3-pyridylacetate__20251229_003726:
+      num_targets: 9
+      num_goal_pairs: 8
+      locations:
+      - ReagentCabinet
+      - ExperimentalPlatform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - ValidationPlatform
+      - FumeHood
+    Hydrolysis_of_Nitrile_to_Amide_20251229_003725:
+      num_targets: 11
+      num_goal_pairs: 10
+      locations:
+      - ReagentCabinet
+      - ExperimentalPlatform
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - ValidationPlatform
+    Knoevenagel_Condensation_Protocol_20251230_151033:
+      num_targets: 9
+      num_goal_pairs: 8
+      locations:
+      - reagent_cabinet
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - FumeHood
+      - RotaryEvaporator
+      - GravityChromatographyColumn
+      - validation_platform

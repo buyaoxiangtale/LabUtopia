@@ -1,0 +1,23 @@
+{
+  "description": "多场景批量导航点生成配置文件",
+  "output_dir": "outputs/batch_nav_scenes",
+
+  "scenes": [
+    {
+      "scene_name": "12_17_alkylation",
+      "scene_dir": "/home/pjlab/fbh/LabUtopia/roomlayout/12_17",
+      "room_assets_file": "Alkylation_of_Ethyl_Acetoacetate_with_Bis(4-fluoro_room_isaacsim.json",
+      "protocol_file": "protocol_Alkylation_of_Ethyl_Acetoaceta_20251215_102129.json",
+      "asset_lib_file": "assets_annotated.json",
+      "offset_radius": 0.6
+    },
+    {
+      "scene_name": "sodium_acetate_preparation",
+      "scene_dir": "/home/pjlab/fbh/LabUtopia/roomlayout",
+      "room_assets_file": "Preparation_of_Sodium_Acetate,_Crystallization,_and_Simple_Distillation_of_Residual_Liquor_room_isaacsim.json",
+      "protocol_file": "protocol_Preparation_of_Sodium_Acetate,_20251111_165059.json",
+      "asset_lib_file": "12_17/assets_annotated.json",
+      "offset_radius": 0.6
+    }
+  ]
+}
