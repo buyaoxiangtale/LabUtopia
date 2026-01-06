@@ -50,5 +50,6 @@ register_task("navigation", NavigationTask)
 register_task("navigation_new", NavigationTaskNew)
 register_task("navigation_new_cp", NavigationTaskNewCP)   # 顺序式导航任务  
 register_task("navigation_new_cp_cp", NavigationTaskNewCPCP)   # 顺序式导航任务  
-register_task("navigation_test_weizi", NavigationTaskTestWeizi)   # 顺序式导航任务  
+register_task("navigation_test_weizi", NavigationTaskTestWeizi)
+register_task("navigation_task_test_weizi", NavigationTaskTestWeizi)
 register_task("mobile_pick", MobilePickTask)

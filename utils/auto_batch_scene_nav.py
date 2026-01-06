@@ -73,6 +73,7 @@ class AutoSceneScanner:
         self.root_dir = Path(root_dir)
         self.verbose = verbose
         self.scenes = []
+        self.offset_radius = 0.3  # 默认机器人半径，可通过命令行修改
 
     def _print(self, msg: str):
         """打印输出"""
@@ -189,7 +190,7 @@ class AutoSceneScanner:
                 room_assets_file=files_info["room_assets_file"],
                 protocol_file=files_info["protocol_file"],
                 asset_lib_file=asset_lib_path,
-                offset_radius=0.6
+                offset_radius=self.offset_radius  # 使用扫描器的半径
             )
 
             scene_configs.append(scene_config)
@@ -839,21 +840,46 @@ class MultiSceneNavGenerator:
 def main():
     """主函数：自动处理 layout_new 目录"""
     import sys
+    import argparse
 
     # 配置参数
     DEFAULT_ROOT_DIR = Path("/home/pjlab/fbh/LabUtopia/roomlayout/layout_new")
     DEFAULT_OUTPUT_DIR = Path("/home/pjlab/fbh/LabUtopia/outputs/auto_batch_nav_targets")
+    DEFAULT_RADIUS = 0.3  # 默认机器人半径（米）
 
     # 解析命令行参数
-    if len(sys.argv) > 1:
-        root_dir = Path(sys.argv[1])
-    else:
-        root_dir = DEFAULT_ROOT_DIR
+    parser = argparse.ArgumentParser(
+        description='自动化场景导航点批量生成工具',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+示例:
+  # 使用默认目录和默认半径(0.3m)
+  python3 utils/auto_batch_scene_nav.py
 
-    if len(sys.argv) > 2:
-        output_dir = Path(sys.argv[2])
-    else:
-        output_dir = DEFAULT_OUTPUT_DIR
+  # 指定输入和输出目录
+  python3 utils/auto_batch_scene_nav.py /path/to/input /path/to/output
+
+  # 指定自定义半径
+  python3 utils/auto_batch_scene_nav.py /path/to/input /path/to/output --radius 0.5
+        """
+    )
+
+    parser.add_argument('root_dir', nargs='?', default=DEFAULT_ROOT_DIR, type=Path,
+                       help='输入目录路径（默认: roomlayout/layout_new）')
+    parser.add_argument('output_dir', nargs='?', default=DEFAULT_OUTPUT_DIR, type=Path,
+                       help='输出目录路径（默认: outputs/auto_batch_nav_targets）')
+    parser.add_argument('--radius', type=float, default=DEFAULT_RADIUS,
+                       help=f'机器人半径（米），默认: {DEFAULT_RADIUS}米')
+
+    args = parser.parse_args()
+
+    root_dir = args.root_dir
+    output_dir = args.output_dir
+    offset_radius = args.radius
+
+    print(f"输入目录: {root_dir}")
+    print(f"输出目录: {output_dir}")
+    print(f"机器人半径: {offset_radius}米")
 
     # 1. 自动扫描场景
     print("\n" + "="*80)
@@ -861,6 +887,7 @@ def main():
     print("="*80)
 
     scanner = AutoSceneScanner(root_dir, verbose=True)
+    scanner.offset_radius = offset_radius  # 设置机器人半径
     scene_configs = scanner.scan_all_scenes()
 
     if not scene_configs:

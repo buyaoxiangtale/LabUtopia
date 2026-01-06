@@ -161,3 +161,4 @@ if __name__ == "__main__":
 # python main.py --config-name=level5_Navigation
 # python main.py --config-name=level5_Navigation_velocity_demo_copy
 # python main.py --config-name=level5_Navigation_12_21
+# python main.py --config-name=level5_Navigation_smooth_1_4
