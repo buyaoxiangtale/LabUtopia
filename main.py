@@ -16,7 +16,10 @@ def parse_args():
                        help='Configuration file name (without .yaml extension)')
     parser.add_argument('--config-dir', type=str, default='config',
                        help='Configuration directory path (default: config)')
-    return parser.parse_args()
+    # 接受剩余的参数作为 Hydra 覆盖
+    args, overrides = parser.parse_known_args()
+    args.overrides = overrides
+    return args
 
 # Get command line arguments
 args = parse_args()
@@ -46,7 +49,8 @@ from factories.controller_factory import create_controller
 
 def main():
     hydra.initialize(config_path=args.config_dir, job_name=args.config_name)
-    cfg = hydra.compose(config_name=args.config_name)
+    # 将剩余的命令行参数作为 Hydra 覆盖传递
+    cfg = hydra.compose(config_name=args.config_name, overrides=args.overrides)
     os.makedirs(cfg.multi_run.run_dir, exist_ok=True)
     OmegaConf.save(cfg, cfg.multi_run.run_dir + "/config.yaml")
 

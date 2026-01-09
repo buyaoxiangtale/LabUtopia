@@ -159,12 +159,35 @@ class NavigationControllerSmooth1216(BaseController):
     def _init_collect_mode(self, cfg, robot=None):
         """Initialize the collect mode"""
         from factories.collector_factory import create_collector
+        
+        # 构建收集器参数
+        collector_kwargs = {
+            'camera_configs': cfg.cameras,
+            'save_dir': cfg.multi_run.run_dir,
+            'max_episodes': cfg.max_episodes,
+        }
+        
+        # 根据收集器类型添加特定参数
+        if cfg.collector.type == 'video_format':
+            # VideoFormatCollector 参数
+            if hasattr(cfg.collector, 'chunk_size'):
+                collector_kwargs['chunk_size'] = cfg.collector.chunk_size
+            if hasattr(cfg.collector, 'save_images'):
+                collector_kwargs['save_images'] = cfg.collector.save_images
+            if hasattr(cfg.collector, 'save_videos'):
+                collector_kwargs['save_videos'] = cfg.collector.save_videos
+            if hasattr(cfg.collector, 'video'):
+                collector_kwargs['video_config'] = cfg.collector.video
+            if hasattr(cfg.collector, 'image'):
+                collector_kwargs['image_config'] = cfg.collector.image
+        else:
+            # 其他收集器参数 (default/mock)
+            if hasattr(cfg.collector, 'compression'):
+                collector_kwargs['compression'] = cfg.collector.compression
+        
         self.data_collector = create_collector(
             cfg.collector.type,
-            camera_configs=cfg.cameras,
-            save_dir=cfg.multi_run.run_dir,
-            max_episodes=cfg.max_episodes,
-            compression=cfg.collector.compression
+            **collector_kwargs
         )
     
     def _init_infer_mode(self, cfg, robot=None):

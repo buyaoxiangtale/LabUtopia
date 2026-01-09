@@ -1,0 +1,101 @@
+# 视频格式数据收集配置示例
+name: level5_Navigation_video_format
+
+task_type: "navigation_task_test_weizi"
+controller_type: "navigation_smooth_12_16"
+mode: "collect"
+
+# USD 场景文件
+usd_path: "roomlayout/layout_new/Alkylation_of_Ethyl_Acetoacetate_with_Bis_4-fluoro_20251229_003726/Alkylation_of_Ethyl_Acetoacetate_with_Bis_4-fluoro_room_isaacsim.usd"
+
+# 最大 episode 数量
+max_episodes: 100
+
+# ==================== 推断配置 ====================
+infer:
+  type: "local"
+  obs_names: {"camera_1_rgb": 'camera_1_rgb', "camera_2_rgb": 'camera_2_rgb'}
+  policy_model_path: ""
+  policy_config_path: ""
+  normalizer_path: ""
+  host: "127.0.0.1"
+  port: 8000
+  n_obs_steps: 1
+  timeout: 30
+  max_retries: 3
+
+# ==================== 任务配置 ====================
+task:
+  max_steps: 4000
+  navigation_config_path: "config/navigation/navigation_assets_1_4.yaml"
+  goal_pairs:
+    - start: [2.2, 7.11, 0.0]
+      end: [5.5, 6.26, 0.0]
+    - start: [5.5, 6.26, 0.0]
+      end: [6.485, 4.5, 4.71238898038469]
+    - start: [6.485, 4.5, 4.71238898038469]
+      end: [5.507, 1.8, 4.71238898038469]
+  max_linear_speed: 0.6
+  max_angular_speed: 1.5
+  position_threshold: 0.08
+  angle_threshold: 0.1
+
+# ==================== 相机配置 ====================
+cameras:
+  - prim_path: "/World/Ridgebase/base_link/Camera_02"
+    name: "observation"
+    resolution: [256, 256]
+    image_type: "rgb+depth"  # 同时收集 RGB 和深度图
+    clipping_range: [0.1, 10.0]
+
+  # 如果需要多个相机，可以添加更多
+  # - prim_path: "/World/Ridgebase/base_link/Camera_02"
+  #   name: "wrist"
+  #   resolution: [256, 256]
+  #   image_type: "rgb"
+
+# ==================== 机器人配置 ====================
+robot:
+  type: "ridgebase"
+  position: [0.0, 0.0, 0.0]
+
+# ==================== 数据集配置 ====================
+dataset:
+  type: "video_format"
+  chunk_size: 1000      # 每个 chunk 包含的 episode 数量
+
+  # 是否保存图像/视频
+  save_images: true     # 保存单帧图像 (JPG/PNG)
+  save_videos: true     # 保存视频 (MP4)
+
+  # 视频编码配置
+  video:
+    # RGB 视频配置
+    rgb_codec: "mp4v"       # H.264 编码器
+    rgb_fps: 30             # 视频帧率
+    rgb_quality: 18         # JPEG 质量 (1-31, 越小越好)
+
+    # 深度视频配置
+    depth_codec: "mp4v"     # 深度视频编码器
+    depth_fps: 30           # 深度视频帧率
+    depth_colormap: "jet"   # 深度可视化颜色映射 (jet/viridis/gray)
+
+  # 图像保存配置
+  image:
+    rgb_format: "jpg"       # RGB 图像格式 (jpg/png)
+    rgb_quality: 95         # JPEG 质量 (1-100)
+    depth_format: "png"     # 深度图格式 (png推荐，无损)
+    depth_normalize: true   # 是否归一化深度图到 0-255
+
+# ==================== 数据收集器配置 ====================
+collector:
+  type: "video_format"  # 指定使用视频格式收集器
+  compression: null     # 视频自带压缩，不需要额外压缩
+
+# ==================== Hydra 输出配置 ====================
+hydra:
+  run:
+    dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}
+
+multi_run:
+  run_dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}

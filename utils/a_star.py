@@ -126,6 +126,90 @@ def calculate_path_distance(path: List[List[float]]) -> float:
     
     return total_distance
 
+def visualize_failure(grid, start, end, start_on_obstacle=False, end_on_obstacle=False, output_path=None):
+    """
+    可视化路径规划失败情况
+    
+    Args:
+        grid: 二值网格 (0=可通行, 1=障碍物)，可以是列表或numpy数组
+        start: 起点坐标 [i, j]
+        end: 终点坐标 [i, j]
+        start_on_obstacle: 起点是否在障碍物上
+        end_on_obstacle: 终点是否在障碍物上
+        output_path: 保存路径 (可选)
+    """
+    import matplotlib.pyplot as plt
+    import matplotlib.patches as patches
+    
+    # 确保 grid 是 numpy 数组
+    if not isinstance(grid, np.ndarray):
+        grid = np.array(grid)
+    
+    fig, ax = plt.subplots(figsize=(12, 12))
+    
+    # 显示网格 (0=白色可通行, 1=黑色障碍物)
+    ax.imshow(grid, cmap='binary', origin='upper', extent=[0, grid.shape[1], grid.shape[0], 0])
+    
+    # 标记起点
+    start_y, start_x = start[0], start[1]
+    color1 = 'lime' if not start_on_obstacle else 'yellow'
+    facecolor1 = 'lime' if not start_on_obstacle else 'yellow'
+    edgecolor1 = 'green' if not start_on_obstacle else 'orange'
+    circle1 = patches.Circle((start_x, start_y), radius=3, linewidth=2, 
+                           edgecolor=edgecolor1, facecolor=facecolor1, label='Start')
+    ax.add_patch(circle1)
+    if start_on_obstacle:
+        ax.text(start_x, start_y + 5, '✗ Start on obstacle!', color='red', fontsize=12, 
+               bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.7))
+    
+    # 标记终点
+    end_y, end_x = end[0], end[1]
+    color2 = 'orange' if not end_on_obstacle else 'yellow'
+    facecolor2 = 'orange' if not end_on_obstacle else 'yellow'
+    edgecolor2 = 'red' if not end_on_obstacle else 'orange'
+    circle2 = patches.Circle((end_x, end_y), radius=3, linewidth=2, 
+                           edgecolor=edgecolor2, facecolor=facecolor2, label='End')
+    ax.add_patch(circle2)
+    if end_on_obstacle:
+        ax.text(end_x, end_y + 5, '✗ End on obstacle!', color='red', fontsize=12, 
+               bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.7))
+    
+    # 标题和说明
+    title_parts = []
+    if start_on_obstacle and end_on_obstacle:
+        title_parts.append("Both on obstacle!")
+    elif start_on_obstacle:
+        title_parts.append("Start on obstacle!")
+    elif end_on_obstacle:
+        title_parts.append("End on obstacle!")
+    else:
+        title_parts.append("No direct obstacle")
+    
+    ax.set_title(f"Path Finding Failed - {' | '.join(title_parts)}\nGreen=Start, Red=End, Lime/Yellow=OK", fontsize=12, weight='bold')
+    
+    # 添加说明
+    info_text = "Possible reasons:\n"
+    info_text += "1. Start/End points inside obstacles (blocked)\n"
+    info_text += "2. Path completely blocked by obstacles\n"
+    info_text += "3. No valid path through maze\n"
+    
+    ax.text(len(grid[0])//2, len(grid)//2 - 2, info_text, color='black', fontsize=10,
+           bbox=dict(boxstyle='round', facecolor='lightgray', alpha=0.3),
+           verticalalignment='top')
+    
+    ax.set_xlim(-1, len(grid[0]))
+    ax.set_ylim(len(grid), -1)
+    ax.set_xlabel('X (pixels)')
+    ax.set_ylabel('Y (pixels)')
+    ax.legend(loc='upper right')
+    ax.grid(True, alpha=0.3)
+    
+    if output_path:
+        plt.savefig(output_path, dpi=150, bbox_inches='tight')
+        print(f"失败可视化已保存到: {output_path}")
+    
+    plt.close()
+
 def save_path_image(grid_path, path, save_path=None):
 
     plt.figure(figsize=(10, 10))
@@ -160,6 +244,90 @@ def visualize_pathfinding(grid, start, end, path_grid=None, output_path=None):
     """
     import matplotlib.pyplot as plt
     import matplotlib.patches as patches
+    
+    # 确保 grid 是 numpy 数组
+    if not isinstance(grid, np.ndarray):
+        grid = np.array(grid)
+    
+    fig, ax = plt.subplots(figsize=(12, 12))
+    
+    # 显示网格 (0=白色可通行, 1=黑色障碍物)
+    ax.imshow(grid, cmap='binary', origin='upper', extent=[0, grid.shape[1], grid.shape[0], 0])
+    
+    # 标记起点 (绿色圆点)
+    start_y, start_x = start[0], start[1]
+    circle1 = patches.Circle((start_x, start_y), radius=3, linewidth=2, edgecolor='green', facecolor='lime', label='Start')
+    ax.add_patch(circle1)
+    
+    # 标记终点 (红色圆点)
+    end_y, end_x = end[0], end[1]
+    circle2 = patches.Circle((end_x, end_y), radius=3, linewidth=2, edgecolor='red', facecolor='orange', label='End')
+    ax.add_patch(circle2)
+    
+    # 检查起点是否在障碍物上
+    if grid[start_y][start_x] == 1:
+        ax.text(start_x, start_y + 5, '✗ Start on obstacle!', color='red', fontsize=12, 
+               bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.7))
+    
+    # 检查终点是否在障碍物上
+    if grid[end_y][end_x] == 1:
+        ax.text(end_x, end_y + 5, '✗ End on obstacle!', color='red', fontsize=12, 
+               bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.7))
+    
+    # 如果有路径，绘制路径
+    if path_grid:
+        # 将路径分为 X 和 Y 坐标
+        path_x = [p[1] for p in path_grid]
+        path_y = [p[0] for p in path_grid]
+        
+        # 绘制路径 (蓝色线)
+        ax.plot(path_x, path_y, 'b-', linewidth=2, markersize=0, label='Path')
+        
+        # 标记路径点
+        ax.scatter(path_x, path_y, c='blue', s=20, alpha=0.5)
+        
+        # 在每个路径点上标注序号
+        for idx, (px, py) in enumerate(zip(path_x, path_y)):
+            if idx % 5 == 0 or idx == len(path_grid) - 1:  # 每5个点标注一次
+                ax.text(px, py, str(idx), color='white', fontsize=8, 
+                       bbox=dict(boxstyle='round,pad=0.3', facecolor='black', alpha=0.6))
+    else:
+        ax.text(len(grid[0])//2, len(grid)//2, '✗ NO PATH FOUND!', color='red', fontsize=20,
+               ha='center', va='center', weight='bold',
+               bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.9))
+    
+    ax.set_xlim(-1, len(grid[0]))
+    ax.set_ylim(len(grid), -1)
+    ax.set_xlabel('X (pixels)')
+    ax.set_ylabel('Y (pixels)')
+    ax.set_title(f'Path Finding: Start {start} → End {end}\nGreen=Start, Red=End, Black=Obstacle, Blue=Path', fontsize=12)
+    ax.legend(loc='upper right')
+    ax.grid(True, alpha=0.3)
+    
+    # 保存图像
+    if output_path:
+        plt.savefig(output_path, dpi=150, bbox_inches='tight')
+        print(f"可视化结果已保存到: {output_path}")
+    
+    plt.close()
+
+def visualize_pathfinding(grid, start, end, path_grid=None, output_path=None):
+    """
+    可视化路径规划过程
+    
+    Args:
+        grid: 二值网格 (0=可通行, 1=障碍物)
+        start: 起点坐标 [i, j]
+        end: 终点坐标 [i, j]
+        path_grid: 网格路径 (可选)
+        output_path: 保存路径 (可选)
+    """
+    import matplotlib.pyplot as plt
+    import matplotlib.patches as patches
+    
+    # 确保 grid 是 numpy 数组
+    if not isinstance(grid, np.ndarray):
+        grid = np.array(grid)
     
     fig, ax = plt.subplots(figsize=(12, 12))
     

@@ -1389,6 +1389,10 @@ class NavigationTaskTestWeizi(BaseTask):
             return False
 
         merged_path_real, _ ,_ = path_result
+        
+        # 检查路径是否有效（plan_navigation_path 失败时返回 (None, debug_path, 0.0)）
+        if merged_path_real is None:
+            return False
         waypoints = []
         for i, (x, y, _) in enumerate(merged_path_real):
             if i < len(merged_path_real) - 1:
