@@ -23,6 +23,7 @@ from controllers.navigation_controller import NavigationController
 from controllers.mobile_pick_controller import MobilePickController
 from controllers.navigation_controller_new import NavigationControllerNew
 from controllers.navigation_controller_smooth_12_16 import NavigationControllerSmooth1216
+from controllers.navigation_controller_parquet import NavigationControllerParquet
 
 _controller_registry: Dict[str, Type[BaseController]] = {}
 
@@ -57,3 +58,4 @@ register_controller("navigation", NavigationController)
 register_controller("mobile_pick", MobilePickController)
 register_controller("navigation_new", NavigationControllerNew)
 register_controller("navigation_smooth_12_16", NavigationControllerSmooth1216) # 平滑式导航控制器
+register_controller("navigation_parquet", NavigationControllerParquet) # Parquet格式导航控制器（支持相机数据收集）

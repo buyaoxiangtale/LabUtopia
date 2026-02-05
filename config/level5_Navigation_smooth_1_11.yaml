@@ -1,0 +1,69 @@
+name: level5_Navigation_smooth_1_11
+
+task_type: "navigation_task_test_weizi"
+# task_type: "navigation_new_cp_cp"
+controller_type: "navigation_smooth_12_16"
+mode: "collect"
+
+usd_path: "roomlayout/layout_new/Alkylation_of_Ethyl_Acetoacetate_with_Bis_4-fluoro_20251229_003726/Alkylation_of_Ethyl_Acetoacetate_with_Bis_4-fluoro_room_isaacsim.usd"
+
+max_episodes: 100
+
+infer:
+  type: "local"
+  obs_names: {"camera_1_rgb": 'camera_1_rgb', "camera_2_rgb": 'camera_2_rgb'}
+  policy_model_path: ""
+  policy_config_path: ""
+  normalizer_path: ""
+  host: "127.0.0.1"
+  port: 8000
+  n_obs_steps: 1
+  timeout: 30
+  max_retries: 3
+
+task:
+  max_steps: 4000
+  navigation_config_path: "config/navigation/navigation_assets_1_4.yaml"
+  goal_pairs:
+    - start: [2.2, 7.11, 0.0]
+      end: [5.5, 6.26, 0.0]
+    - start: [5.5, 6.26, 0.0]
+      end: [6.485, 4.5, 4.71238898038469]
+    - start: [6.485, 4.5, 4.71238898038469]
+      end: [5.507, 1.8, 4.71238898038469]
+  max_linear_speed: 0.6
+  max_angular_speed: 1.5
+  position_threshold: 0.08
+  angle_threshold: 0.1
+
+cameras:
+  - prim_path: "/World/Ridgebase/base_link/Camera"
+    name: "front_camera"
+    resolution: [256, 256]
+    image_type: "rgb"
+
+  - prim_path: "/World/Ridgebase/base_link/Camera_02"
+    name: "wrist_camera"
+    resolution: [256, 256]
+    clipping_range: [0, 10.0]
+    image_type: "rgb"
+  
+  - prim_path: "/World/Ridgebase/base_link/Camera_01"
+    name: "top_camera"
+    resolution: [256, 256]
+    image_type: "rgb"
+
+robot:
+  type: "ridgebase"
+  position: [0.0, 0.0, 0.0]
+
+collector:
+  type: "default"
+  compression: gzip
+
+hydra:
+  run:
+    dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}
+
+multi_run:
+  run_dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}

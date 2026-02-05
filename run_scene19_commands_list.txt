@@ -1,0 +1,93 @@
+# 批量运行命令列表 - generated_configs_scene19/main
+# 使用方法：复制单个命令直接运行，或使用 bash run_all_scene19_configs.sh 批量运行
+# 注意：这些配置使用 Camera_03 和 gemini_scene_19 USD 文件
+
+# 1. Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop
+
+# 2. Basic_Methanolysis_of_an_Acetate_Ester
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Basic_Methanolysis_of_an_Acetate_Ester
+
+# 3. Boc_Deprotection_of_Benzyl-methyl-piperidin-4-yl-a
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Boc_Deprotection_of_Benzyl-methyl-piperidin-4-yl-a
+
+# 4. Boc_Deprotection_of_Tert-Butyl_Carbazate
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Boc_Deprotection_of_Tert-Butyl_Carbazate
+
+# 5. Chlorination_of_Triazolyl-Benzyl_Alcohol_Protocol
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Chlorination_of_Triazolyl-Benzyl_Alcohol_Protocol
+
+# 6. Deprotection_and_Cyclization_of_an_Indole_Derivati
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Deprotection_and_Cyclization_of_an_Indole_Derivati
+
+# 7. Deprotection_of_Pyrrolidone_Derivative_TFA_Method
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Deprotection_of_Pyrrolidone_Derivative_TFA_Method
+
+# 8. Fmoc_Deprotection_of_Peptide_Intermediate
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Fmoc_Deprotection_of_Peptide_Intermediate
+
+# 9. Hydrolysis_of_Ethyl_Crotonate_using_Lithium_Hydrox
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Hydrolysis_of_Ethyl_Crotonate_using_Lithium_Hydrox
+
+# 10. Hydrolysis_of_Ethyl_Ester_using_Lithium_Hydroxide
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Hydrolysis_of_Ethyl_Ester_using_Lithium_Hydroxide
+
+# 11. Hydrolysis_of_Nitrile_to_Amide
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Hydrolysis_of_Nitrile_to_Amide
+
+# 12. Knoevenagel_Condensation_Protocol
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Knoevenagel_Condensation_Protocol
+
+# 13. Oxidation_of_Nicotine_to_Nicotinic_Acid
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Oxidation_of_Nicotine_to_Nicotinic_Acid
+
+# 14. Oxidation_of_Sulfide_to_Sulfoxide
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Oxidation_of_Sulfide_to_Sulfoxide
+
+# 15. Preparation_of_13-Benzothiazol-6-sulfinic_Acid_Sod
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Preparation_of_13-Benzothiazol-6-sulfinic_Acid_Sod
+
+# 16. Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride_
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride_
+
+# 17. Preparation_of_Acid_Chloride_using_Thionyl_Chlorid
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Preparation_of_Acid_Chloride_using_Thionyl_Chlorid
+
+# 18. Preparation_of_Chlorophenylisocyanate
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Preparation_of_Chlorophenylisocyanate
+
+# 19. Preparation_of_Ethyl_4-chloromethyl-125-trimethylp
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Preparation_of_Ethyl_4-chloromethyl-125-trimethylp
+
+# 20. Preparation_of_Phenylphosphonic_Dichloride
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Preparation_of_Phenylphosphonic_Dichloride
+
+# 21. Synthesis_of_3-4-acetyloxyphenylglutaric_anhydride
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Synthesis_of_3-4-acetyloxyphenylglutaric_anhydride
+
+# 22. Synthesis_of_Acid_Chloride_using_Thionyl_Chloride
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Synthesis_of_Acid_Chloride_using_Thionyl_Chloride
+
+# 23. Synthesis_of_Ethyl_2-ethoxymethylene-3-oxobutanoat
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Synthesis_of_Ethyl_2-ethoxymethylene-3-oxobutanoat
+
+# 24. Synthesis_of_N-2-cyclopropylphenylcarbamothioylben
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Synthesis_of_N-2-cyclopropylphenylcarbamothioylben
+
+# 25. Synthesis_of_N-Benzoyl-N-benzylthiourea
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Synthesis_of_N-Benzoyl-N-benzylthiourea
+
+# 26. Synthesis_of_Piperidine-Hydantoin
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Synthesis_of_Piperidine-Hydantoin
+
+# 27. Synthesis_of_Thiazole_Derivative_via_Hantzsch_Cycl
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Synthesis_of_Thiazole_Derivative_via_Hantzsch_Cycl
+
+# 28. Synthesis_of_Thiourea_Derivative
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Synthesis_of_Thiourea_Derivative
+
+# 29. Synthesis_of_a_Piperazinyl-Quinoline_Derivative
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Synthesis_of_a_Piperazinyl-Quinoline_Derivative
+
+# 30. Urea_Synthesis_via_Isocyanate_Addition
+python3 main.py --config-dir generated_configs_scene19/main --config-name batch_level5_Navigation_Urea_Synthesis_via_Isocyanate_Addition

@@ -70,6 +70,7 @@ class NavigationControllerNew(BaseController):
         """重置控制器状态"""
         super().reset()
         self.waypoints_set = False
+        self._waypoints_collected = False  # Reset waypoints collection flag
         if hasattr(self, 'ridgebase_controller'):
             self.ridgebase_controller.reset()
 
@@ -116,10 +117,22 @@ class NavigationControllerNew(BaseController):
                 current_pose[2]
             ])
 
+            # Get waypoints from state for data collection
+            # Pass waypoints on the first data collection step
+            waypoints_to_pass = None
+            if not hasattr(self, '_waypoints_collected'):
+                self._waypoints_collected = False
+
+            if not self._waypoints_collected and state.get('waypoints') is not None:
+                waypoints_to_pass = state['waypoints']
+                self._waypoints_collected = True
+
             self.data_collector.cache_step(
                 camera_images=state['camera_data'],
                 joint_angles=joint_positions,
-                language_instruction=self.get_language_instruction()
+                language_instruction=self.get_language_instruction(),
+                waypoints=waypoints_to_pass,
+                base_pose=current_pose  # Pass current_pose as base_pose
             )
 
         if done or self.ridgebase_controller.is_path_complete():

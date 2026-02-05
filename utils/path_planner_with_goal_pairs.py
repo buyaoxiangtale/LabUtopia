@@ -38,7 +38,7 @@ class ScenePathPlanner:
         barrier_image_path: str,
         x_bounds: Optional[List[float]] = None,
         y_bounds: Optional[List[float]] = None,
-        offset_radius: float = 0.6
+        offset_radius: float = 0.3
     ):
         """
         初始化路径规划器
@@ -440,8 +440,8 @@ if __name__ == "__main__":
                        help='X轴边界 (如: 0 10)')
     parser.add_argument('--y_bounds', type=float, nargs=2, default=None,
                        help='Y轴边界 (如: 0 10)')
-    parser.add_argument('--offset_radius', type=float, default=2,
-                       help='障碍物膨胀半径（米）, 默认2')
+    parser.add_argument('--offset_radius', type=float, default=0.3,
+                       help='障碍物膨胀半径（米）, 默认0.3')
     parser.add_argument('--output_dir', type=str,
                        default='outputs/path_planning_results',
                        help='输出目录')

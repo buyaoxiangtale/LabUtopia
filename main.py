@@ -87,12 +87,21 @@ def main():
         stage=stage,
         robot=robot,
     )
-    
-    task_controller = create_controller(
-        cfg.controller_type,
-        cfg=cfg,
-        robot=robot,
-    )
+
+    # 创建控制器，对于Parquet格式控制器传递相机实例
+    if cfg.controller_type == 'navigation_parquet':
+        task_controller = create_controller(
+            cfg.controller_type,
+            cfg=cfg,
+            robot=robot,
+            cameras=task.cameras  # 传递相机实例
+        )
+    else:
+        task_controller = create_controller(
+            cfg.controller_type,
+            cfg=cfg,
+            robot=robot,
+        )
     
     video_writer = None
     task.reset()
@@ -140,7 +149,10 @@ def main():
                     combined_img = np.hstack(camera_images)
                     total_width = 0
                     for idx, img in enumerate(camera_images):
-                        label = f"Camera {idx+1} ({cfg.cameras[idx].image_type})"
+                        # 原始标签代码（已注释）
+                        # label = f"Camera {idx+1} ({cfg.cameras[idx].image_type})"
+                        # 自定义固定标签
+                        label = "Fumehood to validationplatform"
                         cv2.putText(combined_img, label, (total_width + 2, 20),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.25, (255, 255, 255), 1)
                         total_width += img.shape[1]
@@ -166,3 +178,23 @@ if __name__ == "__main__":
 # python main.py --config-name=level5_Navigation_velocity_demo_copy
 # python main.py --config-name=level5_Navigation_12_21
 # python main.py --config-name=level5_Navigation_smooth_1_4
+# python main.py --config-name=level5_Navigation_video_format
+# python main.py  --config-name=level5_Navigation_parquet_1_20
+
+
+#   python3 main.py \
+#       --config-dir generated_configs_scene19/main \
+#       --config-name batch_level5_Navigation_Chlorination_of_Triazolyl-Benzyl_Alcohol_Protocol
+
+
+#   python3 main.py \
+#       --config-dir generated_configs_scene19/main \
+#       --config-name batch_level5_Navigation_Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop
+
+#   python3 main.py \
+#       --config-dir generated_configs_scene19/main \
+#       --config-name batch_level5_Navigation_Basic_Methanolysis_of_an_Acetate_Ester
+
+#   python3 main.py \
+#       --config-dir generated_configs_scene19/main \
+#       --config-name batch_level5_Navigation_Boc_Deprotection_of_Benzyl-methyl-piperidin-4-yl-a

@@ -1,0 +1,2475 @@
+{
+  "summary": {
+    "total_failed_tasks": 14,
+    "total_failed_scenes": 8
+  },
+  "failed_by_scene": {
+    "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair": {
+      "failed_count": 3,
+      "failed_tasks": [
+        {
+          "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_000",
+          "start": [
+            7.301,
+            6.5
+          ],
+          "end": [
+            2.6,
+            5.912
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            43,
+            146
+          ],
+          "end_grid": [
+            55,
+            52
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_002",
+          "start": [
+            4.295,
+            6.955
+          ],
+          "end": [
+            1.761,
+            6.5
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            34,
+            86
+          ],
+          "end_grid": [
+            43,
+            35
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_003",
+          "start": [
+            1.761,
+            6.5
+          ],
+          "end": [
+            6.2,
+            5.912
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            43,
+            35
+          ],
+          "end_grid": [
+            55,
+            124
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        }
+      ]
+    },
+    "Fmoc_Deprotection_of_Peptide_Intermediate_20260112_202101_pair": {
+      "failed_count": 1,
+      "failed_tasks": [
+        {
+          "task_id": "Fmoc_Deprotection_of_Peptide_Intermediate_20260112_202101_pair_004",
+          "start": [
+            4.295,
+            9.166
+          ],
+          "end": [
+            4.295,
+            3.612
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            0,
+            86
+          ],
+          "end_grid": [
+            103,
+            86
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        }
+      ]
+    },
+    "Urea_Synthesis_via_Isocyanate_Addition_20260112_202101_pair": {
+      "failed_count": 1,
+      "failed_tasks": [
+        {
+          "task_id": "Urea_Synthesis_via_Isocyanate_Addition_20260112_202101_pair_000",
+          "start": [
+            1.29,
+            4.47
+          ],
+          "end": [
+            4.295,
+            6.955
+          ],
+          "is_success": false,
+          "failure_reason": "起点在障碍物上",
+          "failure_category": "start_on_obstacle",
+          "start_grid": [
+            85,
+            25
+          ],
+          "end_grid": [
+            34,
+            86
+          ],
+          "start_on_obstacle": true,
+          "end_on_obstacle": false
+        }
+      ]
+    },
+    "Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101_pair": {
+      "failed_count": 2,
+      "failed_tasks": [
+        {
+          "task_id": "Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101_pair_000",
+          "start": [
+            2.0,
+            1.47
+          ],
+          "end": [
+            4.295,
+            7.412
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            148,
+            40
+          ],
+          "end_grid": [
+            24,
+            86
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101_pair_001",
+          "start": [
+            4.295,
+            7.412
+          ],
+          "end": [
+            4.295,
+            6.995
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            24,
+            86
+          ],
+          "end_grid": [
+            33,
+            86
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        }
+      ]
+    },
+    "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair": {
+      "failed_count": 4,
+      "failed_tasks": [
+        {
+          "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_000",
+          "start": [
+            1.29,
+            4.5
+          ],
+          "end": [
+            4.0,
+            4.912
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            85,
+            25
+          ],
+          "end_grid": [
+            76,
+            80
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_001",
+          "start": [
+            4.0,
+            4.912
+          ],
+          "end": [
+            4.0,
+            6.955
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            76,
+            80
+          ],
+          "end_grid": [
+            34,
+            80
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_002",
+          "start": [
+            4.0,
+            6.955
+          ],
+          "end": [
+            6.83,
+            5.5
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            34,
+            80
+          ],
+          "end_grid": [
+            64,
+            137
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_003",
+          "start": [
+            6.83,
+            5.5
+          ],
+          "end": [
+            4.0,
+            7.612
+          ],
+          "is_success": false,
+          "failure_reason": "终点在障碍物上",
+          "failure_category": "end_on_obstacle",
+          "start_grid": [
+            64,
+            137
+          ],
+          "end_grid": [
+            20,
+            80
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": true
+        }
+      ]
+    },
+    "Synthesis_of_N-2-cyclopropylphenylcarbamothioylben_20260112_202101_pair": {
+      "failed_count": 1,
+      "failed_tasks": [
+        {
+          "task_id": "Synthesis_of_N-2-cyclopropylphenylcarbamothioylben_20260112_202101_pair_000",
+          "start": [
+            7.301,
+            2.5
+          ],
+          "end": [
+            4.295,
+            7.18
+          ],
+          "is_success": false,
+          "failure_reason": "起点在障碍物上",
+          "failure_category": "start_on_obstacle",
+          "start_grid": [
+            126,
+            146
+          ],
+          "end_grid": [
+            29,
+            86
+          ],
+          "start_on_obstacle": true,
+          "end_on_obstacle": false
+        }
+      ]
+    },
+    "Synthesis_of_Thiourea_Derivative_20260112_202101_pair": {
+      "failed_count": 1,
+      "failed_tasks": [
+        {
+          "task_id": "Synthesis_of_Thiourea_Derivative_20260112_202101_pair_000",
+          "start": [
+            1.29,
+            4.47
+          ],
+          "end": [
+            4.295,
+            6.955
+          ],
+          "is_success": false,
+          "failure_reason": "起点在障碍物上",
+          "failure_category": "start_on_obstacle",
+          "start_grid": [
+            85,
+            25
+          ],
+          "end_grid": [
+            34,
+            86
+          ],
+          "start_on_obstacle": true,
+          "end_on_obstacle": false
+        }
+      ]
+    },
+    "Synthesis_of_N-Benzoyl-N-benzylthiourea_20260112_202101_pair": {
+      "failed_count": 1,
+      "failed_tasks": [
+        {
+          "task_id": "Synthesis_of_N-Benzoyl-N-benzylthiourea_20260112_202101_pair_004",
+          "start": [
+            4.0,
+            5.412
+          ],
+          "end": [
+            4.0,
+            3.412
+          ],
+          "is_success": false,
+          "failure_reason": "终点在障碍物上",
+          "failure_category": "end_on_obstacle",
+          "start_grid": [
+            66,
+            80
+          ],
+          "end_grid": [
+            107,
+            80
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": true
+        }
+      ]
+    }
+  },
+  "failed_by_reason": {
+    "路径被障碍物完全阻隔": {
+      "count": 9,
+      "tasks": [
+        {
+          "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_000",
+          "start": [
+            7.301,
+            6.5
+          ],
+          "end": [
+            2.6,
+            5.912
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            43,
+            146
+          ],
+          "end_grid": [
+            55,
+            52
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_002",
+          "start": [
+            4.295,
+            6.955
+          ],
+          "end": [
+            1.761,
+            6.5
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            34,
+            86
+          ],
+          "end_grid": [
+            43,
+            35
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_003",
+          "start": [
+            1.761,
+            6.5
+          ],
+          "end": [
+            6.2,
+            5.912
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            43,
+            35
+          ],
+          "end_grid": [
+            55,
+            124
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Fmoc_Deprotection_of_Peptide_Intermediate_20260112_202101_pair_004",
+          "start": [
+            4.295,
+            9.166
+          ],
+          "end": [
+            4.295,
+            3.612
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            0,
+            86
+          ],
+          "end_grid": [
+            103,
+            86
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101_pair_000",
+          "start": [
+            2.0,
+            1.47
+          ],
+          "end": [
+            4.295,
+            7.412
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            148,
+            40
+          ],
+          "end_grid": [
+            24,
+            86
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101_pair_001",
+          "start": [
+            4.295,
+            7.412
+          ],
+          "end": [
+            4.295,
+            6.995
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            24,
+            86
+          ],
+          "end_grid": [
+            33,
+            86
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_000",
+          "start": [
+            1.29,
+            4.5
+          ],
+          "end": [
+            4.0,
+            4.912
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            85,
+            25
+          ],
+          "end_grid": [
+            76,
+            80
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_001",
+          "start": [
+            4.0,
+            4.912
+          ],
+          "end": [
+            4.0,
+            6.955
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            76,
+            80
+          ],
+          "end_grid": [
+            34,
+            80
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_002",
+          "start": [
+            4.0,
+            6.955
+          ],
+          "end": [
+            6.83,
+            5.5
+          ],
+          "is_success": false,
+          "failure_reason": "路径被障碍物完全阻隔",
+          "failure_category": "blocked",
+          "start_grid": [
+            34,
+            80
+          ],
+          "end_grid": [
+            64,
+            137
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": false
+        }
+      ]
+    },
+    "起点在障碍物上": {
+      "count": 3,
+      "tasks": [
+        {
+          "task_id": "Urea_Synthesis_via_Isocyanate_Addition_20260112_202101_pair_000",
+          "start": [
+            1.29,
+            4.47
+          ],
+          "end": [
+            4.295,
+            6.955
+          ],
+          "is_success": false,
+          "failure_reason": "起点在障碍物上",
+          "failure_category": "start_on_obstacle",
+          "start_grid": [
+            85,
+            25
+          ],
+          "end_grid": [
+            34,
+            86
+          ],
+          "start_on_obstacle": true,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Synthesis_of_N-2-cyclopropylphenylcarbamothioylben_20260112_202101_pair_000",
+          "start": [
+            7.301,
+            2.5
+          ],
+          "end": [
+            4.295,
+            7.18
+          ],
+          "is_success": false,
+          "failure_reason": "起点在障碍物上",
+          "failure_category": "start_on_obstacle",
+          "start_grid": [
+            126,
+            146
+          ],
+          "end_grid": [
+            29,
+            86
+          ],
+          "start_on_obstacle": true,
+          "end_on_obstacle": false
+        },
+        {
+          "task_id": "Synthesis_of_Thiourea_Derivative_20260112_202101_pair_000",
+          "start": [
+            1.29,
+            4.47
+          ],
+          "end": [
+            4.295,
+            6.955
+          ],
+          "is_success": false,
+          "failure_reason": "起点在障碍物上",
+          "failure_category": "start_on_obstacle",
+          "start_grid": [
+            85,
+            25
+          ],
+          "end_grid": [
+            34,
+            86
+          ],
+          "start_on_obstacle": true,
+          "end_on_obstacle": false
+        }
+      ]
+    },
+    "终点在障碍物上": {
+      "count": 2,
+      "tasks": [
+        {
+          "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_003",
+          "start": [
+            6.83,
+            5.5
+          ],
+          "end": [
+            4.0,
+            7.612
+          ],
+          "is_success": false,
+          "failure_reason": "终点在障碍物上",
+          "failure_category": "end_on_obstacle",
+          "start_grid": [
+            64,
+            137
+          ],
+          "end_grid": [
+            20,
+            80
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": true
+        },
+        {
+          "task_id": "Synthesis_of_N-Benzoyl-N-benzylthiourea_20260112_202101_pair_004",
+          "start": [
+            4.0,
+            5.412
+          ],
+          "end": [
+            4.0,
+            3.412
+          ],
+          "is_success": false,
+          "failure_reason": "终点在障碍物上",
+          "failure_category": "end_on_obstacle",
+          "start_grid": [
+            66,
+            80
+          ],
+          "end_grid": [
+            107,
+            80
+          ],
+          "start_on_obstacle": false,
+          "end_on_obstacle": true
+        }
+      ]
+    }
+  },
+  "all_failed_tasks": [
+    {
+      "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_000",
+      "start": [
+        7.301,
+        6.5
+      ],
+      "end": [
+        2.6,
+        5.912
+      ],
+      "is_success": false,
+      "failure_reason": "路径被障碍物完全阻隔",
+      "failure_category": "blocked",
+      "start_grid": [
+        43,
+        146
+      ],
+      "end_grid": [
+        55,
+        52
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "ReagentCabinet"
+      ],
+      "end_colliding_objects": [
+        "ExperimentalPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "ReagentCabinet",
+            "position": [
+              8.1705,
+              6.5
+            ],
+            "category": "storage_furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              2.6,
+              4.5
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_002",
+      "start": [
+        4.295,
+        6.955
+      ],
+      "end": [
+        1.761,
+        6.5
+      ],
+      "is_success": false,
+      "failure_reason": "路径被障碍物完全阻隔",
+      "failure_category": "blocked",
+      "start_grid": [
+        34,
+        86
+      ],
+      "end_grid": [
+        43,
+        35
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "FumeHood"
+      ],
+      "end_colliding_objects": [
+        "RotaryEvaporator"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.295,
+              8.06
+            ],
+            "category": "safety_equipment"
+          }
+        ],
+        "end": [
+          {
+            "id": "RotaryEvaporator",
+            "position": [
+              0.6555,
+              6.5
+            ],
+            "category": "evaporation_equipment"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_003",
+      "start": [
+        1.761,
+        6.5
+      ],
+      "end": [
+        6.2,
+        5.912
+      ],
+      "is_success": false,
+      "failure_reason": "路径被障碍物完全阻隔",
+      "failure_category": "blocked",
+      "start_grid": [
+        43,
+        35
+      ],
+      "end_grid": [
+        55,
+        124
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "RotaryEvaporator"
+      ],
+      "end_colliding_objects": [
+        "ValidationPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "RotaryEvaporator",
+            "position": [
+              0.6555,
+              6.5
+            ],
+            "category": "evaporation_equipment"
+          }
+        ],
+        "end": [
+          {
+            "id": "ValidationPlatform",
+            "position": [
+              6.2,
+              4.5
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Fmoc_Deprotection_of_Peptide_Intermediate_20260112_202101_pair_004",
+      "start": [
+        4.295,
+        9.166
+      ],
+      "end": [
+        4.295,
+        3.612
+      ],
+      "is_success": false,
+      "failure_reason": "路径被障碍物完全阻隔",
+      "failure_category": "blocked",
+      "start_grid": [
+        0,
+        86
+      ],
+      "end_grid": [
+        103,
+        86
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "FumeHood"
+      ],
+      "end_colliding_objects": [
+        "ExperimentalPlatform",
+        "ValidationPlatform",
+        "Chair"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.295,
+              8.06
+            ],
+            "category": "safety_equipment"
+          }
+        ],
+        "end": [
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              4.295,
+              4.8
+            ],
+            "category": "furniture"
+          },
+          {
+            "id": "ValidationPlatform",
+            "position": [
+              4.295,
+              2.2
+            ],
+            "category": "furniture"
+          },
+          {
+            "id": "Chair",
+            "position": [
+              4.295,
+              3.5
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Urea_Synthesis_via_Isocyanate_Addition_20260112_202101_pair_000",
+      "start": [
+        1.29,
+        4.47
+      ],
+      "end": [
+        4.295,
+        6.955
+      ],
+      "is_success": false,
+      "failure_reason": "起点在障碍物上",
+      "failure_category": "start_on_obstacle",
+      "start_grid": [
+        85,
+        25
+      ],
+      "end_grid": [
+        34,
+        86
+      ],
+      "start_on_obstacle": true,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "ReagentCabinet"
+      ],
+      "end_colliding_objects": [
+        "FumeHood",
+        "ValidationPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "ReagentCabinet",
+            "position": [
+              0.4195,
+              4.47
+            ],
+            "category": "storage_furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.295,
+              8.06
+            ],
+            "category": "safety_equipment"
+          },
+          {
+            "id": "ValidationPlatform",
+            "position": [
+              4.295,
+              5.7
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101_pair_000",
+      "start": [
+        2.0,
+        1.47
+      ],
+      "end": [
+        4.295,
+        7.412
+      ],
+      "is_success": false,
+      "failure_reason": "路径被障碍物完全阻隔",
+      "failure_category": "blocked",
+      "start_grid": [
+        148,
+        40
+      ],
+      "end_grid": [
+        24,
+        86
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "ReagentCabinet"
+      ],
+      "end_colliding_objects": [
+        "FumeHood",
+        "ExperimentalPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "ReagentCabinet",
+            "position": [
+              2.0,
+              0.6
+            ],
+            "category": "storage_furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.295,
+              8.1
+            ],
+            "category": "safety_equipment"
+          },
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              4.295,
+              6.0
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101_pair_001",
+      "start": [
+        4.295,
+        7.412
+      ],
+      "end": [
+        4.295,
+        6.995
+      ],
+      "is_success": false,
+      "failure_reason": "路径被障碍物完全阻隔",
+      "failure_category": "blocked",
+      "start_grid": [
+        24,
+        86
+      ],
+      "end_grid": [
+        33,
+        86
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "FumeHood",
+        "ExperimentalPlatform"
+      ],
+      "end_colliding_objects": [
+        "FumeHood",
+        "ExperimentalPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.295,
+              8.1
+            ],
+            "category": "safety_equipment"
+          },
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              4.295,
+              6.0
+            ],
+            "category": "furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.295,
+              8.1
+            ],
+            "category": "safety_equipment"
+          },
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              4.295,
+              6.0
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_000",
+      "start": [
+        1.29,
+        4.5
+      ],
+      "end": [
+        4.0,
+        4.912
+      ],
+      "is_success": false,
+      "failure_reason": "路径被障碍物完全阻隔",
+      "failure_category": "blocked",
+      "start_grid": [
+        85,
+        25
+      ],
+      "end_grid": [
+        76,
+        80
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "ReagentCabinet"
+      ],
+      "end_colliding_objects": [
+        "ValidationPlatform",
+        "ExperimentalPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "ReagentCabinet",
+            "position": [
+              0.4195,
+              4.5
+            ],
+            "category": "storage_furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "ValidationPlatform",
+            "position": [
+              4.0,
+              6.2
+            ],
+            "category": "furniture"
+          },
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              4.0,
+              3.5
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_001",
+      "start": [
+        4.0,
+        4.912
+      ],
+      "end": [
+        4.0,
+        6.955
+      ],
+      "is_success": false,
+      "failure_reason": "路径被障碍物完全阻隔",
+      "failure_category": "blocked",
+      "start_grid": [
+        76,
+        80
+      ],
+      "end_grid": [
+        34,
+        80
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "ValidationPlatform",
+        "ExperimentalPlatform"
+      ],
+      "end_colliding_objects": [
+        "FumeHood",
+        "ValidationPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "ValidationPlatform",
+            "position": [
+              4.0,
+              6.2
+            ],
+            "category": "furniture"
+          },
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              4.0,
+              3.5
+            ],
+            "category": "furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.0,
+              8.06
+            ],
+            "category": "safety_equipment"
+          },
+          {
+            "id": "ValidationPlatform",
+            "position": [
+              4.0,
+              6.2
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_002",
+      "start": [
+        4.0,
+        6.955
+      ],
+      "end": [
+        6.83,
+        5.5
+      ],
+      "is_success": false,
+      "failure_reason": "路径被障碍物完全阻隔",
+      "failure_category": "blocked",
+      "start_grid": [
+        34,
+        80
+      ],
+      "end_grid": [
+        64,
+        137
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "FumeHood",
+        "ValidationPlatform"
+      ],
+      "end_colliding_objects": [
+        "RotaryEvaporator"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.0,
+              8.06
+            ],
+            "category": "safety_equipment"
+          },
+          {
+            "id": "ValidationPlatform",
+            "position": [
+              4.0,
+              6.2
+            ],
+            "category": "furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "RotaryEvaporator",
+            "position": [
+              7.9345,
+              5.5
+            ],
+            "category": "evaporation_equipment"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_003",
+      "start": [
+        6.83,
+        5.5
+      ],
+      "end": [
+        4.0,
+        7.612
+      ],
+      "is_success": false,
+      "failure_reason": "终点在障碍物上",
+      "failure_category": "end_on_obstacle",
+      "start_grid": [
+        64,
+        137
+      ],
+      "end_grid": [
+        20,
+        80
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": true,
+      "start_colliding_objects": [
+        "RotaryEvaporator"
+      ],
+      "end_colliding_objects": [
+        "FumeHood",
+        "ValidationPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "RotaryEvaporator",
+            "position": [
+              7.9345,
+              5.5
+            ],
+            "category": "evaporation_equipment"
+          }
+        ],
+        "end": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.0,
+              8.06
+            ],
+            "category": "safety_equipment"
+          },
+          {
+            "id": "ValidationPlatform",
+            "position": [
+              4.0,
+              6.2
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Synthesis_of_N-2-cyclopropylphenylcarbamothioylben_20260112_202101_pair_000",
+      "start": [
+        7.301,
+        2.5
+      ],
+      "end": [
+        4.295,
+        7.18
+      ],
+      "is_success": false,
+      "failure_reason": "起点在障碍物上",
+      "failure_category": "start_on_obstacle",
+      "start_grid": [
+        126,
+        146
+      ],
+      "end_grid": [
+        29,
+        86
+      ],
+      "start_on_obstacle": true,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "ReagentCabinet"
+      ],
+      "end_colliding_objects": [
+        "FumeHood",
+        "ExperimentalPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "ReagentCabinet",
+            "position": [
+              8.1705,
+              2.5
+            ],
+            "category": "storage_furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.295,
+              8.2845
+            ],
+            "category": "safety_equipment"
+          },
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              3.5,
+              6.0
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Synthesis_of_Thiourea_Derivative_20260112_202101_pair_000",
+      "start": [
+        1.29,
+        4.47
+      ],
+      "end": [
+        4.295,
+        6.955
+      ],
+      "is_success": false,
+      "failure_reason": "起点在障碍物上",
+      "failure_category": "start_on_obstacle",
+      "start_grid": [
+        85,
+        25
+      ],
+      "end_grid": [
+        34,
+        86
+      ],
+      "start_on_obstacle": true,
+      "end_on_obstacle": false,
+      "start_colliding_objects": [
+        "ReagentCabinet"
+      ],
+      "end_colliding_objects": [
+        "FumeHood"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "ReagentCabinet",
+            "position": [
+              0.42,
+              4.47
+            ],
+            "category": "storage_furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "FumeHood",
+            "position": [
+              4.295,
+              8.06
+            ],
+            "category": "safety_equipment"
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "Synthesis_of_N-Benzoyl-N-benzylthiourea_20260112_202101_pair_004",
+      "start": [
+        4.0,
+        5.412
+      ],
+      "end": [
+        4.0,
+        3.412
+      ],
+      "is_success": false,
+      "failure_reason": "终点在障碍物上",
+      "failure_category": "end_on_obstacle",
+      "start_grid": [
+        66,
+        80
+      ],
+      "end_grid": [
+        107,
+        80
+      ],
+      "start_on_obstacle": false,
+      "end_on_obstacle": true,
+      "start_colliding_objects": [
+        "ExperimentalPlatform",
+        "Chair"
+      ],
+      "end_colliding_objects": [
+        "ExperimentalPlatform",
+        "ValidationPlatform"
+      ],
+      "obstacle_details": {
+        "start": [
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              4.0,
+              4.0
+            ],
+            "category": "furniture"
+          },
+          {
+            "id": "Chair",
+            "position": [
+              4.0,
+              5.2
+            ],
+            "category": "furniture"
+          }
+        ],
+        "end": [
+          {
+            "id": "ExperimentalPlatform",
+            "position": [
+              4.0,
+              4.0
+            ],
+            "category": "furniture"
+          },
+          {
+            "id": "ValidationPlatform",
+            "position": [
+              4.0,
+              2.0
+            ],
+            "category": "furniture"
+          }
+        ]
+      }
+    }
+  ],
+  "obstacle_analysis": {
+    "obstacle_statistics": {
+      "start_on_obstacle": {
+        "ReagentCabinet": 6,
+        "FumeHood": 4,
+        "RotaryEvaporator": 2,
+        "ExperimentalPlatform": 3,
+        "ValidationPlatform": 2,
+        "Chair": 1
+      },
+      "end_on_obstacle": {
+        "ExperimentalPlatform": 7,
+        "RotaryEvaporator": 2,
+        "ValidationPlatform": 7,
+        "Chair": 1,
+        "FumeHood": 7
+      },
+      "blocking_objects": {},
+      "by_category": {
+        "storage_furniture": 6,
+        "furniture": 21,
+        "safety_equipment": 11,
+        "evaporation_equipment": 4
+      }
+    },
+    "failed_tasks_with_obstacles": [
+      {
+        "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_000",
+        "start": [
+          7.301,
+          6.5
+        ],
+        "end": [
+          2.6,
+          5.912
+        ],
+        "is_success": false,
+        "failure_reason": "路径被障碍物完全阻隔",
+        "failure_category": "blocked",
+        "start_grid": [
+          43,
+          146
+        ],
+        "end_grid": [
+          55,
+          52
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "ReagentCabinet"
+        ],
+        "end_colliding_objects": [
+          "ExperimentalPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "ReagentCabinet",
+              "position": [
+                8.1705,
+                6.5
+              ],
+              "category": "storage_furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                2.6,
+                4.5
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_002",
+        "start": [
+          4.295,
+          6.955
+        ],
+        "end": [
+          1.761,
+          6.5
+        ],
+        "is_success": false,
+        "failure_reason": "路径被障碍物完全阻隔",
+        "failure_category": "blocked",
+        "start_grid": [
+          34,
+          86
+        ],
+        "end_grid": [
+          43,
+          35
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "FumeHood"
+        ],
+        "end_colliding_objects": [
+          "RotaryEvaporator"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.295,
+                8.06
+              ],
+              "category": "safety_equipment"
+            }
+          ],
+          "end": [
+            {
+              "id": "RotaryEvaporator",
+              "position": [
+                0.6555,
+                6.5
+              ],
+              "category": "evaporation_equipment"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Hydrolysis_of_Nitrile_to_Amide_20260112_202101_pair_003",
+        "start": [
+          1.761,
+          6.5
+        ],
+        "end": [
+          6.2,
+          5.912
+        ],
+        "is_success": false,
+        "failure_reason": "路径被障碍物完全阻隔",
+        "failure_category": "blocked",
+        "start_grid": [
+          43,
+          35
+        ],
+        "end_grid": [
+          55,
+          124
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "RotaryEvaporator"
+        ],
+        "end_colliding_objects": [
+          "ValidationPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "RotaryEvaporator",
+              "position": [
+                0.6555,
+                6.5
+              ],
+              "category": "evaporation_equipment"
+            }
+          ],
+          "end": [
+            {
+              "id": "ValidationPlatform",
+              "position": [
+                6.2,
+                4.5
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Fmoc_Deprotection_of_Peptide_Intermediate_20260112_202101_pair_004",
+        "start": [
+          4.295,
+          9.166
+        ],
+        "end": [
+          4.295,
+          3.612
+        ],
+        "is_success": false,
+        "failure_reason": "路径被障碍物完全阻隔",
+        "failure_category": "blocked",
+        "start_grid": [
+          0,
+          86
+        ],
+        "end_grid": [
+          103,
+          86
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "FumeHood"
+        ],
+        "end_colliding_objects": [
+          "ExperimentalPlatform",
+          "ValidationPlatform",
+          "Chair"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.295,
+                8.06
+              ],
+              "category": "safety_equipment"
+            }
+          ],
+          "end": [
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                4.295,
+                4.8
+              ],
+              "category": "furniture"
+            },
+            {
+              "id": "ValidationPlatform",
+              "position": [
+                4.295,
+                2.2
+              ],
+              "category": "furniture"
+            },
+            {
+              "id": "Chair",
+              "position": [
+                4.295,
+                3.5
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Urea_Synthesis_via_Isocyanate_Addition_20260112_202101_pair_000",
+        "start": [
+          1.29,
+          4.47
+        ],
+        "end": [
+          4.295,
+          6.955
+        ],
+        "is_success": false,
+        "failure_reason": "起点在障碍物上",
+        "failure_category": "start_on_obstacle",
+        "start_grid": [
+          85,
+          25
+        ],
+        "end_grid": [
+          34,
+          86
+        ],
+        "start_on_obstacle": true,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "ReagentCabinet"
+        ],
+        "end_colliding_objects": [
+          "FumeHood",
+          "ValidationPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "ReagentCabinet",
+              "position": [
+                0.4195,
+                4.47
+              ],
+              "category": "storage_furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.295,
+                8.06
+              ],
+              "category": "safety_equipment"
+            },
+            {
+              "id": "ValidationPlatform",
+              "position": [
+                4.295,
+                5.7
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101_pair_000",
+        "start": [
+          2.0,
+          1.47
+        ],
+        "end": [
+          4.295,
+          7.412
+        ],
+        "is_success": false,
+        "failure_reason": "路径被障碍物完全阻隔",
+        "failure_category": "blocked",
+        "start_grid": [
+          148,
+          40
+        ],
+        "end_grid": [
+          24,
+          86
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "ReagentCabinet"
+        ],
+        "end_colliding_objects": [
+          "FumeHood",
+          "ExperimentalPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "ReagentCabinet",
+              "position": [
+                2.0,
+                0.6
+              ],
+              "category": "storage_furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.295,
+                8.1
+              ],
+              "category": "safety_equipment"
+            },
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                4.295,
+                6.0
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101_pair_001",
+        "start": [
+          4.295,
+          7.412
+        ],
+        "end": [
+          4.295,
+          6.995
+        ],
+        "is_success": false,
+        "failure_reason": "路径被障碍物完全阻隔",
+        "failure_category": "blocked",
+        "start_grid": [
+          24,
+          86
+        ],
+        "end_grid": [
+          33,
+          86
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "FumeHood",
+          "ExperimentalPlatform"
+        ],
+        "end_colliding_objects": [
+          "FumeHood",
+          "ExperimentalPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.295,
+                8.1
+              ],
+              "category": "safety_equipment"
+            },
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                4.295,
+                6.0
+              ],
+              "category": "furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.295,
+                8.1
+              ],
+              "category": "safety_equipment"
+            },
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                4.295,
+                6.0
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_000",
+        "start": [
+          1.29,
+          4.5
+        ],
+        "end": [
+          4.0,
+          4.912
+        ],
+        "is_success": false,
+        "failure_reason": "路径被障碍物完全阻隔",
+        "failure_category": "blocked",
+        "start_grid": [
+          85,
+          25
+        ],
+        "end_grid": [
+          76,
+          80
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "ReagentCabinet"
+        ],
+        "end_colliding_objects": [
+          "ValidationPlatform",
+          "ExperimentalPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "ReagentCabinet",
+              "position": [
+                0.4195,
+                4.5
+              ],
+              "category": "storage_furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "ValidationPlatform",
+              "position": [
+                4.0,
+                6.2
+              ],
+              "category": "furniture"
+            },
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                4.0,
+                3.5
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_001",
+        "start": [
+          4.0,
+          4.912
+        ],
+        "end": [
+          4.0,
+          6.955
+        ],
+        "is_success": false,
+        "failure_reason": "路径被障碍物完全阻隔",
+        "failure_category": "blocked",
+        "start_grid": [
+          76,
+          80
+        ],
+        "end_grid": [
+          34,
+          80
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "ValidationPlatform",
+          "ExperimentalPlatform"
+        ],
+        "end_colliding_objects": [
+          "FumeHood",
+          "ValidationPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "ValidationPlatform",
+              "position": [
+                4.0,
+                6.2
+              ],
+              "category": "furniture"
+            },
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                4.0,
+                3.5
+              ],
+              "category": "furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.0,
+                8.06
+              ],
+              "category": "safety_equipment"
+            },
+            {
+              "id": "ValidationPlatform",
+              "position": [
+                4.0,
+                6.2
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_002",
+        "start": [
+          4.0,
+          6.955
+        ],
+        "end": [
+          6.83,
+          5.5
+        ],
+        "is_success": false,
+        "failure_reason": "路径被障碍物完全阻隔",
+        "failure_category": "blocked",
+        "start_grid": [
+          34,
+          80
+        ],
+        "end_grid": [
+          64,
+          137
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "FumeHood",
+          "ValidationPlatform"
+        ],
+        "end_colliding_objects": [
+          "RotaryEvaporator"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.0,
+                8.06
+              ],
+              "category": "safety_equipment"
+            },
+            {
+              "id": "ValidationPlatform",
+              "position": [
+                4.0,
+                6.2
+              ],
+              "category": "furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "RotaryEvaporator",
+              "position": [
+                7.9345,
+                5.5
+              ],
+              "category": "evaporation_equipment"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Preparation_of_5-Chloro-2-methoxybenzoyl_Chloride__20260112_202101_pair_003",
+        "start": [
+          6.83,
+          5.5
+        ],
+        "end": [
+          4.0,
+          7.612
+        ],
+        "is_success": false,
+        "failure_reason": "终点在障碍物上",
+        "failure_category": "end_on_obstacle",
+        "start_grid": [
+          64,
+          137
+        ],
+        "end_grid": [
+          20,
+          80
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": true,
+        "start_colliding_objects": [
+          "RotaryEvaporator"
+        ],
+        "end_colliding_objects": [
+          "FumeHood",
+          "ValidationPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "RotaryEvaporator",
+              "position": [
+                7.9345,
+                5.5
+              ],
+              "category": "evaporation_equipment"
+            }
+          ],
+          "end": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.0,
+                8.06
+              ],
+              "category": "safety_equipment"
+            },
+            {
+              "id": "ValidationPlatform",
+              "position": [
+                4.0,
+                6.2
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Synthesis_of_N-2-cyclopropylphenylcarbamothioylben_20260112_202101_pair_000",
+        "start": [
+          7.301,
+          2.5
+        ],
+        "end": [
+          4.295,
+          7.18
+        ],
+        "is_success": false,
+        "failure_reason": "起点在障碍物上",
+        "failure_category": "start_on_obstacle",
+        "start_grid": [
+          126,
+          146
+        ],
+        "end_grid": [
+          29,
+          86
+        ],
+        "start_on_obstacle": true,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "ReagentCabinet"
+        ],
+        "end_colliding_objects": [
+          "FumeHood",
+          "ExperimentalPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "ReagentCabinet",
+              "position": [
+                8.1705,
+                2.5
+              ],
+              "category": "storage_furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.295,
+                8.2845
+              ],
+              "category": "safety_equipment"
+            },
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                3.5,
+                6.0
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Synthesis_of_Thiourea_Derivative_20260112_202101_pair_000",
+        "start": [
+          1.29,
+          4.47
+        ],
+        "end": [
+          4.295,
+          6.955
+        ],
+        "is_success": false,
+        "failure_reason": "起点在障碍物上",
+        "failure_category": "start_on_obstacle",
+        "start_grid": [
+          85,
+          25
+        ],
+        "end_grid": [
+          34,
+          86
+        ],
+        "start_on_obstacle": true,
+        "end_on_obstacle": false,
+        "start_colliding_objects": [
+          "ReagentCabinet"
+        ],
+        "end_colliding_objects": [
+          "FumeHood"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "ReagentCabinet",
+              "position": [
+                0.42,
+                4.47
+              ],
+              "category": "storage_furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "FumeHood",
+              "position": [
+                4.295,
+                8.06
+              ],
+              "category": "safety_equipment"
+            }
+          ]
+        }
+      },
+      {
+        "task_id": "Synthesis_of_N-Benzoyl-N-benzylthiourea_20260112_202101_pair_004",
+        "start": [
+          4.0,
+          5.412
+        ],
+        "end": [
+          4.0,
+          3.412
+        ],
+        "is_success": false,
+        "failure_reason": "终点在障碍物上",
+        "failure_category": "end_on_obstacle",
+        "start_grid": [
+          66,
+          80
+        ],
+        "end_grid": [
+          107,
+          80
+        ],
+        "start_on_obstacle": false,
+        "end_on_obstacle": true,
+        "start_colliding_objects": [
+          "ExperimentalPlatform",
+          "Chair"
+        ],
+        "end_colliding_objects": [
+          "ExperimentalPlatform",
+          "ValidationPlatform"
+        ],
+        "obstacle_details": {
+          "start": [
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                4.0,
+                4.0
+              ],
+              "category": "furniture"
+            },
+            {
+              "id": "Chair",
+              "position": [
+                4.0,
+                5.2
+              ],
+              "category": "furniture"
+            }
+          ],
+          "end": [
+            {
+              "id": "ExperimentalPlatform",
+              "position": [
+                4.0,
+                4.0
+              ],
+              "category": "furniture"
+            },
+            {
+              "id": "ValidationPlatform",
+              "position": [
+                4.0,
+                2.0
+              ],
+              "category": "furniture"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -122,6 +122,7 @@ class BaseTask(ABC):
                 camera.set_local_pose(orientation=np.array(cam_cfg.orientation), camera_axes="usd")
                 camera.set_focal_length(cam_cfg.focal_length)
             
+            camera.initialize()
             if hasattr(cam_cfg, 'clipping_range'):
                 camera.set_clipping_range(near_distance=cam_cfg.clipping_range[0], far_distance=cam_cfg.clipping_range[1])
             else:

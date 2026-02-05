@@ -81,6 +81,7 @@ class MobilePickController(BaseController):
         """Reset the controller state"""
         super().reset()
         self.waypoints_set = False
+        self._waypoints_collected = False  # Reset waypoints collection flag
         self.pick_started = False
         self.navigation_done = False
         self.initial_object_z = None
@@ -142,7 +143,7 @@ class MobilePickController(BaseController):
         
         current_pose = state['current_pose']
         action, done = self.ridgebase_controller.get_action(current_pose)
-        
+
         # Collect navigation data
         if 'camera_data' in state and not done:
             # For navigation, only record base movement (first 3 joints: x, y, theta)
@@ -151,11 +152,23 @@ class MobilePickController(BaseController):
                 current_pose[1],
                 current_pose[2]
             ])
-            
+
+            # Get waypoints from state for data collection
+            # Pass waypoints on the first data collection step
+            waypoints_to_pass = None
+            if not hasattr(self, '_waypoints_collected'):
+                self._waypoints_collected = False
+
+            if not self._waypoints_collected and state.get('waypoints') is not None:
+                waypoints_to_pass = state['waypoints']
+                self._waypoints_collected = True
+
             self.data_collector.cache_step(
                 camera_images=state['camera_data'],
                 joint_angles=nav_joint_positions,
-                language_instruction="Navigate to the pick location"
+                language_instruction="Navigate to the pick location",
+                waypoints=waypoints_to_pass,
+                base_pose=current_pose  # Pass current_pose as base_pose
             )
         
         # Check if navigation is complete

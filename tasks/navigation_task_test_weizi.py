@@ -1349,6 +1349,10 @@ class NavigationTaskTestWeizi(BaseTask):
         self.goal_pairs: List[Tuple[list, list]] = []
         self.current_goal_idx: int = 0
 
+        # ✅ 新增：waypoints JSON保存器
+        self.waypoints_saver = None
+        self.episode_count = 0
+
         super().__init__(cfg, world, stage, robot)
 
         if hasattr(self.cfg, "task") and hasattr(self.cfg.task, "goal_pairs"):
@@ -1376,6 +1380,11 @@ class NavigationTaskTestWeizi(BaseTask):
         if self.navigation_assets:
             nav_scene = self.navigation_assets[0]
             self.grid, self.W, self.H = load_grid(nav_scene["barrier_image_path"])
+
+        # ✅ 新增：初始化waypoints JSON保存器
+        from utils.waypoints_json_saver import WaypointsJSONSaver
+        output_dir = self.cfg.multi_run.run_dir if hasattr(self.cfg, "multi_run") else "outputs/waypoints"
+        self.waypoints_saver = WaypointsJSONSaver(output_dir)
 
     def _plan_and_set_path(self, nav_scene: dict, start_point: list, end_point: list) -> bool:
         """
@@ -1414,6 +1423,24 @@ class NavigationTaskTestWeizi(BaseTask):
                 position=np.array([end_point[0], end_point[1], 0.01]),
                 orientation=goal_quat
             )
+
+        # ✅ 新增：保存waypoints到JSON文件
+        if self.waypoints_saver:
+            try:
+                self.waypoints_saver.save_waypoints(
+                    waypoints=waypoints,
+                    start=start_point,
+                    end=end_point,
+                    episode_num=self.episode_count,
+                    is_success=True,
+                    metadata={
+                        "goal_pair_index": self.current_goal_idx,
+                        "scene": nav_scene.get("name", "unknown")
+                    }
+                )
+                self.episode_count += 1
+            except Exception as e:
+                print(f"⚠️ 保存waypoints到JSON失败: {e}")
 
         # --- 修复点 3：规范化起点初始化 (关节同步) ---
         num_dof = self.robot.num_dof

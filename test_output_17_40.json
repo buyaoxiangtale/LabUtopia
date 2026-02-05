@@ -1,0 +1,220 @@
+{
+  "scene_name": "Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop_20260112_202101",
+  "config": {
+    "scene_dir": "/home/pjlab/fbh/LabUtopia/gemini-3-flash-preview/Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop_20260112_202101",
+    "room_assets_file": "Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop_room_isaacsim.json",
+    "protocol_file": "protocol_Alkylation_of_Ethyl_Acetoaceta_20260112_165955.json",
+    "asset_lib_file": "/home/pjlab/fbh/LabUtopia/gemini-3-flash-preview/assets_annotated.json",
+    "offset_radius": 0.3
+  },
+  "nav_targets": [
+    {
+      "step_number": 1,
+      "location": "reagent_cabinet",
+      "matched_object": "ReagentCabinet",
+      "target_x": 0.94,
+      "target_y": 5.5,
+      "offset_dx": 0.52,
+      "offset_dy": 0.0,
+      "bbox_width": 0.439128053284753,
+      "bbox_depth": 1.7919863780488523,
+      "object_center_x": 0.42,
+      "object_center_y": 5.5,
+      "rotation_z": 270
+    },
+    {
+      "step_number": 2,
+      "location": "FumeHood",
+      "matched_object": "FumeHood",
+      "target_x": 1.71,
+      "target_y": 7.305,
+      "offset_dx": 0.0,
+      "offset_dy": -0.755,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 3.0012501258850106,
+      "object_center_x": 1.71,
+      "object_center_y": 8.06,
+      "rotation_z": 180
+    },
+    {
+      "step_number": 3,
+      "location": "FumeHood",
+      "matched_object": "FumeHood",
+      "target_x": 1.71,
+      "target_y": 7.305,
+      "offset_dx": 0.0,
+      "offset_dy": -0.755,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 3.0012501258850106,
+      "object_center_x": 1.71,
+      "object_center_y": 8.06,
+      "rotation_z": 180
+    },
+    {
+      "step_number": 4,
+      "location": "FumeHood",
+      "matched_object": "FumeHood",
+      "target_x": 1.71,
+      "target_y": 7.305,
+      "offset_dx": 0.0,
+      "offset_dy": -0.755,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 3.0012501258850106,
+      "object_center_x": 1.71,
+      "object_center_y": 8.06,
+      "rotation_z": 180
+    },
+    {
+      "step_number": 5,
+      "location": "FumeHood",
+      "matched_object": "FumeHood",
+      "target_x": 1.71,
+      "target_y": 7.305,
+      "offset_dx": 0.0,
+      "offset_dy": -0.755,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 3.0012501258850106,
+      "object_center_x": 1.71,
+      "object_center_y": 8.06,
+      "rotation_z": 180
+    },
+    {
+      "step_number": 6,
+      "location": "FumeHood",
+      "matched_object": "FumeHood",
+      "target_x": 1.71,
+      "target_y": 7.305,
+      "offset_dx": 0.0,
+      "offset_dy": -0.755,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 3.0012501258850106,
+      "object_center_x": 1.71,
+      "object_center_y": 8.06,
+      "rotation_z": 180
+    },
+    {
+      "step_number": 7,
+      "location": "FumeHood",
+      "matched_object": "FumeHood",
+      "target_x": 1.71,
+      "target_y": 7.305,
+      "offset_dx": 0.0,
+      "offset_dy": -0.755,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 3.0012501258850106,
+      "object_center_x": 1.71,
+      "object_center_y": 8.06,
+      "rotation_z": 180
+    },
+    {
+      "step_number": 8,
+      "location": "FumeHood",
+      "matched_object": "FumeHood",
+      "target_x": 1.71,
+      "target_y": 7.305,
+      "offset_dx": 0.0,
+      "offset_dy": -0.755,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 3.0012501258850106,
+      "object_center_x": 1.71,
+      "object_center_y": 8.06,
+      "rotation_z": 180
+    },
+    {
+      "step_number": 9,
+      "location": "FumeHood",
+      "matched_object": "FumeHood",
+      "target_x": 1.71,
+      "target_y": 7.305,
+      "offset_dx": 0.0,
+      "offset_dy": -0.755,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 3.0012501258850106,
+      "object_center_x": 1.71,
+      "object_center_y": 8.06,
+      "rotation_z": 180
+    },
+    {
+      "step_number": 10,
+      "location": "FumeHood",
+      "matched_object": "FumeHood",
+      "target_x": 1.71,
+      "target_y": 7.305,
+      "offset_dx": 0.0,
+      "offset_dy": -0.755,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 3.0012501258850106,
+      "object_center_x": 1.71,
+      "object_center_y": 8.06,
+      "rotation_z": 180
+    },
+    {
+      "step_number": 11,
+      "location": "RotaryEvaporator",
+      "matched_object": "RotaryEvaporator",
+      "target_x": 7.175,
+      "target_y": 7.1,
+      "offset_dx": -0.755,
+      "offset_dy": 0.001,
+      "bbox_width": 0.9105756737463484,
+      "bbox_depth": 2.3,
+      "object_center_x": 7.93,
+      "object_center_y": 7.1,
+      "rotation_z": 90
+    },
+    {
+      "step_number": 12,
+      "location": "validation_platform",
+      "matched_object": "ValidationPlatform",
+      "target_x": 4.939,
+      "target_y": 4.5,
+      "offset_dx": -1.061,
+      "offset_dy": 0.001,
+      "bbox_width": 1.5220382895305355,
+      "bbox_depth": 2.7348869195972734,
+      "object_center_x": 6.0,
+      "object_center_y": 4.5,
+      "rotation_z": 90
+    }
+  ],
+  "goal_pairs": [
+    {
+      "start": [
+        0.94,
+        5.5,
+        1.5707963267948966
+      ],
+      "end": [
+        1.71,
+        7.305,
+        0.0
+      ]
+    },
+    {
+      "start": [
+        1.71,
+        7.305,
+        0.0
+      ],
+      "end": [
+        7.175,
+        7.1,
+        4.71238898038469
+      ]
+    },
+    {
+      "start": [
+        7.175,
+        7.1,
+        4.71238898038469
+      ],
+      "end": [
+        4.939,
+        4.5,
+        4.71238898038469
+      ]
+    }
+  ],
+  "num_targets": 12,
+  "num_goal_pairs": 3
+}

@@ -6,6 +6,7 @@
 支持的数据收集器类型：
 - default: 原始 HDF5 格式 (DataCollector)
 - video_format: 视频格式 (VideoFormatCollector)
+- parquet_format: Parquet格式 (ParquetFormatCollector)
 """
 
 from typing import List, Dict, Any, Optional, Union
@@ -18,12 +19,12 @@ def create_collector(
     save_dir: str,
     max_episodes: int = 100,
     **kwargs
-) -> Union['DataCollector', 'VideoFormatCollector']:
+) -> Union['DataCollector', 'VideoFormatCollector', 'ParquetFormatCollector']:
     """
     创建数据收集器的工厂函数
 
     Args:
-        collector_type: 收集器类型 ('default' 或 'video_format')
+        collector_type: 收集器类型 ('default', 'video_format', 'parquet_format')
         camera_configs: 相机配置列表
         save_dir: 保存目录
         max_episodes: 最大 episode 数量
@@ -52,8 +53,36 @@ def create_collector(
             save_images=True,
             save_videos=True
         )
+
+        # 创建 Parquet 格式收集器
+        collector = create_collector(
+            collector_type='parquet_format',
+            camera_configs=cfg.cameras,
+            save_dir='outputs/data',
+            max_episodes=100,
+            chunk_size=1000,
+            save_videos=True
+        )
     """
-    if collector_type == 'video_format':
+    if collector_type == 'parquet_format':
+        # 导入 Parquet 格式收集器
+        from data_collectors.parquet_format_collector import ParquetFormatCollector
+
+        # 提取 Parquet 格式相关参数
+        chunk_size = kwargs.get('chunk_size', 1000)
+        save_videos = kwargs.get('save_videos', True)
+        video_config = kwargs.get('video_config')
+
+        return ParquetFormatCollector(
+            save_dir=save_dir,
+            camera_configs=camera_configs,
+            chunk_size=chunk_size,
+            max_episodes=max_episodes,
+            save_videos=save_videos,
+            video_config=video_config
+        )
+
+    elif collector_type == 'video_format':
         # 导入视频格式收集器
         from data_collectors.video_format_collector import VideoFormatCollector
 
@@ -92,7 +121,7 @@ def create_collector(
 
     else:
         raise ValueError(f"Unknown collector type: {collector_type}. "
-                        f"Supported types: 'default', 'video_format'")
+                        f"Supported types: 'default', 'video_format', 'parquet_format'")
 
 
 def create_collector_from_cfg(cfg: Any, save_dir: str) -> Union['DataCollector', 'VideoFormatCollector']:
@@ -237,4 +266,24 @@ def create_video_collector(
         save_videos=save_videos,
         video_config=video_config,
         image_config=image_config
+    )
+
+
+def create_parquet_collector(
+    camera_configs,
+    save_dir,
+    max_episodes=100,
+    chunk_size=1000,
+    save_videos=True,
+    video_config=None
+):
+    """创建 Parquet 格式收集器（便捷函数）"""
+    return create_collector(
+        collector_type='parquet_format',
+        camera_configs=camera_configs,
+        save_dir=save_dir,
+        max_episodes=max_episodes,
+        chunk_size=chunk_size,
+        save_videos=save_videos,
+        video_config=video_config
     )

@@ -62,6 +62,7 @@ class NavigationControllerSmooth1216(BaseController):
         """Reset the controller state"""
         super().reset()
         self.waypoints_set = False
+        self._waypoints_collected = False  # Reset waypoints collection flag
     
     def step(self, state: Dict[str, Any]) -> Tuple[Any, bool, bool]:
         """
@@ -84,17 +85,18 @@ class NavigationControllerSmooth1216(BaseController):
     def _step_collect(self, state: Dict[str, Any]) -> Tuple[Any, bool, bool]:
         """
         Control step in collect mode.
-        
+
         Args:
             state: The state dictionary
-            
+
         Returns:
             tuple: (action, done, is_success)
         """
+        # Check if waypoints need to be set (for control)
         if not self.waypoints_set and state.get('waypoints') is not None:
             self.ridgebase_controller.set_waypoints(state['waypoints'])
             self.waypoints_set = True
-        
+
         current_pose = state['current_pose']
 
         action, done = self.ridgebase_controller.get_action(current_pose)
@@ -105,11 +107,23 @@ class NavigationControllerSmooth1216(BaseController):
                 current_pose[1],
                 current_pose[2]
             ])
-            
+
+            # Get waypoints from state for data collection
+            # Pass waypoints on the first data collection step
+            waypoints_to_pass = None
+            if not hasattr(self, '_waypoints_collected'):
+                self._waypoints_collected = False
+
+            if not self._waypoints_collected and state.get('waypoints') is not None:
+                waypoints_to_pass = state['waypoints']
+                self._waypoints_collected = True
+
             self.data_collector.cache_step(
                 camera_images=state['camera_data'],
                 joint_angles=joint_positions,
-                language_instruction=self.get_language_instruction()
+                language_instruction=self.get_language_instruction(),
+                waypoints=waypoints_to_pass,
+                base_pose=current_pose  # Pass current_pose as base_pose
             )
         
         if done or self.ridgebase_controller.is_path_complete():
@@ -180,6 +194,22 @@ class NavigationControllerSmooth1216(BaseController):
                 collector_kwargs['video_config'] = cfg.collector.video
             if hasattr(cfg.collector, 'image'):
                 collector_kwargs['image_config'] = cfg.collector.image
+
+            # 路径点相关配置
+            if hasattr(cfg.collector, 'save_waypoints'):
+                collector_kwargs['save_waypoints'] = cfg.collector.save_waypoints
+            if hasattr(cfg.collector, 'save_base_pose'):
+                collector_kwargs['save_base_pose'] = cfg.collector.save_base_pose
+            if hasattr(cfg.collector, 'waypoints_format'):
+                collector_kwargs['waypoints_format'] = cfg.collector.waypoints_format
+            if hasattr(cfg.collector, 'waypoints_dir'):
+                collector_kwargs['waypoints_dir'] = cfg.collector.waypoints_dir
+            if hasattr(cfg.collector, 'log_waypoints_stats'):
+                collector_kwargs['log_waypoints_stats'] = cfg.collector.log_waypoints_stats
+            if hasattr(cfg.collector, 'waypoints_stats_interval'):
+                collector_kwargs['waypoints_stats_interval'] = cfg.collector.waypoints_stats_interval
+            if hasattr(cfg.collector, 'save_metadata'):
+                collector_kwargs['save_metadata'] = cfg.collector.save_metadata
         else:
             # 其他收集器参数 (default/mock)
             if hasattr(cfg.collector, 'compression'):

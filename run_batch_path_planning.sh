@@ -1,11 +1,11 @@
 #!/bin/bash
 
 BASE_DIR="/home/pjlab/fbh/LabUtopia"
-BASE_OUTPUT_DIR="$BASE_DIR/outputs/path_planning_batch_results"
+BASE_OUTPUT_DIR="$BASE_DIR/outputs/path_planning_batch_results_1_13"
 
 # 可配置参数：障碍物膨胀半径（米）
 # 可以根据需要修改这个值
-OFFSET_RADIUS=${OFFSET_RADIUS:-0.4}  # 默认 2.0 米，可通过环境变量覆盖
+OFFSET_RADIUS=${OFFSET_RADIUS:-0.3}  # 默认 2.0 米，可通过环境变量覆盖
 
 # 记录脚本开始时间
 SCRIPT_START_TIME=$(date +%s)

@@ -7,10 +7,16 @@
     dataset/
     ├── videos/
     │   └── chunk-000/
-    │       ├── observation.images.{camera_name}/
-    │       │   ├── 0.jpg, 1.jpg, ...
-    │       ├── observation.images.{camera_name}_depth/
-    │       │   ├── 0.png, 1.png, ...
+    │       ├── observation.images.rgb/
+    │       │   ├── episode_000000/
+    │       │   │   ├── 0.jpg, 1.jpg, ...
+    │       │   ├── episode_000001/
+    │       │   │   ├── 0.jpg, 1.jpg, ...
+    │       ├── observation.images.depth/
+    │       │   ├── episode_000000/
+    │       │   │   ├── 0.png, 1.png, ...
+    │       │   ├── episode_000001/
+    │       │   │   ├── 0.png, 1.png, ...
     │       ├── observation.video.trajectory/
     │       │   ├── episode_000000.mp4, ...
     │       └── observation.video.depth/
@@ -48,7 +54,14 @@ class VideoFormatCollector:
         save_images: bool = True,
         save_videos: bool = True,
         video_config: Optional[dict] = None,
-        image_config: Optional[dict] = None
+        image_config: Optional[dict] = None,
+        save_waypoints: bool = False,
+        save_base_pose: bool = False,
+        waypoints_format: str = "json",
+        waypoints_dir: str = "waypoints",
+        log_waypoints_stats: bool = True,
+        waypoints_stats_interval: int = 10,
+        save_metadata: bool = True
     ):
         """
         初始化视频格式数据收集器
@@ -63,6 +76,12 @@ class VideoFormatCollector:
             save_videos: 是否保存视频
             video_config: 视频配置
             image_config: 图像配置
+            save_waypoints: 是否保存 A* 规划的路径点（默认 False，遵循视频格式标准）
+            save_base_pose: 是否保存机器人基座全局姿态轨迹
+            waypoints_format: 路径点保存格式 ("json"/"h5"/"npy")
+            waypoints_dir: 路径点文件保存子目录
+            log_waypoints_stats: 是否在控制台输出路径点统计信息
+            waypoints_stats_interval: 每多少步输出一次路径点统计
         """
         self.save_dir = Path(save_dir)
         self.camera_configs = camera_configs
@@ -70,6 +89,15 @@ class VideoFormatCollector:
         self.max_episodes = max_episodes
         self.save_images = save_images
         self.save_videos = save_videos
+
+        # 路径点相关配置
+        self.save_waypoints = save_waypoints
+        self.save_base_pose = save_base_pose
+        self.waypoints_format = waypoints_format
+        self.waypoints_dir = waypoints_dir
+        self.log_waypoints_stats = log_waypoints_stats
+        self.waypoints_stats_interval = waypoints_stats_interval
+        self.save_metadata = save_metadata
 
         # 默认视频配置
         self.video_config = video_config or {
@@ -131,7 +159,9 @@ class VideoFormatCollector:
         self,
         camera_images: Dict[str, np.ndarray],
         joint_angles: np.ndarray,
-        language_instruction: Optional[str] = None
+        language_instruction: Optional[str] = None,
+        waypoints: Optional[List] = None,
+        base_pose: Optional[List] = None
     ):
         """
         缓存每步数据
@@ -141,6 +171,8 @@ class VideoFormatCollector:
                 例如: {"observation_rgb": [3, 256, 256], "observation_depth": [1, 256, 256]}
             joint_angles: [num_joints]
             language_instruction: 语言指令
+            waypoints: 路径点列表（可选，用于兼容性）
+            base_pose: 机器人基座姿态（可选，用于兼容性）
         """
         # 保存语言指令
         if language_instruction is not None:
@@ -154,6 +186,16 @@ class VideoFormatCollector:
 
         # 缓存关节角度
         self.temp_poses.append(joint_angles)
+
+        # 处理路径点统计（如果启用）
+        if self.log_waypoints_stats and waypoints is not None:
+            step_count = len(self.temp_poses)
+            if step_count % self.waypoints_stats_interval == 0:
+                num_waypoints = len(waypoints) if hasattr(waypoints, '__len__') else 0
+                print(f"  [路径点统计] 步 {step_count}: {num_waypoints} 个路径点")
+
+        # 注意：VideoFormatCollector 不实际保存路径点数据（遵循视频格式标准）
+        # 如果需要保存路径点，请使用其他收集器或修改此实现
 
     def write_cached_data(self, final_joint_positions: np.ndarray):
         """
@@ -193,8 +235,9 @@ class VideoFormatCollector:
         if self.save_videos:
             self._save_videos(chunk_dir, episode_name)
 
-        # 3. 保存元数据 JSON
-        self._save_metadata(episode_name, self.temp_poses, actions)
+        # 3. 保存元数据 JSON（如果启用）
+        if self.save_metadata:
+            self._save_metadata(episode_name, self.temp_poses, actions)
 
         print(f"✓ Episode {episode_idx} saved successfully")
 
@@ -217,19 +260,17 @@ class VideoFormatCollector:
             else:
                 continue
 
-            # 图像保存目录
-            image_dir_name = f"observation.images.{cam_name}"
-            if img_type == 'depth':
-                image_dir_name += "_depth"
+            # 图像保存目录 - 使用标准格式目录名
+            # 标准: observation.images.rgb/episode_000000/ 和 observation.images.depth/episode_000000/
+            image_dir_name = f"observation.images.{img_type}"
+            episode_name = f"episode_{episode_idx:06d}"
 
-            image_dir = chunk_dir / image_dir_name
+            image_dir = chunk_dir / image_dir_name / episode_name
             image_dir.mkdir(parents=True, exist_ok=True)
 
-            # 计算全局帧索引
-            frame_start_idx = episode_idx * len(frames)
-
+            # 每个episode的帧从0开始编号
             for i, frame in enumerate(frames):
-                frame_idx = frame_start_idx + i
+                frame_idx = i
 
                 if img_type == 'rgb':
                     # 转换 [C, H, W] -> [H, W, C]
@@ -407,7 +448,14 @@ def create_video_format_collector(
     save_images: bool = True,
     save_videos: bool = True,
     video_config: Optional[dict] = None,
-    image_config: Optional[dict] = None
+    image_config: Optional[dict] = None,
+    save_waypoints: bool = False,
+    save_base_pose: bool = False,
+    waypoints_format: str = "json",
+    waypoints_dir: str = "waypoints",
+    log_waypoints_stats: bool = True,
+    waypoints_stats_interval: int = 10,
+    save_metadata: bool = True
 ) -> VideoFormatCollector:
     """
     创建视频格式数据收集器的工厂函数
@@ -421,6 +469,14 @@ def create_video_format_collector(
         save_videos: 是否保存视频
         video_config: 视频配置
         image_config: 图像配置
+        save_waypoints: 是否保存路径点（默认 False）
+        save_base_pose: 是否保存基座姿态（默认 False）
+        waypoints_format: 路径点保存格式
+        waypoints_dir: 路径点保存目录
+        log_waypoints_stats: 是否输出路径点统计
+        waypoints_stats_interval: 统计输出间隔
+        save_metadata: 是否保存 JSON 元数据文件（默认 True）
+            save_metadata: 是否保存 JSON 元数据文件（默认 True）
 
     Returns:
         VideoFormatCollector 实例
@@ -433,5 +489,12 @@ def create_video_format_collector(
         save_images=save_images,
         save_videos=save_videos,
         video_config=video_config,
-        image_config=image_config
+        image_config=image_config,
+        save_waypoints=save_waypoints,
+        save_base_pose=save_base_pose,
+        waypoints_format=waypoints_format,
+        waypoints_dir=waypoints_dir,
+        log_waypoints_stats=log_waypoints_stats,
+        waypoints_stats_interval=waypoints_stats_interval,
+        save_metadata=save_metadata
     )

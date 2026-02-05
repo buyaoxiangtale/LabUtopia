@@ -567,11 +567,11 @@ class MultiSceneNavGenerator:
             return None
 
         cx, cy = info["center"]
-        hy = info["half_y"]
+        hx = info["half_x"]
         rz_deg = info["rz"]
 
         # 机器人停靠距离
-        dist = hy + offset_radius
+        dist = hx + offset_radius + 0.4
         rad = math.radians(rz_deg)
 
         # 投影计算 (0deg=+Y, 270deg=+X)
@@ -908,3 +908,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+#   cd /home/pjlab/fbh/LabUtopia
+#   python3 utils/auto_batch_scene_nav.py gemini-3-flash-preview outputs/gemini_flash_nav_targets_1_13_18_38 --radius 0.3

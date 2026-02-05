@@ -8,11 +8,14 @@ from concurrent.futures import ProcessPoolExecutor, Future
 from typing import List, Optional
 from glob import glob
 
-def _write_episode_data(episode_path: str, episode_name: str, 
-                       camera_data: dict, agent_pose_data: np.ndarray, 
-                       actions_data: np.ndarray, language_instruction: Optional[str] = None, compression=None):
+def _write_episode_data(episode_path: str, episode_name: str,
+                       camera_data: dict, agent_pose_data: np.ndarray,
+                       actions_data: np.ndarray, language_instruction: Optional[str] = None,
+                       waypoints_data: Optional[np.ndarray] = None,
+                       base_pose_data: Optional[np.ndarray] = None,
+                       compression=None):
     """Helper function to write episode data in a separate process
-    
+
     Args:
         episode_path: Path to the individual episode HDF5 file
         episode_name: Name of the episode
@@ -20,12 +23,14 @@ def _write_episode_data(episode_path: str, episode_name: str,
         agent_pose_data: Robot joint angles [T, num_joints]
         actions_data: Robot actions [T, num_joints]
         language_instruction: Language instruction for the task
+        waypoints_data: A* planned waypoints [num_waypoints, 3] (x, y, theta)
+        base_pose_data: Robot base pose in global coordinates [T, 3] (x, y, theta)
         compression: Compression method for image data, None for no compression
     """
-    
+
     with h5py.File(episode_path, 'w') as h5_file:
         print(f"Writing episode {episode_name} to {episode_path}")
-        
+
         # Store camera data with Blosc compression and dynamic chunking
         for camera_name, image_data in camera_data.items():
             chunk_size = (min(64, image_data.shape[0]),) + image_data.shape[1:]
@@ -40,21 +45,41 @@ def _write_episode_data(episode_path: str, episode_name: str,
                     'compression_opts': 5
                 })
             h5_file.create_dataset(camera_name, **kwargs)
-        
+
         # Store pose and action data without compression (small size, frequent access)
         h5_file.create_dataset(
-            "agent_pose", 
-            data=agent_pose_data, 
-            dtype='float32', 
+            "agent_pose",
+            data=agent_pose_data,
+            dtype='float32',
             chunks=True
         )
         h5_file.create_dataset(
-            "actions", 
-            data=actions_data, 
-            dtype='float32', 
+            "actions",
+            data=actions_data,
+            dtype='float32',
             chunks=True
         )
-        
+
+        # Store waypoints if provided (planned path from A*)
+        if waypoints_data is not None:
+            h5_file.create_dataset(
+                "waypoints",
+                data=waypoints_data,
+                dtype='float32',
+                chunks=True
+            )
+            print(f"  Saved {len(waypoints_data)} waypoints")
+
+        # Store base_pose if provided (robot global position)
+        if base_pose_data is not None:
+            h5_file.create_dataset(
+                "base_pose",
+                data=base_pose_data,
+                dtype='float32',
+                chunks=True
+            )
+            print(f"  Saved base_pose trajectory with {len(base_pose_data)} steps")
+
         # Store language instruction if provided
         if language_instruction is not None:
             h5_file.create_dataset(
@@ -62,7 +87,7 @@ def _write_episode_data(episode_path: str, episode_name: str,
                 data=language_instruction,
                 dtype=h5py.special_dtype(vlen=str)
             )
-        
+
         print(f"Finished writing episode {episode_name}")
 
 class DataCollector:
@@ -102,24 +127,40 @@ class DataCollector:
         self.temp_agent_pose = []
         self.temp_actions = []
         self.temp_language_instruction = None
-        
+        self.temp_waypoints = None  # Store waypoints for the episode (set once)
+        self.temp_base_pose = []    # Store base pose trajectory
+
         # Initialize process pool and tracking variables
         self.process_pool = ProcessPoolExecutor(max_workers=max_workers)
         self.pending_futures: List[Future] = []
         
-    def cache_step(self, camera_images: dict, joint_angles: np.ndarray, language_instruction: Optional[str] = None):
+    def cache_step(self, camera_images: dict, joint_angles: np.ndarray,
+                   language_instruction: Optional[str] = None,
+                   waypoints: Optional[np.ndarray] = None,
+                   base_pose: Optional[np.ndarray] = None):
         """Cache each step's data in temporary lists
-        
+
         Args:
             camera_images: Dict of camera name to RGB image {name: np.ndarray}
             joint_angles: Robot joint angles
             language_instruction: Language instruction for the task
+            waypoints: A* planned waypoints [num_waypoints, 3] (set once per episode)
+            base_pose: Robot base pose in global coordinates [3] (x, y, theta)
         """
         if self.task_instructions is None and language_instruction is not None:
             self.task_instructions = language_instruction
         for camera_name, image in camera_images.items():
             self.temp_cameras[camera_name].append(image)
         self.temp_agent_pose.append(joint_angles)
+
+        # Store waypoints (only set once per episode)
+        if waypoints is not None and self.temp_waypoints is None:
+            self.temp_waypoints = waypoints
+
+        # Store base pose trajectory
+        if base_pose is not None:
+            self.temp_base_pose.append(base_pose)
+
         if language_instruction is not None:
             self.temp_language_instruction = language_instruction
         
@@ -128,22 +169,26 @@ class DataCollector:
         if self.episode_count >= self.max_episodes:
             self.close()
             return
-            
+
         # Add the final action
         self.temp_actions = self.temp_agent_pose[1:] + [final_joint_positions]
-        
+
         # Convert lists to numpy arrays
         camera_data = {
-            name: np.array(images) 
+            name: np.array(images)
             for name, images in self.temp_cameras.items()
         }
         agent_pose_data = np.array(self.temp_agent_pose)
         actions_data = np.array(self.temp_actions)
-        
+
+        # Convert waypoints and base_pose to numpy arrays
+        waypoints_data = np.array(self.temp_waypoints) if self.temp_waypoints is not None else None
+        base_pose_data = np.array(self.temp_base_pose) if len(self.temp_base_pose) > 0 else None
+
         # Create individual episode file path
         episode_name = f"episode_{self.episode_count:04d}"
         episode_path = os.path.join(self.session_dir, f"{episode_name}.h5")
-        
+
         # Submit writing task to process pool
         future = self.process_pool.submit(
             _write_episode_data,
@@ -153,6 +198,8 @@ class DataCollector:
             agent_pose_data,
             actions_data,
             self.temp_language_instruction,
+            waypoints_data,
+            base_pose_data,
             self.compression
         )
         self.pending_futures.append(future)
@@ -162,16 +209,18 @@ class DataCollector:
             "tasks": [self.task_instructions] if self.task_instructions else [],
             "length": len(self.temp_agent_pose)
         }
-        
+
         with open(self.episode_file_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(info, ensure_ascii=False) + "\n")
-        
+
         # Clear cache
         for camera_name in self.temp_cameras:
             self.temp_cameras[camera_name] = []
         self.temp_agent_pose = []
         self.temp_actions = []
         self.temp_language_instruction = None
+        self.temp_waypoints = None  # Reset waypoints for next episode
+        self.temp_base_pose = []    # Reset base_pose for next episode
         
         # Increment episode count
         self.episode_count += 1
@@ -183,6 +232,8 @@ class DataCollector:
         self.temp_agent_pose = []
         self.temp_actions = []
         self.temp_language_instruction = None
+        self.temp_waypoints = None  # Clear waypoints
+        self.temp_base_pose = []    # Clear base_pose
         self.task_instructions = None
         
     def close(self, merge=False):
