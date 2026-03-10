@@ -1,0 +1,15 @@
+assets:
+- name: Basic_Methanolysis_of_an_Acetate_Ester
+  barrier_image_path: gemini_scene_19/Basic_Methanolysis_of_an_Acetate_Ester_20260112_202101/Basic.png
+  scene_asset_path: Basic_Methanolysis_of_an_Acetate_Ester_20260112_202101/Basic_Methanolysis_of_an_Acetate_Ester_room_isaacsim.usd
+  scene_scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  offset_radius: 0.6
+  x_bounds:
+  - 0
+  - 9
+  y_bounds:
+  - 0
+  - 9

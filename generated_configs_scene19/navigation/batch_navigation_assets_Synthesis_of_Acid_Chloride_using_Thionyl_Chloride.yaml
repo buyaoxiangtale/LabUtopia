@@ -1,0 +1,15 @@
+assets:
+- name: Synthesis_of_Acid_Chloride_using_Thionyl_Chloride
+  barrier_image_path: gemini_scene_19/Synthesis_of_Acid_Chloride_using_Thionyl_Chloride_20260112_202101/syna.png
+  scene_asset_path: Synthesis_of_Acid_Chloride_using_Thionyl_Chloride_20260112_202101/Synthesis_of_Acid_Chloride_using_Thionyl_Chloride_room_isaacsim.usd
+  scene_scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  offset_radius: 0.6
+  x_bounds:
+  - 0
+  - 9
+  y_bounds:
+  - 0
+  - 9

@@ -1,0 +1,15 @@
+assets:
+- name: Preparation_of_Phenylphosphonic_Dichloride
+  barrier_image_path: gemini_scene_19/Preparation_of_Phenylphosphonic_Dichloride_20260112_202101/pre_P.png
+  scene_asset_path: Preparation_of_Phenylphosphonic_Dichloride_20260112_202101/Preparation_of_Phenylphosphonic_Dichloride_room_isaacsim.usd
+  scene_scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  offset_radius: 0.6
+  x_bounds:
+  - 0
+  - 9
+  y_bounds:
+  - 0
+  - 9

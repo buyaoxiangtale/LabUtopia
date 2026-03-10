@@ -1,0 +1,15 @@
+assets:
+- name: Deprotection_of_Pyrrolidone_Derivative_TFA_Method
+  barrier_image_path: gemini_scene_19/Deprotection_of_Pyrrolidone_Derivative_TFA_Method_20260112_202101/dep_pr.png
+  scene_asset_path: Deprotection_of_Pyrrolidone_Derivative_TFA_Method_20260112_202101/Deprotection_of_Pyrrolidone_Derivative_TFA_Method_room_isaacsim.usd
+  scene_scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  offset_radius: 0.6
+  x_bounds:
+  - 0
+  - 9
+  y_bounds:
+  - 0
+  - 9

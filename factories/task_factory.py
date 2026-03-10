@@ -19,6 +19,7 @@ from tasks.navigation_task_new import NavigationTaskNew
 from tasks.navigation_task_new_cp import NavigationTaskNewCP
 from tasks.navigation_task_new_cp_cp import NavigationTaskNewCPCP
 from tasks.navigation_task_test_weizi import NavigationTaskTestWeizi
+from tasks.close_lid_task import CloseLidTask
 
 _task_registry: Dict[str, Type[BaseTask]] = {}
 
@@ -52,3 +53,4 @@ register_task("navigation_new_cp", NavigationTaskNewCP)   # 顺序式导航任�
 register_task("navigation_new_cp_cp", NavigationTaskNewCPCP)   # 顺序式导航任务  
 register_task("navigation_test_weizi", NavigationTaskTestWeizi)   # 顺序式导航任务  
 register_task("mobile_pick", MobilePickTask)
+register_task("close_lid", CloseLidTask)

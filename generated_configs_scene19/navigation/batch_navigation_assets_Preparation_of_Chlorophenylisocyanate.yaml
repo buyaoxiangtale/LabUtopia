@@ -1,0 +1,15 @@
+assets:
+- name: Preparation_of_Chlorophenylisocyanate
+  barrier_image_path: gemini_scene_19/Preparation_of_Chlorophenylisocyanate_20260112_202101/preC.png
+  scene_asset_path: Preparation_of_Chlorophenylisocyanate_20260112_202101/Preparation_of_Chlorophenylisocyanate_room_isaacsim.usd
+  scene_scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  offset_radius: 0.6
+  x_bounds:
+  - 0
+  - 9
+  y_bounds:
+  - 0
+  - 9

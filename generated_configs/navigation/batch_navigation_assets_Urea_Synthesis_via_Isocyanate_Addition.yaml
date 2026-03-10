@@ -1,0 +1,15 @@
+assets:
+- name: Urea_Synthesis_via_Isocyanate_Addition
+  barrier_image_path: gemini_3_flash_preview_1_16/Urea_Synthesis_via_Isocyanate_Addition_20260112_202101/Urea.png
+  scene_asset_path: Urea_Synthesis_via_Isocyanate_Addition_20260112_202101/Urea_Synthesis_via_Isocyanate_Addition_room_isaacsim.usd
+  scene_scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  offset_radius: 0.6
+  x_bounds:
+  - 0
+  - 9
+  y_bounds:
+  - 0
+  - 9

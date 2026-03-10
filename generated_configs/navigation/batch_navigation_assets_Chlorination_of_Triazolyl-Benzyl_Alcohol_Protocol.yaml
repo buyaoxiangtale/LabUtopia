@@ -1,0 +1,15 @@
+assets:
+- name: Chlorination_of_Triazolyl-Benzyl_Alcohol_Protocol
+  barrier_image_path: gemini_3_flash_preview_1_16/Chlorination_of_Triazolyl-Benzyl_Alcohol_Protocol_20260112_202101/Chlor.png
+  scene_asset_path: Chlorination_of_Triazolyl-Benzyl_Alcohol_Protocol_20260112_202101/Chlorination_of_Triazolyl-Benzyl_Alcohol_Protocol_room_isaacsim.usd
+  scene_scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  offset_radius: 0.6
+  x_bounds:
+  - 0
+  - 9
+  y_bounds:
+  - 0
+  - 9

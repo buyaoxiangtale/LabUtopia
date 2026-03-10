@@ -1,0 +1,72 @@
+name: level5_Navigation_Deprotection_and_Cyclization_of_an_Indole_Derivati
+task_type: navigation_task_test_weizi
+controller_type: navigation_parquet
+mode: collect
+usd_path: gemini_scene_19/Deprotection_and_Cyclization_of_an_Indole_Derivati_20260112_202101/Deprotection_and_Cyclization_of_an_Indole_Derivati_room_isaacsim.usd
+max_episodes: 100
+infer:
+  type: local
+  obs_names:
+    camera_1_rgb: camera_1_rgb
+    camera_2_rgb: camera_2_rgb
+  policy_model_path: ''
+  policy_config_path: ''
+  normalizer_path: ''
+  host: 127.0.0.1
+  port: 8000
+  n_obs_steps: 1
+  timeout: 30
+  max_retries: 3
+task:
+  max_steps: 4000
+  navigation_config_path: generated_configs_scene19/navigation/batch_navigation_assets_Deprotection_and_Cyclization_of_an_Indole_Derivati.yaml
+  goal_pairs:
+  - start:
+    - 0.0
+    - 0.0
+    - 0.0
+    end:
+    - 0.0
+    - 0.0
+    - 0.0
+  max_linear_speed: 0.6
+  max_angular_speed: 1.5
+  position_threshold: 0.08
+  angle_threshold: 0.1
+cameras:
+- prim_path: /World/Ridgebase/base_link/Camera_03
+  name: observation
+  resolution:
+  - 256
+  - 256
+  image_type: rgb+depth
+  clipping_range:
+  - 0.1
+  - 10.0
+robot:
+  type: ridgebase
+  position:
+  - 0.0
+  - 0.0
+  - 0.0
+dataset:
+  type: parquet_format
+  chunk_size: 1000
+  save_videos: true
+  save_images: true
+  video:
+    rgb_codec: mp4v
+    rgb_fps: 30
+    depth_codec: mp4v
+    depth_fps: 30
+    depth_colormap: jet
+  image:
+    rgb_format: jpg
+    rgb_quality: 95
+    depth_format: png
+    depth_normalize: true
+    depth_colormap: jet
+collector:
+  type: parquet_format
+multi_run:
+  run_dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}

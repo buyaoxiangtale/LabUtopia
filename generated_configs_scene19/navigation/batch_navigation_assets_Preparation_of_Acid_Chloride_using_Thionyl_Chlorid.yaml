@@ -1,0 +1,15 @@
+assets:
+- name: Preparation_of_Acid_Chloride_using_Thionyl_Chlorid
+  barrier_image_path: gemini_scene_19/Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101/preofA.png
+  scene_asset_path: Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_20260112_202101/Preparation_of_Acid_Chloride_using_Thionyl_Chlorid_room_isaacsim.usd
+  scene_scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  offset_radius: 0.6
+  x_bounds:
+  - 0
+  - 9
+  y_bounds:
+  - 0
+  - 9

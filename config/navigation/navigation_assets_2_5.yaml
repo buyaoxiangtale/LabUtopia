@@ -1,0 +1,8 @@
+assets:
+- name: "lab_3"
+  barrier_image_path: "/media/pjlab/8ba9685c-f73f-4c1d-bb10-bcce2f7177ed/2_5_资产/障碍地图.png"
+  scene_asset_path: "/media/pjlab/8ba9685c-f73f-4c1d-bb10-bcce2f7177ed/2_5_资产/Alkylation_of_Ethyl_Acetoacetate_with_Bis_4-fluoro_room_isaacsim.usd"
+  scene_scale: [ 1.0, 1.0, 1.0 ]
+  offset_radius: 0.6
+  x_bounds: [0, 9]
+  y_bounds: [0, 9]

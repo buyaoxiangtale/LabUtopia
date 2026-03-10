@@ -1,0 +1,87 @@
+name: Level1_close_lid
+
+task_type: "close_lid"
+controller_type: "close_lid"
+
+mode: "collect"
+usd_path: "assets/chemistry_lab/lab_001/lab_001.usd"
+max_episodes: 5
+
+infer:
+  type: "local"
+  obs_names: {"camera_1_rgb": 'camera_1_rgb', "camera_2_rgb": 'camera_2_rgb'}
+  policy_model_path: ""
+  policy_config_path: ""
+  normalizer_path: ""
+  host: "127.0.0.1"
+  port: 8000
+  n_obs_steps: 1
+  timeout: 30
+  max_retries: 3
+
+task:
+  max_steps: 1500
+  lid_type: "centrifuge"
+  # 两阶段关闭:
+  # 1. 圆弧抓取拉动: 从90度拉到约15度 (arc_close_angle = 75)
+  # 2. 按压关闭: 从15度压到0度
+  arc_close_angle: 75.0     # 圆弧运动关闭的角度 (90-75=15度时松手)
+  final_close_angle: 90.0   # 总关闭角度 (完全关闭)
+  lid_length: 0.17          # 盖子长度: 从铰链到前边缘约17cm
+  # Sub-object paths within the centrifuge USD (centrifuge_eppendorf_5430.usd)
+  # The USD has structure: /World/thermal_mixer/Group (lid) and /World/thermal_mixer/Group_01 (body)
+  # When loaded with prim_path="/World/centrifuge", it becomes:
+  #   /World/centrifuge/World/thermal_mixer/Group
+  #
+  # Group: lid (the part to close) - contains lid_visual_0 and RevoluteJoint
+  # Group_01: body (the base) - contains body_visual_* meshes
+  #
+  # 铰链位置 (from RevoluteJoint localPos): Y=0.224, Z=0.191
+  lid_path: "World/thermal_mixer/Group"
+  body_path: "World/thermal_mixer/Group_01"
+  hinge_path: null  # Will be estimated - 铰链在盖子后边缘
+  joint_path: "World/thermal_mixer/Group/RevoluteJoint"
+  obj_paths:
+    - path: "/World/centrifuge"
+      usd_path: "assets/chemistry_lab/lab_001/centrifuge_eppendorf_5430.usd"
+      position_range:
+        x: [0.30, 0.40]
+        y: [-0.10, 0.10]
+        z: [0.71, 0.71]
+
+cameras:
+  - prim_path: "/World/Camera1"
+    name: "camera_1"
+    translation: [-0.3, 0.8, 1.2]
+    resolution: [256, 256]
+    focal_length: 2.5
+    orientation: [-0.2297, -0.18336, 0.59631, 0.74701]
+    image_type: "rgb"
+
+  - prim_path: "/World/Camera2"
+    name: "camera_2"
+    translation: [-0.6, 0.0, 1.5]
+    resolution: [256, 256]
+    focal_length: 3
+    orientation: [0.69035, 0.15304, -0.15304, -0.69035]
+    image_type: "rgb"
+
+  - prim_path: "/World/Franka/panda_hand/arm_camera"
+    name: "camera_3"
+    resolution: [256, 256]
+    image_type: "rgb"
+
+robot:
+  type: "franka"
+  position: [-0.35, 0.0, 0.71]
+
+collector:
+  type: "default"
+  compression: gzip
+
+hydra:
+  run:
+    dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}
+
+multi_run:
+  run_dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}

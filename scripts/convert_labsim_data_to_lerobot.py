@@ -26,19 +26,35 @@ from concurrent.futures import ProcessPoolExecutor
 import queue
 import time
 
-# Try to import LeRobot modules
+# Try to import LeRobot modules (支持新旧版本)
 try:
-    from lerobot.common.datasets.lerobot_dataset import HF_LEROBOT_HOME
-    from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
+    # lerobot >= 0.4.0
+    from lerobot.datasets.lerobot_dataset import HF_LEROBOT_HOME
+    from lerobot.datasets.lerobot_dataset import LeRobotDataset
     LEROBOT_AVAILABLE = True
 except ImportError:
-    LEROBOT_AVAILABLE = False
-    print("Warning: LeRobot not installed, please run: pip install lerobot")
+    try:
+        # lerobot < 0.4.0
+        from lerobot.common.datasets.lerobot_dataset import HF_LEROBOT_HOME
+        from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
+        LEROBOT_AVAILABLE = True
+    except ImportError:
+        LEROBOT_AVAILABLE = False
+        print("Warning: LeRobot not installed, please run: pip install lerobot")
 
 
 def get_image_shape_from_h5(h5_file: h5py.File, camera_name: str) -> tuple:
     """Get image shape from HDF5 file"""
-    # Get camera data shape from first episode group
+    # 首先检查根级别是否有相机数据（多文件模式）
+    if camera_name in h5_file:
+        dataset = h5_file[camera_name]
+        if hasattr(dataset, 'shape'):
+            if len(dataset.shape) == 4:  # [T, H, W, C]
+                return dataset.shape[1:]  # Return [H, W, C]
+            elif len(dataset.shape) == 3:  # [H, W, C]
+                return dataset.shape
+    
+    # Get camera data shape from first episode group (单文件模式)
     for key in h5_file.keys():
         episode_group = h5_file[key]
         if isinstance(episode_group, h5py.Group) and camera_name in episode_group:
@@ -54,6 +70,15 @@ def get_image_shape_from_h5(h5_file: h5py.File, camera_name: str) -> tuple:
 
 def get_state_shape_from_h5(h5_file: h5py.File) -> tuple:
     """Get state data shape from HDF5 file"""
+    # 首先检查根级别（多文件模式）
+    if "agent_pose" in h5_file:
+        dataset = h5_file["agent_pose"]
+        if hasattr(dataset, 'shape'):
+            if len(dataset.shape) == 2:  # [T, num_joints]
+                return (dataset.shape[1],)  # Return [num_joints]
+            elif len(dataset.shape) == 1:  # [num_joints]
+                return (dataset.shape[0],)
+    
     # Get state data shape from first episode group
     for key in h5_file.keys():
         episode_group = h5_file[key]
@@ -70,6 +95,15 @@ def get_state_shape_from_h5(h5_file: h5py.File) -> tuple:
 
 def get_action_shape_from_h5(h5_file: h5py.File) -> tuple:
     """Get action data shape from HDF5 file"""
+    # 首先检查根级别（多文件模式）
+    if "actions" in h5_file:
+        dataset = h5_file["actions"]
+        if hasattr(dataset, 'shape'):
+            if len(dataset.shape) == 2:  # [T, num_joints]
+                return (dataset.shape[1],)  # Return [num_joints]
+            elif len(dataset.shape) == 1:  # [num_joints]
+                return (dataset.shape[0],)
+    
     # Get action data shape from first episode group
     for key in h5_file.keys():
         episode_group = h5_file[key]
@@ -88,13 +122,23 @@ def detect_camera_names(h5_file: h5py.File) -> list:
     """Detect camera names in HDF5 file"""
     camera_names = []
     
-    # First find an episode group to detect camera names
+    # 首先检查根级别（多文件模式）
+    for data_key in h5_file.keys():
+        if data_key not in ["agent_pose", "actions", "language_instruction"]:
+            dataset = h5_file[data_key]
+            if hasattr(dataset, 'shape') and len(dataset.shape) >= 3:
+                camera_names.append(data_key)
+    
+    if camera_names:
+        return camera_names
+    
+    # 然后检查 episode group（单文件模式）
     for key in h5_file.keys():
         episode_group = h5_file[key]
         if isinstance(episode_group, h5py.Group):
             # Look for camera data in episode group
             for data_key in episode_group.keys():
-                if data_key not in ["agent_pose", "actions"]:
+                if data_key not in ["agent_pose", "actions", "language_instruction"]:
                     # Check if it's image data (by shape)
                     dataset = episode_group[data_key]
                     if hasattr(dataset, 'shape') and len(dataset.shape) >= 3:
@@ -176,7 +220,22 @@ def process_episode(args):
         frame_data_list = []
         
         with h5py.File(episode_file, 'r') as h5_file:
-            episode_group = h5_file[episode_name]
+            # 支持两种模式:
+            # 1. episode_name 不为 None: 单文件多 episode 模式
+            # 2. episode_name 为 None: 多文件模式，每个文件是一个 episode
+            if episode_name is not None:
+                episode_group = h5_file[episode_name]
+            else:
+                # 多文件模式: 查找文件中的第一个 group 或使用根
+                keys = list(h5_file.keys())
+                if len(keys) == 1 and isinstance(h5_file[keys[0]], h5py.Group):
+                    # 如果只有一个 group，使用它
+                    episode_group = h5_file[keys[0]]
+                    episode_name = keys[0]
+                else:
+                    # 否则直接使用文件根
+                    episode_group = h5_file
+                    episode_name = episode_file.name
             
             # Get time steps
             if camera_names and camera_names[0] in episode_group:
@@ -284,10 +343,27 @@ def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int =
         print(f"Error: Data directory does not exist: {data_path}")
         return
 
-    # Find episode_data.hdf5 file
+    # 支持两种数据格式：
+    # 1. 单个 episode_data.hdf5 文件
+    # 2. dataset/ 目录下的分散 episode_XXXX.h5 文件
     episode_file = data_path / "episode_data.hdf5"
-    if not episode_file.exists():
-        print(f"Error: episode_data.hdf5 file not found at: {episode_file}")
+    dataset_dir = data_path / "dataset"
+
+    if episode_file.exists():
+        # 格式1: 单个 HDF5 文件
+        episode_files = [episode_file]
+        single_file_mode = True
+        print(f"Found single HDF5 file: {episode_file}")
+    elif dataset_dir.exists():
+        # 格式2: 分散的 episode_XXXX.h5 文件
+        episode_files = sorted(dataset_dir.glob("episode_*.h5"))
+        if not episode_files:
+            print(f"Error: No episode_*.h5 files found in {dataset_dir}")
+            return
+        single_file_mode = False
+        print(f"Found {len(episode_files)} episode files in {dataset_dir}")
+    else:
+        print(f"Error: No episode_data.hdf5 or dataset/ directory found at: {data_path}")
         return
 
     # Clean output directory
@@ -295,10 +371,11 @@ def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int =
     if output_path.exists():
         shutil.rmtree(output_path)
 
-    print(f"Reading dataset: {episode_file}")
+    # First read HDF5 file(s) to determine data structure
+    first_file = episode_files[0]
+    print(f"Reading first episode file to detect structure: {first_file}")
     
-    # First read HDF5 file to determine data structure
-    with h5py.File(episode_file, 'r') as h5_file:
+    with h5py.File(first_file, 'r') as h5_file:
         # Detect camera names
         camera_names = detect_camera_names(h5_file)
         print(f"Detected cameras: {camera_names}")
@@ -361,27 +438,37 @@ def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int =
     # Read and convert data using multiprocessing
     print(f"Converting data using {num_processes} processes...")
     
-    # Get list of episodes for parallel processing
-    episode_names = []
-    with h5py.File(episode_file, 'r') as h5_file:
-        for episode_name in h5_file.keys():
-            episode_group = h5_file[episode_name]
-            if isinstance(episode_group, h5py.Group):
-                episode_names.append(episode_name)
-    
-    print(f"Found {len(episode_names)} episodes to process")
-    
-    # Prepare arguments for parallel processing
-    process_args = [
-        (episode_file, episode_name, camera_names, source_fps, fps, image_shape, state_shape, action_shape)
-        for episode_name in episode_names
-    ]
+    if single_file_mode:
+        # 单文件模式: 从单个 HDF5 文件中读取多个 episode
+        episode_names = []
+        with h5py.File(episode_file, 'r') as h5_file:
+            for episode_name in h5_file.keys():
+                episode_group = h5_file[episode_name]
+                if isinstance(episode_group, h5py.Group):
+                    episode_names.append(episode_name)
+        
+        print(f"Found {len(episode_names)} episodes in single file")
+        
+        # Prepare arguments for parallel processing
+        process_args = [
+            (episode_file, episode_name, camera_names, source_fps, fps, image_shape, state_shape, action_shape)
+            for episode_name in episode_names
+        ]
+    else:
+        # 多文件模式: 每个 HDF5 文件对应一个 episode
+        print(f"Found {len(episode_files)} episode files")
+        
+        # Prepare arguments for parallel processing
+        process_args = [
+            (ep_file, None, camera_names, source_fps, fps, image_shape, state_shape, action_shape)
+            for ep_file in episode_files
+        ]
     
     # Use multiprocessing to process episodes in parallel
     episode_count = 0
     with ProcessPoolExecutor(max_workers=num_processes) as executor:
         # Submit all tasks
-        future_to_episode = {executor.submit(process_episode, args): args[1] for args in process_args}
+        future_to_episode = {executor.submit(process_episode, args): args[1] if args[1] else str(args[0]) for args in process_args}
         
         # Process results as they complete
         for future in future_to_episode:

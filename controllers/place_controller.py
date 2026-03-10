@@ -69,7 +69,7 @@ class PlaceTaskController(BaseController):
         target_position = self.state['target_position']
         
         if self.current_phase == Phase.PICKING:
-            return object_pos[2] > self.initial_position[2] + 0.1
+            return object_pos[2] > self.initial_position[2] + 0.02
         elif self.current_phase == Phase.PLACING:
             success = (np.linalg.norm(object_pos[:2] - target_position[:2]) < 0.05 and abs(object_pos[2] - self.initial_position[2]) < 0.05)
             return success

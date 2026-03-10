@@ -308,7 +308,7 @@ class NavigationTaskNewCPCP(BaseTask):
             print(f"Warning: 路径规划失败，起点 {start_point} 终点 {end_point}")
             return False
 
-        merged_path_real, _ = path_result
+        merged_path_real, _, _ = path_result
         waypoints = []
         for i, (x, y, _) in enumerate(merged_path_real):
             if i < len(merged_path_real) - 1:

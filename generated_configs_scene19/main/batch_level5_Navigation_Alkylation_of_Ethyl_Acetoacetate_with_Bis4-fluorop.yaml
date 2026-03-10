@@ -1,0 +1,88 @@
+name: level5_Navigation_Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop
+
+task_type: "navigation_task_test_weizi"
+controller_type: "navigation_parquet"
+mode: "collect"
+
+# USD 场景文件
+usd_path: "gemini_scene_19/Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop_20260112_202101/Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop_room_isaacsim.usd"
+
+# 最大 episode 数量
+max_episodes: 200
+
+# ==================== 推断配置（占位） ====================
+infer:
+  type: "local"
+  obs_names: {"camera_1_rgb": 'camera_1_rgb', "camera_2_rgb": 'camera_2_rgb'}
+  policy_model_path: ""
+  policy_config_path: ""
+  normalizer_path: ""
+  host: "127.0.0.1"
+  port: 8000
+  n_obs_steps: 1
+  timeout: 30
+  max_retries: 3
+
+# ==================== 任务配置 ====================
+task:
+  max_steps: 4000
+  navigation_config_path: "generated_configs_scene19/navigation/batch_navigation_assets_Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop.yaml"
+
+  # 如果你用 --force-single-zero-goal 生成的配置，这里就是单个 [0,0,0]
+  goal_pairs:
+    - start: [0.0, 0.0, 0.0]
+      end:   [0.0, 0.0, 0.0]
+
+  max_linear_speed: 0.6
+  max_angular_speed: 1.5
+  position_threshold: 0.08
+  angle_threshold: 0.1
+
+# ==================== 相机配置 ====================
+cameras:
+  - prim_path: "/World/Ridgebase/base_link/Camera_03"
+    name: "observation"
+    resolution: [256, 256]
+    image_type: "rgb+depth"
+    # 深度有效范围（米）
+    clipping_range: [0.1, 6.5535]
+
+# ==================== 机器人配置 ====================
+robot:
+  type: "ridgebase"
+  position: [0.0, 0.0, 0.0]
+
+# ==================== 数据集配置 ====================
+dataset:
+  type: "parquet_format"
+  chunk_size: 1000
+  save_videos: true
+  save_images: true
+
+  video:
+    rgb_codec: "mp4v"
+    rgb_fps: 30
+    depth_codec: "mp4v"
+    depth_fps: 30
+    depth_colormap: "jet"  # 仅影响 depth 视频可视化（视频还是 8-bit）
+
+  image:
+    rgb_format: "jpg"
+    rgb_quality: 95
+
+    # 关键：depth_normalize=false 才会保存单通道 uint16
+    depth_format: "png"
+    depth_normalize: false
+
+    # 下面三个是我在采集器里加的控制项（可选；不写也会默认等价）
+    depth_u16_scale: 10000     # depth_u16 = round(depth_m * 10000)
+    depth_u16_min_m: 0.1       # <0.1m 或无效 -> 0（黑）
+    depth_u16_max_m: 6.5535    # >6.5535m -> 65535（白）
+
+# ==================== 收集器配置 ====================
+collector:
+  type: "parquet_format"
+
+# ==================== 多轮运行配置 ====================
+multi_run:
+  run_dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}

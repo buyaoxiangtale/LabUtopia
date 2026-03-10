@@ -42,7 +42,8 @@ class OpenController(BaseController):
                 raise Exception(f"events_dt length must be 8, got {len(self._events_dt)}")
 
         self._position_threshold = 0.01 / get_stage_units()
-        
+        self.start_position = None  # 在 _event == 2 时设置，用于门开合方向判断
+
     def forward(
         self,
         handle_position: np.ndarray,
@@ -201,6 +202,13 @@ class OpenController(BaseController):
             target_joint_positions = ArticulationAction(joint_positions=target_joint_positions)
             self.start_position = handle_position.copy()
         elif self._event == 3:
+            if revolute_joint_position is None:
+                raise ValueError(
+                    "revolute_joint_position is required for door opening. "
+                    "Ensure the task provides it via object_utils.get_revolute_joint_positions(joint_path)."
+                )
+            if self.start_position is None:
+                self.start_position = handle_position.copy()
             if self.position_rotation_interp_iter is None:
                 if revolute_joint_position[1] > self.start_position[1]:
                     angle = -angle
@@ -235,7 +243,7 @@ class OpenController(BaseController):
         elif self._event == 6:
             handle_position = self.trans_interp.copy()
             handle_position[0] -= 0.04
-            if revolute_joint_position[1] > self.start_position[1]:
+            if self.start_position is not None and revolute_joint_position is not None and revolute_joint_position[1] > self.start_position[1]:
                 handle_position[1] += 0.04
             else:
                 handle_position[1] -= 0.04
@@ -262,6 +270,7 @@ class OpenController(BaseController):
         self._t = 0
         self.position_rotation_interp_iter = None
         self._start = True
+        self.start_position = None
 
     def is_done(self) -> bool:
         """Check if controller has completed all states"""

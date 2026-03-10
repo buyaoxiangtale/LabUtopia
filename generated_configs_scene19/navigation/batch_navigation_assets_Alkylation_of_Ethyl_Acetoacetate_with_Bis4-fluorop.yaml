@@ -1,0 +1,15 @@
+assets:
+- name: Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop
+  barrier_image_path: gemini_scene_19/Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop_20260112_202101/Alky.png
+  scene_asset_path: Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop_20260112_202101/Alkylation_of_Ethyl_Acetoacetate_with_Bis4-fluorop_room_isaacsim.usd
+  scene_scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  offset_radius: 0.6
+  x_bounds:
+  - 0
+  - 9
+  y_bounds:
+  - 0
+  - 9

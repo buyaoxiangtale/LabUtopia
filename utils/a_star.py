@@ -6,10 +6,18 @@ import numpy as np
 from typing import Optional, Tuple, List
 
 
-def astar(grid, start, end):
-    """A* pathfinding algorithm with Manhattan heuristic and diagonal movement."""
+def astar(grid, start, end, max_iterations=100000):
+    """A* pathfinding algorithm with Manhattan heuristic and diagonal movement.
     
-
+    Args:
+        grid: 2D grid where 0 is free space and 1 is obstacle
+        start: Starting position (x, y)
+        end: End position (x, y)
+        max_iterations: Maximum number of nodes to explore to prevent infinite loops
+    
+    Returns:
+        List of positions from start to end, or None if no path found
+    """
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1),]
                 #  (-1, -1), (-1, 1), (1, -1), (1, 1)]
     open_heap = []
@@ -17,29 +25,49 @@ def astar(grid, start, end):
     came_from = {}
     g_scores = {start: 0}
     f_scores = {start: heuristic(start, end)}
+    closed = set()  # 已扩展过的节点，避免重复扩展导致堆爆炸
+    iterations = 0  # 迭代计数器，防止无限循环
 
     while open_heap:
+        iterations += 1
+        if iterations > max_iterations:
+            print(f"A* search exceeded maximum iterations ({max_iterations}), aborting.")
+            return None
+            
         current_f, cx, cy = heapq.heappop(open_heap)
+        
+        # 跳过已经处理过的节点（避免处理堆中的重复项）
+        if (cx, cy) in closed:
+            continue
+            
         if (cx, cy) == end:
             return reconstruct_path(came_from, end)
+            
+        closed.add((cx, cy))
 
         for dx, dy in directions:
             nx, ny = cx + dx, cy + dy
+            
+            # 边界检查和障碍物检查
             if (
                 not (0 <= nx < len(grid) and 0 <= ny < len(grid[0]))
                 or grid[nx][ny] != 0
             ):
                 continue
 
-            
+            # 跳过已经处理过的节点，避免重复加入堆
+            if (nx, ny) in closed:
+                continue
 
             move_cost = 1.414 if dx != 0 and dy != 0 else 1
             tentative_g = g_scores[(cx, cy)] + move_cost
             
+            # 只有当找到更好的路径时才更新并加入堆
             if tentative_g < g_scores.get((nx, ny), float("inf")):
                 came_from[(nx, ny)] = (cx, cy)
                 g_scores[(nx, ny)] = tentative_g
                 f = tentative_g + heuristic((nx, ny), end)
+                f_scores[(nx, ny)] = f
                 heapq.heappush(open_heap, (f, nx, ny))
 
     return None
@@ -151,11 +179,13 @@ def save_path_image(grid_path, path, save_path=None):
     plt.legend()
     plt.grid(True)
     
-    if save_path:
-        plt.savefig(save_path)
-        plt.close()
-    else:
-        plt.show()
+    try:
+        if save_path:
+            plt.savefig(save_path)
+        else:
+            plt.show()
+    finally:
+        plt.close()  # 避免 figure 常驻内存导致泄漏
 
 
 def plan_navigation_path(task_info: dict) -> Optional[Tuple[List[List[float]], List[List[int]], float]]:
