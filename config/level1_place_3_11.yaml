@@ -1,0 +1,86 @@
+name: Level1_place_3_11
+
+task_type: "place"
+controller_type: "place"
+
+mode: "collect"
+
+usd_path: "assets/chemistry_lab/lab_001/lab_001.usd"
+target_path: "/World/target_plat"
+
+
+max_episodes: 100
+
+infer:
+  type: "remote"
+  obs_names: {"camera_1_rgb": 'camera_1_rgb', "camera_2_rgb": 'camera_2_rgb',camera_3_rgb: 'camera_3_rgb'}
+  
+  policy_model_path: ""
+  policy_config_path: ""
+  normalizer_path: ""
+  
+  host: "127.0.0.1"
+  port: 8000
+  n_obs_steps: 1
+  timeout: 30
+  max_retries: 3
+
+task:
+  max_steps: 2000
+  obj_paths:
+    - path: "/World/beaker2"
+      position_range:
+        x: [0.19, 0.34]
+        y: [0.10, 0.25]
+        z: [0.84, 0.84]
+
+    - path: "/World/target_plat"
+      position_range:
+        x: [0.18, 0.33]
+        y: [-0.32, -0.17]
+        z: [0.776, 0.776]
+
+cameras:
+  # 相机内参对齐真实相机:
+  # K = [[305.81, 0, 321.01], [0, 305.78, 201.38], [0, 0, 1]]
+  # focal_length = fx * horizontal_aperture / image_width = 10.0 mm
+  # horizontal_aperture = 20.955 mm, vertical_aperture = 15.72 mm
+
+  - prim_path: "/World/Camera2"
+    name: "camera_1"
+    translation: [-0.78534, -2.92179, 2.66521]
+    resolution: [640, 480]
+    focal_length: 4
+    euler_angles: [57.79958, -13.20701, -8.18739]  # XYZ欧拉角 (度数)
+    image_type: "rgb"
+
+  - prim_path: "/World/Camera1"
+    name: "camera_2"
+    translation: [-1.67648, 1.72181, 2.30958]
+    resolution: [640, 480]
+    focal_length: 4
+    euler_angles: [59.79964, 0.0, -130.44353]  # XYZ欧拉角 (度数)
+    image_type: "rgb"
+
+  - prim_path: "/World/Franka/panda_hand/arm_camera"
+    name: "camera_3"
+    translation: [-0.2, 0, -0.02]
+    resolution: [640, 480]
+    focal_length: 4
+    orientation: [0.20083, 0.67799, -0.67799, -0.20083]
+    image_type: "rgb"
+
+robot:
+  type: "franka"
+  position: [-0.4, -0, 0.71]
+
+collector:
+  type: "default"
+  compression: gzip
+
+hydra:
+  run:
+    dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}
+
+multi_run:
+  run_dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}

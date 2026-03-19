@@ -6,8 +6,12 @@ from .base_inference_engine import BaseInferenceEngine
 
 try:
     from openpi_client.websocket_client_policy import WebsocketClientPolicy
+    WEBSOCKET_AVAILABLE = True
 except ModuleNotFoundError:
-    print("OpenPI client not found. Please follow the instruction to install openpi-client'")
+    WEBSOCKET_AVAILABLE = False
+    WebsocketClientPolicy = None
+    print("Warning: OpenPI client not found. Remote inference will not be available.")
+    print("To use remote inference, please install: pip install openpi-client")
 
 
 class RemoteInferenceEngine(BaseInferenceEngine):
@@ -23,6 +27,12 @@ class RemoteInferenceEngine(BaseInferenceEngine):
     
     def _init_inference_engine(self):
         """Initialize OpenPI client connection"""
+        if not WEBSOCKET_AVAILABLE:
+            raise ImportError(
+                "OpenPI client not installed. Remote inference requires openpi-client.\n"
+                "Please install with: pip install openpi-client"
+            )
+        
         # Get server connection parameters
         self.host = getattr(self.cfg.infer, 'host', '0.0.0.0')
         self.port = getattr(self.cfg.infer, 'port', None)
@@ -65,10 +75,11 @@ class RemoteInferenceEngine(BaseInferenceEngine):
         for obs_key, obs_tensor in obs_dict.items():
             arr = obs_tensor.cpu().numpy()  # [batch, time, ...]
             if obs_key == 'agent_pose':
+                # OpenPI expects 'observation/state' key (matching GelloInputs)
                 if n_obs_steps == 1:
-                    observation['state'] = arr[0]
+                    observation['observation/state'] = arr[0]
                 else:
-                    observation['state'] = arr[0]
+                    observation['observation/state'] = arr[0]
             else:
                 if n_obs_steps == 1:
                     latest_image = arr[0, -1]  # [H, W, C] or [H, W]

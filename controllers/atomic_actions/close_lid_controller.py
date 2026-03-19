@@ -161,54 +161,64 @@ class CloseLidController(BaseController):
 
         return target_joint_positions
 
-    def _calculate_lid_edge_position(self) -> np.ndarray:
+    def _calculate_lid_edge_position(self, angle_deg: float = 90.0) -> np.ndarray:
         """
-        Calculate the actual front edge position of the open lid.
+        Calculate the lid edge position based on current angle.
 
-        When the lid is open at 90 degrees (vertical):
-        - The lid rotates around X-axis (hinge at back)
-        - Edge rotates from above hinge to in front of hinge
-        - edge_y = hinge_y - lid_length (in front of hinge)
-        - edge_z = hinge_z (at hinge height, NOT above it)
+        Geometry (rotation around X-axis, hinge at back):
+            关闭时 (0°):  盖子水平
+                edge_y = hinge_y - lid_length (在铰链前方)
+                edge_z = hinge_z (与铰链同高)
+            打开时 (90°): 盖子垂直
+                edge_y = hinge_y (边缘Y回到铰链位置)
+                edge_z = hinge_z - lid_length (在铰链下方)
 
-        Geometry:
-            关闭时 (0°):  边缘在铰链正上方
-            打开时 (90°): 边缘在铰链正前方，与铰链同高
+        任意角度 θ:
+            edge_y = hinge_y - lid_length * cos(θ)
+            edge_z = hinge_z - lid_length * sin(θ)
+
+        Args:
+            angle_deg: Current lid angle (0=closed horizontal, 90=open vertical)
 
         Returns:
             np.ndarray: Position of the lid's front edge
         """
+        angle_rad = np.deg2rad(angle_deg)
+
         edge_position = self.hinge_position.copy()
-        # When lid is vertical (open 90°):
-        # - Edge is in front of hinge (negative Y direction) by lid_length
-        # - Edge is at the SAME height as hinge (not above)
-        edge_position[1] -= self.lid_length  # Y: 在铰链前方 lid_length 距离
-        # edge_position[2] 保持不变 = hinge_z (与铰链同高)
+        # Y方向: 向前偏移 lid_length * cos(angle)
+        edge_position[1] -= self.lid_length * np.cos(angle_rad)
+        # Z方向: 向下偏移 lid_length * sin(angle)
+        edge_position[2] -= self.lid_length * np.sin(angle_rad)
+
         return edge_position
 
-    def _calculate_lid_center_position(self) -> np.ndarray:
+    def _calculate_lid_center_position(self, angle_deg: float = 15.0) -> np.ndarray:
         """
-        Calculate the center position of the lid.
+        Calculate the lid center position based on current angle.
 
-        When lid is nearly horizontal (after arc motion at ~15°):
-        - Center is halfway between hinge and edge
-        - Center Y = hinge_y (midpoint between hinge and edge)
-        - Center Z ≈ hinge_z (nearly horizontal, close to hinge height)
+        Center is at half the lid length from hinge.
 
-        Geometry:
-            盖子长度 = lid_length
-            铰链位置 Y = hinge_y
-            边缘位置 Y = hinge_y - lid_length
-            中央位置 Y = hinge_y - lid_length/2
+        Geometry (rotation around X-axis):
+            任意角度 θ:
+                center_y = hinge_y - (lid_length/2) * cos(θ)
+                center_z = hinge_z - (lid_length/2) * sin(θ)
+
+        Args:
+            angle_deg: Current lid angle (0=closed, 90=open)
 
         Returns:
             np.ndarray: Position of the lid's center
         """
+        angle_rad = np.deg2rad(angle_deg)
+        half_length = self.lid_length / 2
+
         center_position = self.hinge_position.copy()
-        # Center is halfway between hinge and edge
-        # Center Y = hinge_y - lid_length/2
-        center_position[1] -= self.lid_length / 2
-        # Z stays at hinge level (lid is nearly horizontal after arc motion)
+        # Y方向: 向前偏移 (lid_length/2) * cos(angle)
+        center_position[1] -= half_length * np.cos(angle_rad)
+        # Z方向: 向下偏移 (lid_length/2) * sin(angle)
+        center_position[2] -= half_length * np.sin(angle_rad)
+
         return center_position
 
     def _execute_phase(
@@ -326,19 +336,23 @@ class CloseLidController(BaseController):
 
         elif self._event == 6:
             # Phase 6: Move above the lid CENTER for pressing
-            # The lid is now nearly horizontal, move above its center
+            # The lid is now nearly horizontal after arc motion
             press_orientation = euler_angles_to_quat(
                 [0, 180, 0], degrees=True, extrinsic=False  # Straight down
             )
 
-            # Calculate lid center position for pressing
-            # Center is between hinge and edge, at lid_length/2 from hinge
-            lid_center_position = self._calculate_lid_center_position()
+            # Calculate current lid angle after arc motion
+            # arc_close_angle is how much we closed with arc motion (e.g., 75°)
+            # Current angle = 90° - arc_close_angle (e.g., 15°)
+            current_lid_angle = 90.0 - self.arc_close_angle
+
+            # Calculate lid center position with correct angle
+            lid_center_position = self._calculate_lid_center_position(current_lid_angle)
 
             target_position = lid_center_position.copy()
             target_position[2] += 0.08  # Above the lid center
 
-            print(f"[CloseLidController] Phase 6: Moving to lid center {target_position}")
+            print(f"[CloseLidController] Phase 6: Moving to lid center {target_position} at angle {current_lid_angle}°")
 
             target_joint_positions = self._cspace_controller.forward(
                 target_end_effector_position=target_position,

@@ -187,11 +187,14 @@ class CloseLidTask(SingleObjectTask):
                 hinge_position = None
 
         # If no hinge position, estimate it from lid geometry
-        # Geometry: hinge is at back of lid (+Y), at SAME HEIGHT as edge (not below!)
+        # Geometry: when lid is OPEN (90° vertical):
+        #   - lid_center.Y ≈ hinge.Y (same Y position when vertical)
+        #   - lid_center.Z = hinge.Z - lid_length/2 (center is below hinge)
+        # So: hinge is at +Z direction from lid_center
         if hinge_position is None:
             hinge_position = lid_center.copy()
-            hinge_position[1] += lid_length / 2  # Hinge is at back of lid center
-            # hinge_position[2] stays the same as lid_center (same height as edge)
+            hinge_position[1] -= lid_length / 2  # Hinge is above lid center (when lid is vertical)
+            # hinge_position[1] stays the same as lid_center (same Y when vertical)
             print(f"[CloseLidTask] Estimated hinge position: {hinge_position}")
 
         additional_info = {

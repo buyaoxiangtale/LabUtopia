@@ -25,6 +25,7 @@ import multiprocessing as mp
 from concurrent.futures import ProcessPoolExecutor
 import queue
 import time
+import gc  # 用于手动垃圾回收
 
 # Try to import LeRobot modules (支持新旧版本)
 try:
@@ -316,15 +317,17 @@ def process_episode(args):
         return None, f"Error processing episode {episode_name}: {str(e)}"
 
 
-def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int = 10, robot_type: str = "franka", num_processes: int = 4):
+def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int = 10, robot_type: str = "franka", num_processes: int = 4, output_dir: Optional[str] = None):
     """Main conversion function
     
     Args:
         data_dir: Path to the LabSim dataset directory
+        repo_name: Name for the dataset (e.g., 'username/dataset-name')
         push_to_hub: Whether to push to Hugging Face Hub
         fps: Target fps for conversion
         robot_type: Type of robot (default: franka)
         num_processes: Number of processes for parallel processing (default: 4)
+        output_dir: Custom output directory (default: ~/.cache/huggingface/lerobot/<repo_name>)
     """
     if not LEROBOT_AVAILABLE:
         print("Error: LeRobot not installed, cannot continue conversion")
@@ -366,10 +369,17 @@ def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int =
         print(f"Error: No episode_data.hdf5 or dataset/ directory found at: {data_path}")
         return
 
+    # Set output directory
+    if output_dir:
+        output_path = Path(output_dir)
+    else:
+        output_path = HF_LEROBOT_HOME / repo_name
+    
     # Clean output directory
-    output_path = HF_LEROBOT_HOME / repo_name
     if output_path.exists():
         shutil.rmtree(output_path)
+    
+    print(f"Output directory: {output_path}")
 
     # First read HDF5 file(s) to determine data structure
     first_file = episode_files[0]
@@ -431,8 +441,9 @@ def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int =
         robot_type=robot_type,
         fps=fps,
         features=features,
-        image_writer_threads=8,
-        image_writer_processes=8,
+        image_writer_threads=1,
+        image_writer_processes=0,  # 使用主进程写入，避免额外内存开销
+        root=output_path if output_dir else None,  # 自定义保存路径
     )
 
     # Read and convert data using multiprocessing
@@ -464,34 +475,49 @@ def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int =
             for ep_file in episode_files
         ]
     
-    # Use multiprocessing to process episodes in parallel
+    # Use multiprocessing to process episodes in batches
+    # 分批处理以避免内存溢出
     episode_count = 0
-    with ProcessPoolExecutor(max_workers=num_processes) as executor:
-        # Submit all tasks
-        future_to_episode = {executor.submit(process_episode, args): args[1] if args[1] else str(args[0]) for args in process_args}
+    batch_size = max(1, num_processes)  # 每批处理的 episode 数量
+    
+    for batch_start in range(0, len(process_args), batch_size):
+        batch_args = process_args[batch_start:batch_start + batch_size]
+        print(f"Processing batch {batch_start // batch_size + 1}/{(len(process_args) + batch_size - 1) // batch_size} (episodes {batch_start + 1}-{min(batch_start + batch_size, len(process_args))})")
         
-        # Process results as they complete
-        for future in future_to_episode:
-            episode_name = future_to_episode[future]
-            try:
-                frame_data_list, error = future.result()
-                if error:
-                    print(f"Error: {error}")
+        with ProcessPoolExecutor(max_workers=num_processes) as executor:
+            # Submit batch tasks
+            future_to_episode = {executor.submit(process_episode, args): args[1] if args[1] else str(args[0]) for args in batch_args}
+            
+            # Process results as they complete
+            for future in future_to_episode:
+                episode_name = future_to_episode[future]
+                try:
+                    frame_data_list, error = future.result()
+                    if error:
+                        print(f"Error: {error}")
+                        continue
+                    
+                    print(f"Processing episode: {episode_name} ({len(frame_data_list)} frames)")
+                    
+                    # Add frames to dataset sequentially (thread-safe)
+                    for frame_data in frame_data_list:
+                        task = frame_data.pop("task", "")
+                        dataset.add_frame(frame_data, task=task)
+                    
+                    # Save episode - 这会将数据写入磁盘并释放内存
+                    dataset.save_episode()
+                    episode_count += 1
+                    
+                    # 显式释放内存
+                    del frame_data_list
+                    
+                except Exception as e:
+                    print(f"Exception processing episode {episode_name}: {str(e)}")
                     continue
-                
-                print(f"Processing episode: {episode_name} ({len(frame_data_list)} frames)")
-                
-                # Add frames to dataset sequentially (thread-safe)
-                for frame_data in frame_data_list:
-                    dataset.add_frame(frame_data)
-                
-                # Save episode
-                dataset.save_episode()
-                episode_count += 1
-                
-            except Exception as e:
-                print(f"Exception processing episode {episode_name}: {str(e)}")
-                continue
+        
+        # 每批处理完后强制垃圾回收
+        gc.collect()
+        print(f"Batch completed. Total episodes converted: {episode_count}")
 
     print(f"Successfully converted {episode_count} episodes")
 

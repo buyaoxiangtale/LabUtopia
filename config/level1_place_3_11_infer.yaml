@@ -1,0 +1,115 @@
+name: Level1_place_3_11_infer
+
+task_type: "place"
+controller_type: "place"
+
+mode: "infer"  # 推理模式
+
+usd_path: "assets/chemistry_lab/lab_001/lab_001.usd"
+target_path: "/World/target_plat"
+
+max_episodes: 20  # 推理测试时减少episode数量
+
+# ============ 远程推理配置 ============
+infer:
+  type: "remote"  # 使用远程推理 (连接OpenPI服务器)
+
+  # 观测名称映射: 仿真相机名称 -> OpenPI模型期望的输入名称
+  # 必须与训练时的 RepackTransform 配置一致
+  obs_names:
+    camera_1_rgb: 'observation/image'              # 主相机
+    camera_2_rgb: 'observation/wrist_image'        # 腕部相机
+    camera_3_rgb: 'observation/right_wrist_image'  # 右腕相机
+
+  # OpenPI 服务器连接配置
+  host: "127.0.0.1"  # 服务器地址 (本地)
+  port: 8000         # 服务器端口
+  n_obs_steps: 1     # 观测历史步数
+
+  # 设备配置 (可选: "cuda", "cpu", 或留空自动检测)
+  # RTX 5080 用户建议设为 "cpu" 直到 PyTorch 更新支持 sm_120
+  device: "cpu"
+
+  # 网络配置
+  timeout: 30        # 请求超时时间(秒)
+  max_retries: 3     # 最大重试次数
+
+  # 注意: 远程推理不需要以下本地路径配置
+  # policy_model_path: ""  # 不需要
+  # policy_config_path: "" # 不需要
+  # normalizer_path: ""    # 不需要
+
+task:
+  max_steps: 20000
+  obj_paths:
+    - path: "/World/beaker2"
+      position_range:
+        x: [0.19, 0.34]
+        y: [0.10, 0.25]
+        z: [0.84, 0.84]
+
+    - path: "/World/target_plat"
+      position_range:
+        x: [0.18, 0.33]
+        y: [-0.32, -0.17]
+        z: [0.776, 0.776]
+
+cameras:
+  # 相机内参对齐真实相机:
+  # K = [[305.81, 0, 321.01], [0, 305.78, 201.38], [0, 0, 1]]
+  # focal_length = fx * horizontal_aperture / image_width = 10.0 mm
+  # horizontal_aperture = 20.955 mm, vertical_aperture = 15.72 mm
+
+  # - prim_path: "/World/Camera2"
+  #   name: "camera_1"
+  #   translation: [-0.78534, -2.92179, 2.66521]
+  #   resolution: [640, 480]
+  #   focal_length: 4
+  #   euler_angles: [57.79958, -13.20701, -8.18739]  # XYZ欧拉角 (度数)
+  #   image_type: "rgb"
+
+  # - prim_path: "/World/Camera1"
+  #   name: "camera_2"
+  #   translation: [-1.67648, 1.72181, 2.30958]
+  #   resolution: [640, 480]
+  #   focal_length: 4
+  #   euler_angles: [59.79964, 0.0, -130.44353]  # XYZ欧拉角 (度数)
+  #   image_type: "rgb"
+
+
+  - prim_path: "/World/Camera1"
+    name: "camera_1"
+    translation: [-0.78534, -2.92179, 2.66521]
+    resolution: [640, 480]
+    focal_length: 4
+    euler_angles: [57.79958, -13.20701, -8.18739]  # XYZ欧拉角 (度数)
+    image_type: "rgb"
+
+  - prim_path: "/World/Camera2"
+    name: "camera_2"
+    translation: [-1.67648, 1.72181, 2.30958]
+    resolution: [640, 480]
+    focal_length: 4
+    euler_angles: [59.79964, 0.0, -130.44353]  # XYZ欧拉角 (度数)
+    image_type: "rgb"
+
+  - prim_path: "/World/Franka/panda_hand/arm_camera"
+    name: "camera_3"
+    translation: [-0.2, 0, -0.02]
+    resolution: [640, 480]
+    focal_length: 4
+    orientation: [0.20083, 0.67799, -0.67799, -0.20083]
+    image_type: "rgb"
+
+robot:
+  type: "franka"
+  position: [-0.4, -0, 0.71]
+
+# 推理模式不需要 collector 配置
+
+hydra:
+  run:
+    dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}
+
+multi_run:
+  run_dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}

@@ -128,7 +128,7 @@ class Franka(Robot):
             prim_path=prim_path + "/panda_hand/arm_camera",
             translation=np.array([-0.2, -0, -0.02]),
             frequency=60,
-            resolution=(256, 256),
+            resolution=(640, 480),
             orientation=np.array([0.20083, 0.67799, -0.67799, -0.20083]),
         )
         self.camera.set_local_pose(orientation=np.array([0.20083, 0.67799, -0.67799, -0.20083]), camera_axes="usd")

@@ -15,15 +15,35 @@ class BaseInferenceEngine(ABC):
     def __init__(self, cfg, trajectory_controller):
         """
         Initialize the inference engine base class
-        
+
         Args:
             cfg: Configuration object
             trajectory_controller: Trajectory controller
         """
         self.cfg = cfg
         self.trajectory_controller = trajectory_controller
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        
+
+        # Allow device override from config, default to auto-detect
+        device_override = getattr(cfg.infer, 'device', None)
+        if device_override:
+            self.device = torch.device(device_override)
+        else:
+            # Auto-detect: try CUDA, fallback to CPU if incompatible
+            try:
+                if torch.cuda.is_available():
+                    # Test CUDA compatibility with a small tensor operation
+                    test_tensor = torch.zeros(1, device="cuda")
+                    _ = test_tensor + 1
+                    self.device = torch.device("cuda")
+                    del test_tensor
+                else:
+                    self.device = torch.device("cpu")
+            except RuntimeError as e:
+                print(f"[InferenceEngine] CUDA not compatible ({e}), falling back to CPU")
+                self.device = torch.device("cpu")
+
+        print(f"[InferenceEngine] Using device: {self.device}")
+
         # Observation related configuration
         self.obs_names = cfg.infer.obs_names
         self.camera_to_obs = {k: v for k, v in self.obs_names.items()}

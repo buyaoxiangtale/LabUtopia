@@ -158,9 +158,8 @@ class PlaceTaskController(BaseController):
         if self.current_phase == Phase.FINISHED:
             self.reset_needed = True
             return None, True, self._last_success
-        
+
         if self.current_phase == Phase.PICKING:
-            action = None
             action = self.pick_controller.forward(
                     picking_position=state['object_position'],
                     current_joint_positions=state['joint_positions'],
@@ -169,10 +168,26 @@ class PlaceTaskController(BaseController):
                     gripper_control=self.gripper_control,
                     gripper_position=state['gripper_position'],
                     end_effector_orientation=R.from_euler('xyz', np.radians([0, 90, 30])).as_quat(),
-                )    
-        else:
+                )
+
+            # 检查抓取是否完成并成功，成功则切换到放置阶段
+            if self.pick_controller.is_done():
+                success = self._check_phase_success()
+                if success:
+                    print("[PlaceTaskController] Pick success! Switching to placing phase...")
+                    self.current_phase = Phase.PLACING
+                    self.inference_engine.reset()  # 重置推理引擎，清空观测历史
+                    return None, False, False
+                else:
+                    print("[PlaceTaskController] Pick failed!")
+                    self._last_success = False
+                    self.current_phase = Phase.FINISHED
+                    return None, True, False
+
+        else:  # PLACING phase
             state['language_instruction'] = self.get_language_instruction()
             action = self.inference_engine.step_inference(state)
+
         return action, False, self.is_success()
 
     def is_success(self):

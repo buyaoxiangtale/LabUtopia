@@ -7,6 +7,7 @@ from isaacsim.core.utils.semantics import add_update_semantics
 from utils.camera_utils import process_camera_image
 from isaacsim.core.utils.prims import set_prim_visibility
 from pxr import UsdShade
+from isaacsim.core.utils.rotations import euler_angles_to_quat
 
 class BaseTask(ABC):
     """
@@ -119,13 +120,32 @@ class BaseTask(ABC):
                     frequency=60,
                     resolution=tuple(cam_cfg.resolution)
                 )
-                camera.set_local_pose(orientation=np.array(cam_cfg.orientation), camera_axes="usd")
+                # 支持欧拉角或四元数配置
+                if hasattr(cam_cfg, 'euler_angles'):
+                    # 使用欧拉角 (度数), XYZ顺序, extrinsic 旋转 (绕世界坐标轴)
+                    # USD Composer 使用 extrinsic 约定
+                    orientation = euler_angles_to_quat(
+                        np.array(cam_cfg.euler_angles),
+                        degrees=True,
+                        extrinsic=True
+                    )
+                else:
+                    # 使用四元数
+                    orientation = np.array(cam_cfg.orientation)
+                camera.set_local_pose(orientation=orientation, camera_axes="usd")
                 camera.set_focal_length(cam_cfg.focal_length)
             
             if hasattr(cam_cfg, 'clipping_range'):
                 camera.set_clipping_range(near_distance=cam_cfg.clipping_range[0], far_distance=cam_cfg.clipping_range[1])
             else:
                 camera.set_clipping_range(near_distance=0.1, far_distance=10.0)
+
+            # 设置光圈参数以对齐真实相机内参
+            if hasattr(cam_cfg, 'horizontal_aperture'):
+                camera.set_horizontal_aperture(cam_cfg.horizontal_aperture)
+            if hasattr(cam_cfg, 'vertical_aperture'):
+                camera.set_vertical_aperture(cam_cfg.vertical_aperture)
+
             self.cameras.append(camera)
         
         self.world.reset()
