@@ -414,10 +414,10 @@ def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int =
     # Create LeRobot dataset
     features = {}
     
-    # Add camera features
+    # Add camera features (use "video" dtype to store as MP4)
     for camera_name in camera_names:
         features[camera_name] = {
-            "dtype": "image",
+            "dtype": "video",
             "shape": image_shape,
             "names": ["height", "width", "channel"],
         }
@@ -438,12 +438,13 @@ def main(data_dir: str, repo_name: str, *, push_to_hub: bool = False, fps: int =
     print("Creating LeRobot dataset...")
     dataset = LeRobotDataset.create(
         repo_id=repo_name,
-        robot_type=robot_type,
         fps=fps,
         features=features,
+        root=output_path if output_dir else None,
+        robot_type=robot_type,
+        use_videos=True,
         image_writer_threads=1,
-        image_writer_processes=0,  # 使用主进程写入，避免额外内存开销
-        root=output_path if output_dir else None,  # 自定义保存路径
+        image_writer_processes=0,
     )
 
     # Read and convert data using multiprocessing

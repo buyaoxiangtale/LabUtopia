@@ -15,24 +15,25 @@ class PickPlaceTask(BaseTask):
         """
         super().__init__(cfg, world, stage, robot)
 
-        self.table_path = self.cfg.table_path
+        self.table_path = getattr(self.cfg, 'table_path', None)
 
-        self.table_material_paths = self.cfg.table_material_paths
-        self.button_material_paths = self.cfg.button_material_paths
+        # 材质配置变为可选，不配置则使用原始材质
+        self.table_material_paths = getattr(self.cfg, 'table_material_paths', None)
+        self.button_material_paths = getattr(self.cfg, 'button_material_paths', None)
         self.source_beaker = self.cfg.task.obj_paths[0]['path']
         self.target_plat = self.cfg.task.obj_paths[1]['path']
 
         self.num_episode = 0
-        self.per_episode = self.cfg.max_episodes // self.cfg.material_types
-        self.material_types = self.cfg.material_types
-        self.button_types = self.cfg.button_types
+        self.material_types = getattr(self.cfg, 'material_types', 1)
+        self.button_types = getattr(self.cfg, 'button_types', 1)
+        self.per_episode = self.cfg.max_episodes // max(self.material_types, 1)
 
     def reset(self):
         """Reset the task state."""
         super().reset()
         self.robot.initialize()
-        
-        obj_position_range = self.cfg.task.obj_paths[0]['position_range'] 
+
+        obj_position_range = self.cfg.task.obj_paths[0]['position_range']
         object_position = np.array([
                         np.random.uniform(obj_position_range['x'][0], obj_position_range['x'][1]),
                         np.random.uniform(obj_position_range['y'][0], obj_position_range['y'][1]),
@@ -48,16 +49,19 @@ class PickPlaceTask(BaseTask):
                     ])
         self.object_utils.set_object_position(object_path=self.target_plat, position=target_position)
 
-        random_material_path = random.choice(self.button_material_paths[:self.button_types])
-        bind_material_to_object(stage=self.stage,
-                                obj_path=self.cfg.target_sub_path,
-                                material_path=random_material_path)
-        
-        table_material_index = self.num_episode % self.material_types
-        bind_material_to_object(stage=self.stage,
-                                obj_path=self.table_path,
-                                material_path=self.table_material_paths[table_material_index])
-        
+        # 仅在配置了材质时才进行材质绑定
+        if self.button_material_paths and hasattr(self.cfg, 'target_sub_path'):
+            random_material_path = random.choice(self.button_material_paths[:self.button_types])
+            bind_material_to_object(stage=self.stage,
+                                    obj_path=self.cfg.target_sub_path,
+                                    material_path=random_material_path)
+
+        if self.table_material_paths and self.table_path:
+            table_material_index = self.num_episode % self.material_types
+            bind_material_to_object(stage=self.stage,
+                                    obj_path=self.table_path,
+                                    material_path=self.table_material_paths[table_material_index])
+
         self.num_episode += 1
    
 

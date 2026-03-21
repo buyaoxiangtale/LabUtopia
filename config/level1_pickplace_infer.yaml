@@ -1,0 +1,88 @@
+name: Level1_pickplace_infer
+
+task_type: "pickplace"
+controller_type: "pickplace"
+
+mode: "infer"  # 推理模式
+
+usd_path: "assets/chemistry_lab/lab_001/lab_001.usd"
+target_path: "/World/target_plat"
+
+max_episodes: 20  # 推理测试时减少episode数量
+
+# ============ 远程推理配置 ============
+infer:
+  type: "remote"  # 使用远程推理 (连接OpenPI服务器)
+
+  # 观测名称映射: 仿真相机名称 -> OpenPI模型期望的输入名称
+  # 必须与训练时的 RepackTransform 配置一致
+  obs_names:
+    camera_1_rgb: 'observation/image'              # 主相机
+    camera_2_rgb: 'observation/wrist_image'        # 腕部相机
+
+  # OpenPI 服务器连接配置
+  host: "127.0.0.1"  # 服务器地址 (本地)
+  port: 8000         # 服务器端口
+  n_obs_steps: 1     # 观测历史步数
+
+  # 设备配置 (可选: "cuda", "cpu", 或留空自动检测)
+  device: "cpu"
+
+  # 网络配置
+  timeout: 30        # 请求超时时间(秒)
+  max_retries: 3     # 最大重试次数
+
+  # ============ 夹爪状态调试配置 ============
+  gripper_debug:
+    enabled: true
+    log_interval: 10
+    log_action_values: true
+    log_joint_positions: true
+    log_phase_changes: true
+
+task:
+  max_steps: 1000
+  obj_paths:
+    - path: "/World/beaker2"
+      position_range:
+        x: [0.18, 0.33]
+        y: [-0.32, -0.17]
+        z: [0.776, 0.776]
+    - path: "/World/target_plat"
+      position_range:
+        x: [0.19, 0.34]
+        y: [0.10, 0.25]
+        z: [0.84, 0.84]
+
+
+cameras:
+  # 外部相机
+  - prim_path: "/World/Camera"
+    name: "camera_1"
+    translation: [2.9, -0.16, 3.4]
+    resolution: [640, 480]
+    focal_length: 5
+    euler_angles: [-0.29, 46.90, 90.40]  # XYZ欧拉角 (度数)
+    image_type: "rgb"
+
+  # 手腕相机
+  - prim_path: "/World/Franka/panda_hand/arm_camera"
+    name: "camera_2"
+    translation: [-0.2, 0, -0.02]
+    resolution: [640, 480]
+    focal_length: 1
+    orientation: [0.20083, 0.67799, -0.67799, -0.20083]
+    image_type: "rgb"
+
+robot:
+  type: "franka"
+  position: [-0.4, -0, 0.71]
+
+# 推理模式不需要 collector 配置
+
+hydra:
+  run:
+    dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}
+
+multi_run:
+  run_dir: outputs/${mode}/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}

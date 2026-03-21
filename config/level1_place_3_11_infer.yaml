@@ -39,6 +39,21 @@ infer:
   # policy_config_path: "" # 不需要
   # normalizer_path: ""    # 不需要
 
+  # ============ 夹爪状态调试配置 ============
+  # 用于在推理时查看夹爪的各个状态位姿，帮助理解夹爪张开/闭合逻辑
+  gripper_debug:
+    enabled: true                    # 是否启用夹爪调试日志
+    log_interval: 10                 # 日志输出间隔（每N帧输出一次）
+    log_action_values: true          # 是否输出推理得到的夹爪动作值
+    log_joint_positions: true        # 是否输出实际关节位置
+    log_phase_changes: true          # 是否输出阶段变化信息
+
+    # 夹爪状态阈值说明（单位：米）:
+    # - 完全打开: 0.040m (40mm) - 两个手指完全分开
+    # - 打开状态: > 0.030m (30mm) - 认为夹爪处于打开状态
+    # - 闭合状态: < 0.010m (10mm) - 认为夹爪处于闭合状态
+    # - 半开状态: 0.010m ~ 0.030m  - 夹爪处于中间状态
+
 task:
   max_steps: 20000
   obj_paths:
@@ -47,7 +62,6 @@ task:
         x: [0.19, 0.34]
         y: [0.10, 0.25]
         z: [0.84, 0.84]
-
     - path: "/World/target_plat"
       position_range:
         x: [0.18, 0.33]

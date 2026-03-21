@@ -105,34 +105,33 @@ class BaseTask(ABC):
         """
         self.cameras = []
         for cam_cfg in self.cfg.cameras:
-            if self.stage.GetPrimAtPath(cam_cfg.prim_path).IsValid():
-                camera = Camera(
-                    prim_path=cam_cfg.prim_path,
-                    name=cam_cfg.name,
-                    frequency=60,
-                    resolution=tuple(cam_cfg.resolution)
+            # 统一处理：无论相机是否已存在，都应用配置文件的参数
+            camera = Camera(
+                prim_path=cam_cfg.prim_path,
+                translation=np.array(cam_cfg.translation) if hasattr(cam_cfg, 'translation') else None,
+                name=cam_cfg.name,
+                frequency=60,
+                resolution=tuple(cam_cfg.resolution)
+            )
+            # 无论相机是否已存在，都应用配置文件中的位置、朝向和焦距
+            if hasattr(cam_cfg, 'euler_angles'):
+                # 使用欧拉角 (度数), XYZ顺序, intrinsic 旋转 (绕物体自身坐标轴)
+                # 与 USD Composer / Omniverse 约定一致
+                orientation = euler_angles_to_quat(
+                    np.array(cam_cfg.euler_angles),
+                    degrees=True,
+                    extrinsic=False
                 )
+            elif hasattr(cam_cfg, 'orientation'):
+                # 使用四元数
+                orientation = np.array(cam_cfg.orientation)
             else:
-                camera = Camera(
-                    prim_path=cam_cfg.prim_path,
-                    translation=np.array(cam_cfg.translation),
-                    name=cam_cfg.name,
-                    frequency=60,
-                    resolution=tuple(cam_cfg.resolution)
-                )
-                # 支持欧拉角或四元数配置
-                if hasattr(cam_cfg, 'euler_angles'):
-                    # 使用欧拉角 (度数), XYZ顺序, extrinsic 旋转 (绕世界坐标轴)
-                    # USD Composer 使用 extrinsic 约定
-                    orientation = euler_angles_to_quat(
-                        np.array(cam_cfg.euler_angles),
-                        degrees=True,
-                        extrinsic=True
-                    )
-                else:
-                    # 使用四元数
-                    orientation = np.array(cam_cfg.orientation)
+                orientation = None
+
+            if orientation is not None:
+                # set_local_pose 只设置朝向，位置通过构造时的 translation 参数设置
                 camera.set_local_pose(orientation=orientation, camera_axes="usd")
+            if hasattr(cam_cfg, 'focal_length'):
                 camera.set_focal_length(cam_cfg.focal_length)
             
             if hasattr(cam_cfg, 'clipping_range'):

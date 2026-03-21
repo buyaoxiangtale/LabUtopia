@@ -186,7 +186,7 @@ class PlaceTaskController(BaseController):
 
         else:  # PLACING phase
             state['language_instruction'] = self.get_language_instruction()
-            action = self.inference_engine.step_inference(state)
+            action = self.inference_engine.step_inference(state, phase="placing")
 
         return action, False, self.is_success()
 
